@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% load static tz %}
+{% block title %}Examinations · {{ school_name }}{% endblock %}
+{% block breadcrumb %}Examinations &amp; results{% endblock %}
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/examinations.css' %}"><script src="{% static 'vendor/chart.umd.min.js' %}" defer></script><script src="{% static 'js/examinations.js' %}" defer></script>{% endblock %}
+{% block content %}{% timezone exam_zone %}
+<nav class="action-bar exam-nav no-print" aria-label="Examination navigation">
+<a class="btn btn-outline-secondary" href="{% url 'examinations:dashboard' %}">Examinations</a><a class="btn btn-outline-secondary" href="{% url 'examinations:schedules' %}">Date sheets</a><a class="btn btn-outline-secondary" href="{% url 'examinations:results' %}">Published results</a><a class="btn btn-outline-secondary" href="{% url 'examinations:notifications' %}">Notifications</a>
+{% if perms.examinations.correct_results or perms.examinations.decide_corrections %}<a class="btn btn-outline-secondary" href="{% url 'examinations:corrections' %}">Corrections</a>{% endif %}
+{% if perms.examinations.manage_examinations %}<a class="btn btn-outline-secondary" href="{% url 'examinations:setup' 'sessions' %}">Configuration</a>{% endif %}
+</nav>
+{% block exam_content %}{% endblock %}
+{% endtimezone %}{% endblock %}

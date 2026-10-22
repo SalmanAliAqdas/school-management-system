@@ -44,8 +44,8 @@ MODULES = [
         "name": "Examinations & results",
         "category": "Teaching & learning",
         "description": "Assessment planning, mark entry and moderated results.",
-        "state": "Planned",
-        "phase": 3,
+        "state": "Available",
+        "phase": 4,
     },
     {
         "slug": "homework",
@@ -69,7 +69,7 @@ MODULES = [
         "category": "Administration",
         "description": "Fees, receipts, ledgers and reconciliation.",
         "state": "Planned",
-        "phase": 4,
+        "phase": 5,
     },
     {
         "slug": "announcements",

@@ -59,3 +59,14 @@ record guards. ReportLab is installed from the normal requirements for PDF tests
 No external messaging/deployment credentials are needed. Browser workflow QA remains
 an optional local check using installed Chrome and an isolated temporary database;
 see ATTENDANCE_POLICY.md. GitHub Actions is verified against the pushed commit.
+
+
+## Phase 4 checks
+
+The same Foundation checks workflow covers examination migrations and the entire
+PostgreSQL regression suite. New tests exercise grading/weight/status boundaries,
+scoped access and exports, independent approval, immutable publication versions,
+corrections/amendments, schedule exclusions, enrollment preservation, query bounds
+and concurrent submissions/publications/decisions. No CI deployment job was added.
+Local installed-Chrome workflows are separately documented in VERIFICATION.md;
+they do not require or expose production accounts or databases.

@@ -11,8 +11,9 @@ Foundation authentication, access policy, scoped dashboards and audit events are
 retained. Phase 2 adds academic administration, admissions, enrollment transitions,
 guardian relationships, teacher/staff profiles, CSV imports and private images.
 Phase 3 adds enrollment-aware attendance, staff attendance/leave, internal absence
-notices, corrections and attendance reporting. Other teaching, finance and campus
-modules remain planned.
+notices, corrections and attendance reporting. Phase 4 implements examinations,
+weighted grading, review/publication, report cards and result portals. Finance and
+later campus modules remain planned.
 
 ## App boundaries (planned before initial models)
 
@@ -25,7 +26,7 @@ modules remain planned.
 | audit | Append-only application event records and authentication signals | Implement |
 | admissions | Applications, admission workflow and document review | Future |
 | attendance | Dated registers, rules/calendar, corrections, leave, absence notices and scoped reports | Implemented |
-| examinations | Exams, assessments, decimal marks, moderation and results | Future |
+| examinations | Assessment structures, Decimal marks, moderation, publication snapshots, report cards and analytics | Implemented |
 | finance | Decimal invoices, fees, receipts, ledgers and reconciliation | Future |
 | learning | Homework, assignments and submissions | Future |
 | scheduling | Timetables, rooms and calendar events | Future |
@@ -75,11 +76,14 @@ monitoring, database backups and a separately reviewed authorization model.
    audited corrections, employee leave, internal guardian notices and reports.
    Teacher marking is bounded by the assigned academic year and section.
    Timetable, homework, exams and results remain separate future work.
-4. **Finance and communication:** immutable receipt references, decimal ledger
+4. **Examinations (implemented):** configurable assessment/grade structures, conflict-checked
+   date sheets, assigned-teacher marks, independent reviews, controlled publication,
+   preserved report-card versions, personal portals, analytics and recommendations.
+5. **Fees and finance (future):** immutable receipt references, decimal ledger
    workflows, approvals, reconciliation and notification delivery.
-5. **Extended administration:** HR/payroll, library, transport, inventory and
+6. **Extended administration (future):** HR/payroll, library, transport, inventory and
    certificates with module-specific permissions and audit events.
-6. **Commercial validation:** privacy and security review, retention policy,
+7?10. **Further modules and commercial validation (future):** privacy and security review, retention policy,
    accessibility, PostgreSQL performance tests, restore drills, monitoring,
    incident procedures and deployment approval.
 
@@ -101,3 +105,25 @@ Section, TeachingAssignment, Enrollment, Student, Guardian, Teacher and Staff ra
 than introducing a second academic or people hierarchy. Transactional year locks
 serialize roster, register, policy, leave and correction changes. Database guards
 protect final rows, decisions, source relationships and notice history.
+
+
+## Examination boundary
+
+`examinations/services.py` owns setup, year-serialized roster/marks/review writes,
+corrections, amendments, audit events and publication. `calculations.py` owns all
+Decimal grading and explicit source-weight consolidation. `selectors.py` owns role,
+teacher-subject and guardian/student scope; `reporting.py` exposes only permitted
+current-publication aggregates. `exports.py` generates deterministic A4 PDFs from
+immutable snapshots. Browser and PDF rendering use the same authorized records.
+
+Assessment sessions contain section cohorts, subjects and weighted components.
+Term/annual reports explicitly weight existing published sessions. Opening entry
+freezes dated Enrollment references; no duplicate academic or people hierarchy is
+introduced. PostgreSQL constraints, exclusions and guards complement transactional
+services. PublishedResult and ResultPublication are append-only; approved corrections
+and candidate amendments create fresh publication versions. Closed periods and
+existing enrollment history remain protected. Recommendations feed the existing
+school enrollment screen without automatically promoting students.
+
+The current module boundaries and operating policy are in
+[EXAMINATION_POLICY.md](EXAMINATION_POLICY.md). Phase 5 finance has not begun.

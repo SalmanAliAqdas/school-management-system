@@ -147,7 +147,7 @@ class FoundationTests(TestCase):
     def test_planned_modules_and_unknown_module(self):
         self.client.force_login(self.data["student_user"], backend=BACKEND)
         self.assertContains(self.client.get("/modules/"), "planned")
-        self.assertContains(self.client.get("/modules/examinations/"), "no records or actions")
+        self.assertContains(self.client.get("/modules/finance/"), "no records or actions")
         self.assertEqual(self.client.get("/modules/not-real/").status_code, 404)
 
     def test_pdf_boundary_rejects_mismatched_file_and_keeps_private_path(self):

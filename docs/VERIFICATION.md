@@ -139,7 +139,7 @@ MFA, backup/restore and operational scheduling remain outside local verification
 
 ## Phase 3 attendance verification - 23 October 2026
 
-This section is the latest verification scope.
+This section records the completed Phase 3 verification scope.
 
 - Baseline before changes: Phase 2 migrations current and all 130 PostgreSQL tests passed.
 - Final suite: **185 tests passed**, zero failures/errors. It includes every earlier
@@ -167,3 +167,57 @@ This section is the latest verification scope.
 User acceptance with real operational policy, assistive technology, physical printers,
 large school datasets and multilingual PDFs remains necessary before real-school use.
 The repository's Actions tab supplies the pushed-commit CI evidence.
+
+
+## Phase 4 examination verification ? 23 October 2026
+
+This is the current verification scope. The baseline was a clean `c716d27` checkout,
+matching GitHub main, with all 185 existing PostgreSQL tests passing.
+
+- Final complete suite: **251 PostgreSQL tests passed**, zero failures/errors, including
+  all prior authentication, dashboards, admissions/enrollment and attendance regressions.
+  The final run completed in 149.923 seconds on the local verification machine.
+- Sixty-six new examination tests cover setup/roster eligibility, grade gaps/overlaps
+  and boundaries, Decimal weights/rounding, absence/exemption/missing/withheld states,
+  teacher subject restrictions, controller/principal scope, independent reviews,
+  state transitions, source consolidation/retakes, private rankings, recommendations,
+  notifications, direct URLs, CSRF, CSV/PDF authorization, historical image/policy
+  protection and query bounds. Three concurrent-write tests verify one winning marks
+  submission, publication and correction decision without duplicate versions.
+- Five additive examination migrations applied to the existing local database. The
+  legacy migration-upgrade rehearsal passes as part of the complete suite. Migration
+  drift/pending checks report no changes or unapplied migrations.
+- Django system check and production deployment check report zero issues. Ruff lint
+  and formatting pass; `pip check` reports no broken requirements. Production-settings
+  static collection passes. No production deployment was performed.
+- Repository scan including local identity checks reports no findings. Logs, private
+  fingerprints, databases, uploads, generated PDFs and screenshots remain ignored.
+- Installed Chrome ran `scripts/examination_browser.py` in its own randomly named test
+  database. Actual UI writes verified administrator session/cohort/subject/component
+  setup and scheduling, teacher draft/submission, independent controller review,
+  principal approval, publication, correction/republication, student/guardian portal
+  isolation, PDF download, CSV and desktop/mobile layouts. JavaScript error checks and
+  horizontal-page-overflow assertions pass. Screenshots remain ignored under
+  `.local/previews/examinations/`; the script stops its owned server and removes only
+  its owned test database.
+- Browser inspection identified and fixed school-local report issue-date formatting.
+  A PDF reproduction test identified variable document metadata; deterministic output
+  now passes a byte comparison after the source logo is replaced/deleted.
+- Publication now shares grading context and batches guardian-recipient lookup rather
+  than issuing queries per candidate. Bounded-query coverage passes for teacher scope
+  and multi-candidate publication.
+- Repeatable fictional data includes six examination/report sessions, 36 candidates,
+  30 marks sheets/60 entries, 24 snapshot report cards and approved/rejected/pending
+  correction examples, while preserving all pre-existing records.
+- Final preservation comparison found **no differences in 431 original rows across
+  26 tables**, including every existing user password and privilege field, student,
+  guardian, enrollment, teacher assignment, attendance and audit record. No database
+  reset, existing administrator password change or unexpected privilege-flag change
+  occurred. Managed roles gained only the explicitly documented examination grants.
+
+Private execution evidence is retained in `.local/phase4-final-tests.log`,
+`.local/phase4-browser-final.log` and preservation fingerprints. Production-scale load,
+real-school policy acceptance, assistive-technology review, physical printing and
+multilingual PDF typography remain manual/operational validation. The completion
+report supplies the pushed commit and GitHub Actions workflow link; no later phase
+was implemented.

@@ -134,6 +134,7 @@ def module_detail(request, slug):
     if not module:
         raise Http404
     destinations = {
+        "examinations": ("examinations.view_examinations", "examinations:dashboard", {}),
         "attendance": ("attendance.view_attendance", "attendance:dashboard", {}),
         "academics": ("academics.view_academicyear", "academics:overview", {}),
         "admissions": ("people.add_student", "people:admission", {}),

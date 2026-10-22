@@ -108,6 +108,37 @@ ROLE_PERMISSIONS["HR Manager"] += [
 ]
 
 
+EXAM_OVERSIGHT = [
+    "examinations.view_examinations",
+    "examinations.view_all_examinations",
+    "examinations.manage_examinations",
+    "examinations.enter_marks",
+    "examinations.review_results",
+    "examinations.correct_results",
+    "examinations.decide_corrections",
+    "examinations.publish_results",
+]
+for role in ("System Administrator", "School Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += EXAM_OVERSIGHT
+for role in ("System Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += ["examinations.approve_results", "examinations.override_promotion"]
+ROLE_PERMISSIONS["Examination Controller"] += [
+    "examinations.view_examinations",
+    "examinations.manage_examinations",
+    "examinations.review_results",
+    "examinations.correct_results",
+    "examinations.decide_corrections",
+    "examinations.publish_results",
+]
+ROLE_PERMISSIONS["Teacher"] += [
+    "examinations.view_examinations",
+    "examinations.enter_marks",
+    "examinations.correct_results",
+]
+for role in ("Student", "Parent or Guardian"):
+    ROLE_PERMISSIONS[role] += ["examinations.view_examinations"]
+
+
 @transaction.atomic
 def sync_roles():
     """Synchronize only managed groups; fail if migrations are missing."""

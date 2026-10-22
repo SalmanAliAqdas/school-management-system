@@ -22,7 +22,11 @@ for setup, permissions, academic lifecycle, import columns and historical protec
 Attendance now includes student/staff registers, calendars, corrections, leave,
 guardian notices, dashboards and scoped CSV/PDF reports. See the
 [attendance operating and policy guide](docs/ATTENDANCE_POLICY.md).
-Exams, finance, homework and scheduling remain planned.
+Examinations now include weighted assessments, configurable grading, date sheets,
+scoped marks entry, independent review, publication snapshots, corrections, student/
+guardian portals, analytics and branded PDF report cards. See the
+[examination and grading policy](docs/EXAMINATION_POLICY.md).
+Fees/finance and later phases remain planned.
 
 ## Requirements
 
@@ -175,8 +179,8 @@ Phase 1 commit boundaries and results are in [the repository review](docs/REPOSI
 `manage.py` loads `.env` before choosing the settings module; an explicitly exported
 `DJANGO_SETTINGS_MODULE` takes precedence. WSGI/ASGI default to production settings.
 `DATABASE_URL` is mandatory. `TIME_ZONE` defaults to `Asia/Karachi`; school settings
-store a separate timezone/currency boundary for future workflows. The current UI
-uses the environment timezone. Bootstrap 5.3.8 and Chart.js 4.5.1 are vendored.
+store a separate timezone/currency boundary for future workflows. Attendance and examination workflows
+use the configured school timezone; other UI dates use the environment timezone. Bootstrap 5.3.8 and Chart.js 4.5.1 are vendored.
 
 Development password reset emails print to the server console. Production uses
 SMTP environment settings from `.env.example`; validate actual delivery before
@@ -212,6 +216,8 @@ academics/       academic years, terms, classes, sections, subjects, assignments
 people/          admissions, profiles, guardians, enrollment history, imports and scoped reads
 core/            school settings, dashboards, design system, readiness
 audit/           security and access events
+attendance/      student/staff attendance, leave, calendars, notices and reports
+examinations/    assessment setup, marks, grading, publication and report cards
 config/          Django configuration and server entry points
 templates/       shared layouts, auth pages and role workspaces
 static/          local CSS, JavaScript, brand mark and vendor assets

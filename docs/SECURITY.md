@@ -91,3 +91,34 @@ inside the school database and require a reviewed retention policy for real use.
 The attendance browser harness uses a newly created, randomly named test database,
 in-memory credentials and loopback hosting. It removes only its own temporary test
 database. No SMS, WhatsApp, email delivery, payroll or production deployment occurs.
+
+
+## Examination publication and confidentiality
+
+Phase 4 adds explicit examination capabilities and session/controller or exact
+teacher assignment scope. Every write rechecks object authorization in a transaction.
+POST/CSRF, exact rosters, Decimal validation and optimistic versions protect marks
+entry and transitions. Principals approve where configured; independent review and
+mandatory reasons protect corrections and visibility/remarks amendments. PostgreSQL
+guards prevent direct ordinary updates to submitted marks, used policies, completed
+decisions or issued snapshots. Database-owner access remains a trusted operator
+boundary, as with the existing attendance safeguards.
+
+Only authorized current publications appear in personal portals/analytics/exports.
+Withheld snapshots contain no marks, grades, assessment/general remarks or positions;
+current withholding also blocks old personal HTML/PDF/image URLs. Guardian links and
+teacher/controller permissions are rechecked at read time. Notifications do not copy
+restricted marks or private reasons. No public report verification URL is introduced.
+
+Issued branding and sanitized private-image bytes are retained in immutable snapshots,
+so no remote image is fetched while generating a PDF. Images use authorized snapshot
+routes; responses are private/no-store. PDF strings are XML-escaped; CSV formulas are
+escaped. Output is bounded and no official signature/seal is fabricated. Admin models
+are read-only and the existing superuser-only admin gate is retained.
+
+The development-only fictional seed remains explicitly gated and never changes an
+existing account password or overwrites published sessions. Browser QA uses its own
+randomly named test database and removes only that owned test database. Production
+hosting, retention/access governance, backup/restore, real-school privacy review,
+large-scale load, accessibility and multilingual PDF validation remain operational
+work; no production deployment is included.

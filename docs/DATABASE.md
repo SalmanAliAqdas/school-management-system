@@ -121,3 +121,68 @@ and an in-memory working-date calendar for the selected bounded year/range, avoi
 queries per student/day. Indexed dates/statuses, unique daily keys and explicit
 pagination support operational lookups. A test compares register query counts for
 one versus twenty-one students. Production-scale performance remains to be validated.
+
+
+## Phase 4 examinations
+
+Twenty-three examination models reuse the existing academic/people foreign keys:
+
+- AssessmentType and ExaminationSettings: school-defined assessment labels and
+  opt-in ranking/support settings.
+- GradingPolicy and GradeBand: year-specific Decimal thresholds, contiguous bands,
+  grade points, status/rounding and independent/principal-review rules.
+- ExamSession, ExamController, ExamCohort, ExamSubject, Assessment and
+  SessionContribution: dated sessions, explicit controller links, sections, subject
+  structures, weighted components and published term/annual source references.
+- ExamRoom, ExamSchedule and Invigilation: optional locations/duties and time slots.
+- ExamCandidate, MarkSheet and MarkEntry: frozen dated Enrollment identity,
+  optimistic sheet/entry versions and status-aware marks.
+- ResultPublication and PublishedResult: append-only issue batches and candidate
+  snapshots, including school identity, image bytes, applied rules and source versions.
+- ResultCorrection and CandidateAmendment: exact before/after proposals and one
+  independent final decision for marks, remarks or visibility changes.
+- ResultEvent, ExamNotification and PromotionRecommendation: attributed workflow
+  history, recipient-scoped internal notices and reasoned recommendation overrides.
+
+```mermaid
+erDiagram
+    AcademicYear ||--o{ ExamSession : scopes
+    GradingPolicy ||--o{ GradeBand : defines
+    GradingPolicy ||--o{ ExamSession : governs
+    ExamSession ||--o{ ExamCohort : includes
+    Section ||--o{ ExamCohort : reused
+    ExamCohort ||--o{ ExamSubject : configures
+    Subject ||--o{ ExamSubject : reused
+    ExamSubject ||--o{ Assessment : weights
+    Assessment ||--o| ExamSchedule : schedules
+    Assessment ||--o| MarkSheet : records
+    Enrollment ||--o{ ExamCandidate : freezes
+    ExamCandidate ||--o{ MarkEntry : receives
+    MarkSheet ||--o{ MarkEntry : contains
+    ExamSession ||--o{ ResultPublication : issues
+    ResultPublication ||--o{ PublishedResult : snapshots
+    ExamCandidate ||--o{ PublishedResult : history
+    MarkEntry ||--o{ ResultCorrection : reviews
+    ExamCandidate ||--o{ CandidateAmendment : reviews
+```
+
+Five migrations add the schema, guards, amendment/retake support, grading overlap
+exclusion, schedule guards and reporting indexes. Earlier migrations remain intact.
+Foreign keys protect enrollment, policy, candidate, marks and publication history.
+Unique constraints prevent duplicate candidates/session, subjects/cohort, assessment
+names, sheet entries, controller links, source sessions, publication versions and
+notifications; only one pending correction/amendment is permitted per target.
+
+PostgreSQL exclusions protect class/section/room/invigilator time ranges and grade-band
+ranges. Checks enforce ordered dates, positive maxima/weights, 0?100 thresholds,
+status-aware null marks, independent decision metadata and valid sheet states.
+Guards enforce matching candidate enrollment/roster, maximum marks, complete sheet
+submission, frozen setup/used policies, approved correction tokens, exact before/after
+revisions, append-only snapshots/events and original final-approval identity.
+
+Academic-year locks serialize setup, marks, approvals, publication and enrollment
+changes; stale form versions fail before writes. Batched roster/snapshot writes,
+correlated assignment scopes and shared grading context avoid per-student lookup
+queries. Foreign-key, unique and exclusion indexes are complemented by year/state,
+recipient/date and candidate/publication indexes. The public report limit is 5,000
+rows; operational load testing remains required for a real school.

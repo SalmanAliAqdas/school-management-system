@@ -36,6 +36,7 @@ def protect_academic_edit(instance):
         protected = (
             protected
             or StudentRegister.objects.filter(academic_year=instance.academic_year).exists()
+            or instance.examsession_set.exists()
         )
     elif isinstance(instance, SchoolClass):
         protected = (
@@ -51,7 +52,17 @@ def protect_academic_edit(instance):
             or ClassSubject.objects.filter(subject=instance).exists()
         )
     elif isinstance(instance, TeachingAssignment):
-        protected = instance.academic_year.status != "open"
+        from examinations.models import ExamSubject
+
+        protected = (
+            instance.academic_year.status != "open"
+            or ExamSubject.objects.filter(
+                cohort__session__academic_year=instance.academic_year,
+                cohort__section=instance.section,
+                subject=instance.subject,
+                cohort__session__state__in=["approved", "published", "archived"],
+            ).exists()
+        )
     elif isinstance(instance, ClassSubject):
         protected = (
             instance.academic_year.status != "open"
@@ -136,6 +147,17 @@ def period_action(actor, kind, pk, action):
                 raise ValidationError(
                     "Finalize outstanding attendance registers before closing this academic year."
                 )
+        from examinations.models import ExamSession
+
+        unfinished = ExamSession.objects.filter(
+            academic_year=period if model is AcademicYear else period.academic_year
+        )
+        if model is Term:
+            unfinished = unfinished.filter(term=period)
+        if unfinished.exclude(state__in=["published", "archived"]).exists():
+            raise ValidationError(
+                "Publish or resolve outstanding examination sessions before closing this period."
+            )
         period.status, period.is_current = "closed", False
         if model is AcademicYear:
             period.terms.filter(status="open").update(status="closed", is_current=False)

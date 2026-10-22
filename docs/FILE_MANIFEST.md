@@ -155,3 +155,52 @@ dashboards, requests/reviews, notices and reports. New tests cover attendance,
 boundaries and concurrency. scripts/attendance_browser.py creates its own isolated
 browser test database. docs/ATTENDANCE_POLICY.md documents the policy and workflows.
 Runtime data, private files, test logs and screenshots remain ignored.
+
+
+## Phase 4 examination files
+
+- `examinations/__init__.py`
+- `examinations/admin.py`
+- `examinations/apps.py`
+- `examinations/calculations.py`
+- `examinations/demo.py`
+- `examinations/exports.py`
+- `examinations/forms.py`
+- `examinations/migrations/0001_initial.py`
+- `examinations/migrations/0002_history_guards.py`
+- `examinations/migrations/0003_candidateamendment_examsession_retake_of_and_more.py`
+- `examinations/migrations/0004_amendment_schedule_guards.py`
+- `examinations/migrations/0005_examnotification_exam_recipient_date_idx_and_more.py`
+- `examinations/migrations/__init__.py`
+- `examinations/models.py`
+- `examinations/reporting.py`
+- `examinations/selectors.py`
+- `examinations/services.py`
+- `examinations/urls.py`
+- `examinations/views.py`
+- `templates/examinations/analytics.html`
+- `templates/examinations/base.html`
+- `templates/examinations/candidate.html`
+- `templates/examinations/corrections.html`
+- `templates/examinations/dashboard.html`
+- `templates/examinations/form.html`
+- `templates/examinations/marks.html`
+- `templates/examinations/notifications.html`
+- `templates/examinations/report.html`
+- `templates/examinations/results.html`
+- `templates/examinations/schedules.html`
+- `templates/examinations/session.html`
+- `templates/examinations/setup.html`
+- `static/css/examinations.css`
+- `static/js/examinations.js`
+- `scripts/examination_browser.py`
+- `tests/test_examinations.py`
+- `tests/test_examination_boundaries.py`
+- `tests/test_examination_concurrency.py`
+- `docs/PHASE4_PLAN.md`
+- `docs/EXAMINATION_POLICY.md`
+
+Integration also updates managed examination grants, the gated demo command, Django
+app/URL registration, existing academic/enrollment guards, the promotion form and
+student/navigation links. The former examination placeholder regression now checks
+the still-planned finance module. No later module was implemented.

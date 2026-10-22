@@ -112,6 +112,23 @@ def student_transition(request, pk):
     require_capability(request.user, "people.transition_students", student_scope=True)
     student = get_object_or_404(students_visible_to(request.user), pk=pk)
     current = Enrollment.objects.filter(student=student, is_active=True).first()
+    from examinations.reporting import current_results
+
+    academic_result = (
+        current_results(request.user)
+        .filter(candidate__student=student)
+        .order_by("-publication__session__ends_on", "-publication__created_at")
+        .first()
+    )
+    academic_override = None
+    if academic_result:
+        academic_override = (
+            academic_result.candidate.recommendation_overrides.filter(
+                publication=academic_result.publication
+            )
+            .order_by("-created_at")
+            .first()
+        )
     form = TransitionForm(
         request.POST if request.method == "POST" else None,
         initial={
@@ -136,6 +153,8 @@ def student_transition(request, pk):
         f"Enrollment change: {student}",
         description=f"Current placement: {current.section if current else 'none'}. "
         "Review the action and dates carefully before confirming.",
+        academic_result=academic_result,
+        academic_override=academic_override,
     )
 
 

@@ -185,6 +185,11 @@ def transition_student(
             "Recorded attendance exists after this exit date. "
             "Review the placement date before continuing."
         )
+    if current.exam_candidates.filter(session__eligibility_on__gt=effective_on).exists():
+        raise ValidationError(
+            "An examination roster uses this enrollment after the requested exit date. "
+            "Choose an exit date that preserves examination eligibility history."
+        )
     if action in {"transfer", "promote"}:
         if not academic_year or not section:
             raise ValidationError("Choose a destination academic year and section.")

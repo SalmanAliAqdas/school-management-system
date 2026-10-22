@@ -150,6 +150,9 @@ class Command(BaseCommand):
         from attendance.demo import seed_attendance_demo
 
         seed_attendance_demo(accounts, year, students, sections)
+        from examinations.demo import seed_examination_demo
+
+        seed_examination_demo(accounts, year, students, sections)
         record_event("demo.initialized", target=school.pk)
         self.stdout.write(
             self.style.SUCCESS("Fictional demo initialized; existing passwords preserved.")
