@@ -1,0 +1,2 @@
+# Consistent text checkouts across Windows development and Linux deployment.
+* text=auto eol=lf

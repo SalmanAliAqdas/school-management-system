@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_class %}auth-body{% endblock %}
+{% block body %}
+<div class="auth-layout">
+  <section class="auth-story" aria-label="RumiWare SchoolOS">
+    <a class="brand" href="{% url 'accounts:login' %}"><img src="{% static 'img/mark.svg' %}" width="42" height="42" alt=""><span>rumiware<span class="brand-sub">S C H O O L O S</span></span></a>
+    <div class="story-content"><span class="eyebrow light">A LITTLE MORE CONNECTED.</span><h1>Great schools.<br>Clearer days.<br><em>Brighter futures.</em></h1><p>A considered workspace for the people<br>who make a school feel like a community.</p><div class="orbit-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit orbit-three"></div><div class="orbit-center"><svg class="icon"><use href="#i-book"/></svg></div><span class="orbit-dot dot-one"></span><span class="orbit-dot dot-two"></span><span class="art-caption">Every connection matters.</span></div></div>
+    <div class="auth-story-footer"><span>Built with care, by RumiWare.</span><span>School, connected. ↗</span></div>
+  </section>
+  <main class="auth-main" id="main-content" tabindex="-1"><div class="auth-mobile-brand">rumiware <span>SchoolOS</span></div><div class="auth-form-wrap">{% block auth_content %}{% endblock %}</div><div class="auth-legal"><svg class="icon"><use href="#i-shield"/></svg> A private workspace for your school community.</div></main>
+</div>
+{% endblock %}

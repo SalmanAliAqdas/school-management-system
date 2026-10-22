@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}Access restricted{% endblock %}
+{% block body %}<main class="standalone-error" id="main-content"><span class="eyebrow">403 · ACCESS RESTRICTED</span><h1>This space needs permission.</h1><p>Your account does not have access to this action. Contact your school administrator if access is required.</p><a class="btn btn-primary" href="{% url 'core:dashboard' %}">Return to workspace</a></main>{% endblock %}

@@ -1,0 +1,4 @@
+{% extends 'layout.html' %}
+{% block title %}School settings{% endblock %}
+{% block breadcrumb %}School settings{% endblock %}
+{% block content %}<div class="page-heading"><div><span class="eyebrow">THE SCHOOL AT THE CENTER</span><h1>School settings</h1><p>Your school identity and configuration boundaries.</p></div></div><section class="panel settings-panel"><div class="panel-heading"><div><h2>School identity</h2><p>Changes are recorded in the audit trail.</p></div></div><form method="post" class="padded-form" data-loading-form>{% csrf_token %}{% include 'includes/form_fields.html' %}<p class="form-help">The timezone and currency are saved as school configuration. Application timestamps currently use the TIME_ZONE environment setting; no finance workflows are available yet.</p><button class="btn btn-primary" data-loading-label="Saving…">Save school settings</button></form></section>{% endblock %}

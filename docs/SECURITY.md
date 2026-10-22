@@ -1,0 +1,62 @@
+# Security foundation and operational limits
+
+The application is a fictional-data prototype. Foundation controls are not a
+certification of commercial readiness.
+
+The Phase 1 commit boundaries, dependency/secret scans and clean-install results
+are recorded in [REPOSITORY_REVIEW.md](REPOSITORY_REVIEW.md). The reusable
+`scripts/repository_check.py` check also runs in CI. Private local files and
+credential stores remain excluded; public test credentials are fictional fixtures.
+
+## Implemented boundaries
+
+- Environment-only production secrets; production refuses short/missing keys.
+- Django password hashing/validation, inactive-account checks, session key rotation,
+  POST-only logout, CSRF middleware and POST forms.
+- One-hour, single-use password reset tokens; generic unknown-email responses.
+  Local reset messages go to the development console. Production uses SMTP.
+- Database-backed django-axes throttling shared across workers: five failures for
+  either a username or the socket IP trigger a 15-minute lockout. Forwarded client
+  headers are ignored. Run `python manage.py axes_reset` for an authorized local
+  unlock and periodically `python manage.py axes_reset_logs --age 30` to prune access logs.
+- Capability checks plus object-scoped selectors. Restricted history is filtered
+  independently from profile visibility. Administrative bypass is explicitly limited.
+- HttpOnly session and CSRF cookies, SameSite Lax, private/no-store authenticated
+  responses, a local-asset content security policy, frame denial, and no-sniff.
+- HTTPS redirects, secure cookies and HSTS in production. Proxy HTTPS trust is
+  opt-in and requires a proxy that strips client-supplied forwarding headers.
+- Safe generic error pages and a health response that does not expose DB details.
+- Authentication, student-detail access and settings-write audit events omit
+  credentials, request bodies, reset tokens and personal metadata.
+- No upload or public-media route. A reusable PDF extension/size/signature validator
+  and random private-storage path establish a future document-handling boundary.
+- Demo initialization requires DEBUG **and** ALLOW_DEMO_DATA and a locally supplied
+  password. Existing account passwords are preserved on repeat runs.
+
+## Required before real school data
+
+Establish retention/consent policy, tested backups and restores, secrets rotation,
+dependency updates, MFA for administrators, monitoring and incident procedures.
+Use a least-privileged production database account and restrict admin access.
+
+At a reverse proxy, username throttling remains effective, but socket-IP throttling
+may group all users behind one proxy. Configure trusted client-IP extraction only
+after verifying that ingress strips spoofable headers; test the exact deployed
+topology before enabling real accounts. Configure SMTP and exercise delivery and
+bounce handling. Reset request abuse controls and uniform response timing need a
+deployment-level review. Email account existence may be inferred from timing.
+
+Audit rows are read-only through application UI but not cryptographically immutable;
+database operators can change them. Retention, offsite/tamper-evident storage, all
+future writes, exports and bulk reads require a reviewed audit policy. Django admin
+changes also have Django's own LogEntry history, not a unified audit feed.
+
+Do not expose media through WhiteNoise or a static web root. Future file workflows
+need malware scanning, private storage, ownership checks, authenticated downloads,
+attachment headers and file-type validation beyond the initial PDF signature gate.
+Render's ephemeral filesystem cannot serve as durable document storage.
+
+Enrollment overlap validation is application-level across rows. Future concurrent
+enrollment services must use student-row locks or a reviewed PostgreSQL exclusion
+constraint. The app is single-school; multi-school tenancy needs a separate access
+and migration design. No attendance, mark entry, payments or payroll actions exist.

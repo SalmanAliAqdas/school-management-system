@@ -1,0 +1,9 @@
+{% extends 'registration/auth_base.html' %}
+{% block title %}Sign in{% endblock %}
+{% block auth_content %}
+<span class="eyebrow">YOUR SCHOOL DAY STARTS HERE</span><h2>Welcome back.</h2><p class="auth-subtitle">Sign in to your RumiWare SchoolOS workspace.</p>
+{% if next %}<div class="small-note">Sign in to continue to your workspace.</div>{% endif %}
+<form method="post" data-loading-form>{% csrf_token %}{% include 'includes/form_fields.html' %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}<div class="auth-options"><span class="muted">Use your school account</span><a href="{% url 'accounts:password_reset' %}">Forgot password?</a></div><button class="btn btn-primary auth-submit" type="submit" data-loading-label="Signing in…">Sign in to workspace <span aria-hidden="true">↗</span></button></form>
+<div class="auth-divider"></div><p class="access-help">Need an account?<br><strong>Contact your school administrator.</strong></p>
+{% if demo_mode %}<div class="demo-note"><span class="status-dot"></span> Demonstration environment<p>All accounts and school records are fictional.</p></div>{% endif %}
+{% endblock %}

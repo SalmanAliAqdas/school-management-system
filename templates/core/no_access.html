@@ -1,0 +1,3 @@
+{% extends 'layout.html' %}
+{% block title %}Access needed{% endblock %}
+{% block content %}<section class="panel"><div class="empty-state planned-state"><span class="empty-icon"><svg class="icon"><use href="#i-shield"/></svg></span><h1>Your workspace is waiting.</h1><p>No dashboard permissions have been assigned to your account.<br>Contact your school administrator to arrange access.</p><a class="btn btn-primary" href="{% url 'core:profile' %}">View my account</a></div></section>{% endblock %}

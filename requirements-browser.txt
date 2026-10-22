@@ -1,0 +1,3 @@
+# Optional local browser verification. Uses an existing Chrome installation.
+playwright>=1.64,<2
+python-dotenv>=1.2,<2
