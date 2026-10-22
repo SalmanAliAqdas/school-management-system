@@ -1,6 +1,6 @@
 # Reviewed source file manifest
 
-These 130 project files form the reviewed first-commit candidate set. Local environments,
+These 133 project files form the reviewed Phase 1 source set. Local environments,
 secrets, databases, private uploads, generated assets and review evidence are excluded.
 
 - .env.example
@@ -64,6 +64,7 @@ secrets, databases, private uploads, generated assets and review evidence are ex
 - core/urls.py
 - core/views.py
 - docs/ARCHITECTURE.md
+- docs/CI.md
 - docs/DATABASE.md
 - docs/FILE_MANIFEST.md
 - docs/PERMISSIONS.md
@@ -86,6 +87,7 @@ secrets, databases, private uploads, generated assets and review evidence are ex
 - requirements-dev.txt
 - requirements.txt
 - scripts/browser_smoke.py
+- scripts/configure_ci_database.py
 - scripts/local_database.py
 - scripts/repository_check.py
 - static/css/schoolos.css
@@ -129,6 +131,7 @@ secrets, databases, private uploads, generated assets and review evidence are ex
 - tests/__init__.py
 - tests/helpers.py
 - tests/test_authentication.py
+- tests/test_ci_security.py
 - tests/test_configuration.py
 - tests/test_foundation.py
 - tests/test_permissions.py

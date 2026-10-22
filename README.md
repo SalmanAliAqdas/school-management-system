@@ -150,7 +150,8 @@ fictional and never provision production users. CI runs the same checks on Postg
 `CHANGE_ME` database password. Real environment files, virtual environments,
 Python caches, private uploads, database dumps, logs, backups and credential stores
 are excluded by `.gitignore`. Never force-add these files. Fictional test passwords
-and the CI service password are public fixtures; they are never production defaults.
+are public fixtures and never production defaults. CI rotates its isolated database
+password to a random value for each run and masks it in logs; see [CI security](docs/CI.md).
 
 `scripts/repository_check.py` checks tracked and untracked commit candidates and
 rejects private/generated paths, common provider tokens, private keys, stored password

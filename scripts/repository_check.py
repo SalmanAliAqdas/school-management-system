@@ -64,7 +64,6 @@ TOKEN_PATTERNS = {
 }
 PUBLIC_FIXTURES = {
     "CHANGE_ME",
-    "ci-only-ephemeral-password",
     "test-only-ephemeral-key-never-use-in-production-0123456789",
 }
 

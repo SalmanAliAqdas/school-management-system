@@ -9,17 +9,16 @@ jobs:
       postgres:
         image: postgres:17
         env:
-          POSTGRES_USER: schoolos
-          POSTGRES_PASSWORD: ci-only-ephemeral-password
-          POSTGRES_DB: schoolos
-        ports: ["5432:5432"]
+          POSTGRES_USER: schoolos_ci
+          POSTGRES_PASSWORD: bootstrap-${{ github.run_id }}-${{ github.run_attempt }}
+          POSTGRES_DB: schoolos_ci
+        ports: ["127.0.0.1:5432:5432"]
         options: >-
           --health-cmd pg_isready
           --health-interval 5s
           --health-timeout 5s
           --health-retries 10
     env:
-      DATABASE_URL: postgresql://schoolos:ci-only-ephemeral-password@localhost:5432/schoolos
       DJANGO_SETTINGS_MODULE: config.settings.test
     steps:
       - uses: actions/checkout@v4
@@ -29,10 +28,16 @@ jobs:
           cache: pip
       - run: python -m pip install --upgrade "pip>=26.2"
       - run: python -m pip install -r requirements-dev.txt
+      - name: Configure isolated CI database credentials
+        env:
+          CI_POSTGRES_BOOTSTRAP_PASSWORD: bootstrap-${{ github.run_id }}-${{ github.run_attempt }}
+          CI_POSTGRES_PORT: ${{ job.services.postgres.ports['5432'] }}
+        run: python scripts/configure_ci_database.py
       - run: python scripts/repository_check.py
       - run: python -m ruff check .
       - run: python -m ruff format --check .
       - run: python manage.py check
       - run: python manage.py makemigrations --check --dry-run
       - run: python manage.py migrate --noinput
+      - run: python manage.py migrate --check
       - run: python manage.py test tests --noinput

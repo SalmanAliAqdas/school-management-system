@@ -21,7 +21,7 @@ Verified locally on 22 October 2026. Scope: fictional-data foundation only.
 - Database readiness endpoint; separate development/test/production settings.
 - Windows local database helper, Git ignore rules, GitHub CI and Render configuration.
 - Architecture, phase plan, ER relationships, permissions, security limits and README.
-- 72 PostgreSQL tests; Chrome checks for four roles, charts, links, search, details,
+- 77 PostgreSQL tests; Chrome checks for four roles, charts, links, search, details,
   logout, viewport overflow and keyboard/mobile menu behavior.
 
 ## Module status
@@ -54,14 +54,16 @@ Verified locally on 22 October 2026. Scope: fictional-data foundation only.
 - Seven first-party migration files applied, alongside Django and django-axes migrations.
 - Django checks and production deployment checks: zero reported issues.
 - Migration drift: no changes detected.
-- Automated tests: 72 passed, zero failures/errors, on PostgreSQL, including a clean installation.
+- Automated tests: 77 passed, zero failures/errors, on PostgreSQL. The earlier
+  72-test foundation also passed the independent installation rehearsal.
 - Ruff lint/format and installed dependency checks: passed.
 - Production static collection: passed with compressed/hashed assets and source maps.
 - Production-settings request smoke: login, hashed asset and DB health returned 200.
 - Headless installed Chrome checks: passed; screenshots in ignored `.local/previews/`.
 - Local configuration and credentials remain in ignored `.env`; no production
   passwords are included in source. The existing administrator was preserved.
-- Local Git repository initialized on `main`; no commit, remote, push or deployment.
+- Phase 1 source is on GitHub. The CI fix uses isolated, generated database credentials
+  and preserves all repository-scanner detection. See docs/CI.md.
 - Repository review passed: commit candidates have no secret-scan findings;
   Python and vendored browser dependency advisory checks passed.
 - The review's temporary Django preview was stopped. The existing application
