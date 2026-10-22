@@ -62,6 +62,51 @@ ROLE_PERMISSIONS["HR Manager"] += [
     f"people.{verb}_{model}" for model in ("teacher", "staff") for verb in ("view", "add", "change")
 ]
 
+ATTENDANCE_ADMIN = [
+    "attendance.view_attendance",
+    "attendance.mark_attendance",
+    "attendance.view_all_attendance",
+    "attendance.manage_policy",
+    "attendance.request_correction",
+    "attendance.approve_correction",
+    "attendance.override_correction_window",
+    "attendance.view_staff_attendance",
+    "attendance.view_all_staff_attendance",
+    "attendance.manage_staff_attendance",
+    "attendance.request_staff_correction",
+    "attendance.approve_staff_correction",
+    "attendance.request_leave",
+    "attendance.approve_leave",
+]
+for role in ("System Administrator", "School Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += ATTENDANCE_ADMIN
+ROLE_PERMISSIONS["Teacher"] += [
+    "attendance.view_attendance",
+    "attendance.mark_attendance",
+    "attendance.request_correction",
+]
+for role in ("Student", "Parent or Guardian"):
+    ROLE_PERMISSIONS[role] += ["attendance.view_attendance"]
+for role in (
+    "Teacher",
+    "Accountant",
+    "Examination Controller",
+    "HR Manager",
+    "Librarian",
+    "Transport Manager",
+):
+    ROLE_PERMISSIONS[role] += [
+        "attendance.view_staff_attendance",
+        "attendance.request_staff_correction",
+        "attendance.request_leave",
+    ]
+ROLE_PERMISSIONS["HR Manager"] += [
+    "attendance.view_all_staff_attendance",
+    "attendance.manage_staff_attendance",
+    "attendance.approve_staff_correction",
+    "attendance.approve_leave",
+]
+
 
 @transaction.atomic
 def sync_roles():

@@ -176,6 +176,15 @@ def transition_student(
         raise ValidationError("The enrollment changed since this form opened. Reload the profile.")
     if not current.started_on <= effective_on <= current.academic_year.ends_on:
         raise ValidationError({"effective_on": "Choose a date inside the active enrollment."})
+    from attendance.models import StudentAttendance
+
+    if StudentAttendance.objects.filter(
+        enrollment=current, attendance_on__gt=effective_on
+    ).exists():
+        raise ValidationError(
+            "Recorded attendance exists after this exit date. "
+            "Review the placement date before continuing."
+        )
     if action in {"transfer", "promote"}:
         if not academic_year or not section:
             raise ValidationError("Choose a destination academic year and section.")

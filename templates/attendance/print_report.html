@@ -1,0 +1,2 @@
+{% extends 'people/print_base.html' %}
+{% block record %}<h2>{{ title }}</h2><p>{{ year }} · {{ start }} to {{ end }}</p><p>Finalized working-day records only. Missing registers are not absences.</p><table class="table"><thead><tr>{% for heading in headers %}<th>{{ heading }}</th>{% endfor %}</tr></thead><tbody>{% for row in rows %}<tr>{% for value in row %}<td>{{ value|default_if_none:'—' }}</td>{% endfor %}</tr>{% empty %}<tr><td>No finalized records.</td></tr>{% endfor %}</tbody></table>{% endblock %}

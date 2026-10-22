@@ -18,6 +18,24 @@ def save_profile(actor, form):
     if form.instance.pk:
         model.objects.select_for_update().get(pk=form.instance.pk)
     obj = form.save(commit=False)
+    if model._meta.model_name in {"teacher", "staff"} and obj.pk:
+        from django.db.models import Max, Min
+
+        from attendance.models import StaffAttendance
+
+        bounds = StaffAttendance.objects.filter(**{model._meta.model_name: obj}).aggregate(
+            first=Min("attendance_on"), last=Max("attendance_on")
+        )
+        if (bounds["first"] and obj.joined_on > bounds["first"]) or (
+            bounds["last"] and obj.left_on and obj.left_on < bounds["last"]
+        ):
+            raise ValidationError(
+                "Employment dates cannot exclude existing staff attendance records."
+            )
+        if bounds["last"] and not obj.is_active and obj.left_on is None:
+            raise ValidationError(
+                "Set an employment end date when deactivating a profile with attendance history."
+            )
     if (
         isinstance(obj, Teacher)
         and obj.pk

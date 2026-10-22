@@ -10,7 +10,9 @@ baseline. No separate API server, job broker, or frontend build tool is required
 Foundation authentication, access policy, scoped dashboards and audit events are
 retained. Phase 2 adds academic administration, admissions, enrollment transitions,
 guardian relationships, teacher/staff profiles, CSV imports and private images.
-Later teaching, finance and campus modules remain planned.
+Phase 3 adds enrollment-aware attendance, staff attendance/leave, internal absence
+notices, corrections and attendance reporting. Other teaching, finance and campus
+modules remain planned.
 
 ## App boundaries (planned before initial models)
 
@@ -22,7 +24,7 @@ Later teaching, finance and campus modules remain planned.
 | people | Student, guardian, teacher, staff profiles; enrollments and guardian links | Scoped reads, admissions/transitions, directories, imports and private images |
 | audit | Append-only application event records and authentication signals | Implement |
 | admissions | Applications, admission workflow and document review | Future |
-| attendance | Dated student and staff attendance against enrollments | Future |
+| attendance | Dated registers, rules/calendar, corrections, leave, absence notices and scoped reports | Implemented |
 | examinations | Exams, assessments, decimal marks, moderation and results | Future |
 | finance | Decimal invoices, fees, receipts, ledgers and reconciliation | Future |
 | learning | Homework, assignments and submissions | Future |
@@ -69,8 +71,10 @@ monitoring, database backups and a separately reviewed authorization model.
    defaults, repeatable fictional seed, documentation and PostgreSQL tests.
 2. **School operations (implemented):** validated admissions and enrollment workflows, guardian
    and staff management, academic setup UI, change history and access tests.
-3. **Teaching:** attendance, timetable, homework, exams and moderated results.
-   Every teacher action is bounded by an assigned class and subject.
+3. **Attendance (implemented):** daily student/staff registers, policies and calendars,
+   audited corrections, employee leave, internal guardian notices and reports.
+   Teacher marking is bounded by the assigned academic year and section.
+   Timetable, homework, exams and results remain separate future work.
 4. **Finance and communication:** immutable receipt references, decimal ledger
    workflows, approvals, reconciliation and notification delivery.
 5. **Extended administration:** HR/payroll, library, transport, inventory and
@@ -88,3 +92,12 @@ was needed for direct student admission; application/document review remains fut
 scope. PostgreSQL exclusion/unique constraints and a placement guard complement
 service locking. CSV staging uses an owner-bound expiring `AdmissionImport` and an
 explicit confirmation transaction. See [SCHOOL_OPERATIONS.md](SCHOOL_OPERATIONS.md).
+
+Attendance keeps its owning services in `attendance/services.py`, scoped reads in
+`selectors.py`, calendar evaluation in `calendar.py`, SQL aggregates in `reporting.py`
+and bounded exports in `exports.py`. Academic/enrollment/profile transitions check
+attendance references before changing date bounds. It reuses AcademicYear, Term,
+Section, TeachingAssignment, Enrollment, Student, Guardian, Teacher and Staff rather
+than introducing a second academic or people hierarchy. Transactional year locks
+serialize roster, register, policy, leave and correction changes. Database guards
+protect final rows, decisions, source relationships and notice history.

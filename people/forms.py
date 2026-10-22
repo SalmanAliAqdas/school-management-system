@@ -97,10 +97,24 @@ class GuardianLinkForm(StyledFormMixin, forms.ModelForm):
         fields = ["guardian", "student", "relationship"]
 
 
-class TeacherForm(ImageFormMixin, forms.ModelForm):
+class EmploymentFormMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["department"].required = False
+
+    def clean_department(self):
+        return (
+            self.cleaned_data.get("department")
+            or self._meta.model._meta.get_field("department").get_default()
+        )
+
+
+class TeacherForm(EmploymentFormMixin, ImageFormMixin, forms.ModelForm):
     class Meta:
         model = Teacher
         fields = [
+            "department",
+            "left_on",
             "first_name",
             "last_name",
             "employee_number",
@@ -113,10 +127,12 @@ class TeacherForm(ImageFormMixin, forms.ModelForm):
         ]
 
 
-class StaffForm(StyledFormMixin, forms.ModelForm):
+class StaffForm(EmploymentFormMixin, StyledFormMixin, forms.ModelForm):
     class Meta:
         model = Staff
         fields = [
+            "department",
+            "left_on",
             "first_name",
             "last_name",
             "employee_number",

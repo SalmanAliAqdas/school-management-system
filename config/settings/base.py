@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "academics.apps.AcademicsConfig",
     "people.apps.PeopleConfig",
     "audit.apps.AuditConfig",
+    "attendance.apps.AttendanceConfig",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -105,6 +106,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = "DENY"
 SECURE_REFERRER_POLICY = "same-origin"
 DATA_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000
 FILE_UPLOAD_MAX_MEMORY_SIZE = 2 * 1024 * 1024
 FILE_UPLOAD_PERMISSIONS = 0o600
 

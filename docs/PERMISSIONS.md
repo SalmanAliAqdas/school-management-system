@@ -61,3 +61,29 @@ Historical enrollment/admin records are read-only. Operational profile admin all
 trusted superusers to attach login accounts; ordinary profile/academic edits use
 the guarded application services. No managed role receives student or enrollment
 delete permission. Run `sync_roles` after migration to update existing groups.
+
+## Phase 3 attendance permissions
+
+| Role | Student attendance | Student marking | Staff attendance | Corrections / leave |
+| --- | --- | --- | --- | --- |
+| System Administrator | All | All sections | All; register management | Review others; historical override |
+| School Administrator | All | All sections | All; register management | Review others; historical override |
+| Principal | All | All sections | All; register management | Review others; historical override |
+| Teacher | Assigned year/section | Assigned year/section | Own employee profile | Request assigned-student/own-staff corrections and own leave |
+| Student | Own published rows | None | None | No marking or approval |
+| Parent or Guardian | Linked children's published rows/notices | None | None | No marking or approval |
+| HR Manager | None | None | All; register management | Staff correction/leave review; no self-approval |
+| Other staff roles | None | None | Own linked employee profile | Own correction and leave requests |
+
+Read, mark, request, approve, global oversight, policy management and historical-window
+capabilities are separate. Teacher assignment is checked against the actual register's
+year and section. Submitted roster IDs must exactly match valid dated enrollments or
+employment dates. A forged action permission does not grant global student oversight.
+Services repeat checks independently of form/URL validation. Finalized row changes
+require a matching approved correction; draft and finalized data are separate scopes.
+
+Students and guardians never see drafts, internal correction queues or unrelated
+rows. Removing a guardian link immediately revokes notice/detail/export access.
+Staff read scope is independent from student scope. CSV/PDF/print exports reapply
+scope before filtering and aggregating; client-supplied employee/student IDs cannot
+expand it. All mutation endpoints require POST/CSRF and appropriate capabilities.

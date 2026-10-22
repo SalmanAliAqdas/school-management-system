@@ -1,66 +1,85 @@
 # Implementation status
 
-School operations phase implemented on 22 October 2026, retaining the existing
-Django/PostgreSQL architecture, authentication and scoped dashboards.
+Phase 3 attendance management implemented and verified locally on 23 October 2026.
+The existing Django/PostgreSQL architecture, authentication, administrator account,
+academic setup, admissions and dashboards are retained.
 
-## Delivered in this phase
+## Completed attendance features
 
-- School name/logo, address, contact details, principal information and settings.
-- Academic year and term setup, activation, permanent closure and archival.
-- Class, section and subject setup, year-specific class subjects and teacher assignments.
-- Student admissions with automatic, serialized school-wide admission numbers.
-- Student identity, admission/birth dates, status, image and dated placement history.
-- Roll numbers with active section/year uniqueness and audited active-roll corrections.
-- Transactional section transfers, promotion, withdrawal, graduation and transfer out.
-- Guardian contact management and audited many-to-many child relationships.
-- Teacher/staff directories, profile forms, employment details and teacher images.
-- CSV template, bounded parsing, preview, validation, duplicate detection, owner-bound
-  confirmation, expiry, single-use protection, atomic import and staged-data cleanup.
-- Search, sorting, filtering and pagination; printable profiles, admissions and class lists.
-- Explicit role and action permissions, scoped object reads/prints/images and CSRF checks.
-- PostgreSQL constraints for case-insensitive admissions/source references, active
-  enrollment/roll uniqueness, birth dates and overlapping placement date ranges.
-- Database trigger protection for completed placements and placement identity;
-  protected academic definitions and read-only historical Django admin records.
-- Safe decoded PNG/JPEG uploads, metadata stripping, random private filenames,
-  authenticated delivery, replacement cleanup and failed-admission image cleanup.
-- Upgrade backfill preserving legacy admission numbers, enrollment rows and assignments.
-- Operating guide, architecture/permission/security updates and expanded regression tests.
+- Dated class/section/year registers with present, absent, late and excused statuses.
+- Bulk present, individual adjustments, saved drafts, complete-roster final submission,
+  optimistic versions, duplicate prevention and previous-record display.
+- Enrollment-aware history across transfer, withdrawal and promotion; source dates
+  cannot be changed to invalidate saved attendance.
+- Versioned weekday/late/cutoff/excused/correction policies, term boundaries, holidays,
+  school closures, additional working days and audited calendar cancellations.
+- Original/revised correction history with mandatory reasons, independent reviewers,
+  approval/rejection, timestamps and protected finalized records.
+- Saved-data overview, daily/monthly charts, class comparisons, low attendance and
+  separate missing/draft register lists. Missing attendance is never an absence.
+- Student and linked-guardian summaries, monthly calendars, histories and downloads.
+- Internal guardian absence notices with revision deduplication, supersession/read
+  history, link-revocation checks and calendar-exclusion explanations.
+- Separate teacher/staff registers, seven staff statuses, own/team dashboards,
+  department reports, employment dates and canonical employee identity.
+- Leave requests, independent approval/rejection, overlap prevention and explicit
+  attendance correction history when an approval changes recorded staff attendance.
+- Daily/weekly/monthly/year/custom reports; class/student/staff/department/absence/
+  low-attendance views; authorized CSV, generated PDF and printable reports.
+- Role/object/CSRF checks, bounded exports, CSV formula protection, audit events,
+  database record guards and query-batched roster writes.
+- Repeatable fictional weeks of attendance, holiday/closure, draft/missing register,
+  low attendance, staff leave and correction examples without overwriting records.
 
 ## Module status
 
-| Module | Status | Boundary |
-| --- | --- | --- |
-| Core and branding | Implemented | School identity, contacts, principal, logo and printable branding |
-| Authentication and dashboards | Retained | Existing login/reset/roles, scoped dashboard charts and directory access |
-| Academic administration | Implemented | Years/terms, lifecycle, structure and assignments; historical protection |
-| Admissions and enrollment | Implemented | Direct admissions, CSV and individual enrollment workflows |
-| Guardians | Implemented | Contact profiles, multi-child/multi-guardian linking and access revocation |
-| Teachers and staff | Implemented | Administrative profiles and assignments; HR/payroll remains separate |
-| Attendance, examinations, finance, homework and timetable | Pending | Existing planned pages only |
-| Notifications, HR/payroll, library, transport, inventory, certificates | Pending | Later implementation phases |
-| Reporting | Partial | Scoped printable student/admission/class records and existing dashboard charts |
-| Production operations | Pending | Durable storage, real SMTP, MFA, backups/restore and deployment validation |
+| Module | Status |
+| --- | --- |
+| Foundation authentication, roles and dashboards | Retained and regression tested |
+| School branding and academic administration | Implemented; attendance-aware history guards added |
+| Admissions, enrollments, guardians, teacher/staff profiles | Implemented and regression tested |
+| Student and staff attendance | Implemented |
+| Attendance calendar, corrections, notifications and leave | Implemented |
+| Attendance reporting and CSV/PDF exports | Implemented |
+| Examinations, results, fees, payroll, timetable, homework and other future modules | Pending; not started in this phase |
+| Production hosting, durable storage, MFA, backup/restore and operational validation | Pending |
+
+## Migrations
+
+Six new first-party migrations applied to local PostgreSQL:
+
+- people/0006: department, employment end dates and date constraints.
+- attendance/0001: attendance models, indexes and constraints.
+- attendance/0002: register, finalized entry, decision, policy and enrollment guards.
+- attendance/0003: auditable calendar cancellation metadata.
+- attendance/0004: calendar, employment and active-closure protection.
+- attendance/0005: active notice uniqueness, notification history and future-date guards.
 
 ## Verification
 
-**130 PostgreSQL tests passed**, including the original 77 tests. Django system
-and production checks, migration drift, dependency consistency, Ruff, repository
-scan and Chrome desktop/mobile checks passed. Six new first-party migrations
-were applied. Coverage includes role/object denials, imports, enrollment transitions,
-concurrent admissions/transfers and a legacy migration upgrade rehearsal. Browser
-checks cover four roles and five administration screens at desktop/mobile sizes
-using fictional data. Detailed evidence is recorded in docs/VERIFICATION.md.
+- **185 automated PostgreSQL tests passed; zero failures/errors.** All earlier Phase 1/2
+  regression coverage remains included. New tests cover permissions, boundaries,
+  calculations, history, leave, notices, exports, concurrent writes and query scaling.
+- Isolated installed-Chrome workflow test passed for four roles and eight screens at
+  desktop/mobile sizes, including bulk present, draft/final submission, correction
+  and leave review, guardian/student isolation, CSV and generated PDF.
+- Django system/deployment checks, migration drift/pending checks, Ruff, installed
+  dependency consistency and repository/identity secret checks passed.
+- All account password/privilege fingerprints and existing student/enrollment counts
+  remained unchanged. The original PostgreSQL database was preserved.
+- See docs/VERIFICATION.md and docs/ATTENDANCE_POLICY.md for executed checks,
+  policies, workflows, URLs and operating instructions.
 
-## Explicit boundaries
+## Remaining limitations and next phase
 
-This phase implements the requested administration/admissions/academic workflows.
-It does not implement application-document review, readmission, exceptional historical
-record correction, scheduled transitions, bulk promotion, attendance/exams/payments
-or payroll. These are separate workflows rather than hidden edit/delete shortcuts.
-Uploaded images currently use private local storage; production durability and
-operational orphan-file reconciliation require deployment configuration. Expired
-CSV preview cleanup is provided as a command and requires an external schedule.
+This is a functional prototype. Production-scale load, accessibility with assistive
+technology, physical printing and multilingual PDF typography need acceptance testing.
+Late/excused percentages use recorded opportunities and are not a statutory reporting
+or payroll formula. Leave entitlement balances/cancellation, timetable/exam/fee/payroll
+features and paid messaging providers are outside this phase. Used register identities
+and finalized roster dates remain protected; exceptional register reversals require
+separate audited design. Production storage, retention, backups, MFA and deployment
+validation remain outstanding. No production deployment was performed.
 
-No deployment was performed. Local verification does not establish commercial
-readiness; see docs/SECURITY.md and docs/SCHOOL_OPERATIONS.md.
+The attendance foundation is ready for an explicitly authorized Phase 4; no later
+phase has been started.

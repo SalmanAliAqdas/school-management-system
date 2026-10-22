@@ -36,7 +36,7 @@ MODULES = [
         "name": "Attendance",
         "category": "Teaching & learning",
         "description": "Daily attendance and follow-up for assigned classes.",
-        "state": "Planned",
+        "state": "Available",
         "phase": 3,
     },
     {

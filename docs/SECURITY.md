@@ -70,3 +70,24 @@ writes without storing row contents. Expired CSV personal rows need scheduled
 `purge_admission_previews`; successful confirmation clears rows immediately.
 Private file storage still needs durability, backups and orphan reconciliation in
 production. Do not grant application users permission to alter schema or triggers.
+
+## Attendance security boundary
+
+Phase 3 uses existing student/guardian/teacher selectors and explicit attendance
+capabilities. Registers validate complete dated rosters on the server. Corrections
+retain original/revised data with separate requester/reviewer and a configurable
+window. Database guards prevent finalized-row mutation without its matching approved
+correction; enrollment and employment edits cannot invalidate saved attendance.
+Leave approval applies any recorded changes as explicit correction history.
+
+Internal notices target currently authorized linked guardians, are idempotent by
+revision, and retain supersession/read history. Revoked links immediately stop reads.
+HTML, CSV and PDF reports share scope, validate filters and cap exports at 5,000 rows;
+CSV formula prefixes are neutralized, PDF text is escaped and no remote content is
+fetched. Attendance audit events contain identifiers/action names rather than request
+bodies, medical reasons or personal row contents. Sensitive reasons remain restricted
+inside the school database and require a reviewed retention policy for real use.
+
+The attendance browser harness uses a newly created, randomly named test database,
+in-memory credentials and loopback hosting. It removes only its own temporary test
+database. No SMS, WhatsApp, email delivery, payroll or production deployment occurs.

@@ -147,6 +147,9 @@ class Command(BaseCommand):
                 "job_title": "School administrator",
             },
         )
+        from attendance.demo import seed_attendance_demo
+
+        seed_attendance_demo(accounts, year, students, sections)
         record_event("demo.initialized", target=school.pk)
         self.stdout.write(
             self.style.SUCCESS("Fictional demo initialized; existing passwords preserved.")

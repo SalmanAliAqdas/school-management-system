@@ -50,3 +50,12 @@ preserved. Workflow expressions were also checked with actionlint.
 For local verification, use the checks in [README.md](../README.md). Do not execute
 the CI database setup helper against a development database. Current remote run
 results are available on the repository's Actions tab.
+
+## Attendance phase
+
+The same PostgreSQL workflow now validates the Phase 3 attendance migrations and
+full regression suite, including concurrent register/correction writes and database
+record guards. ReportLab is installed from the normal requirements for PDF tests.
+No external messaging/deployment credentials are needed. Browser workflow QA remains
+an optional local check using installed Chrome and an isolated temporary database;
+see ATTENDANCE_POLICY.md. GitHub Actions is verified against the pushed commit.

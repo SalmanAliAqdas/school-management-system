@@ -31,6 +31,12 @@ def protect_academic_edit(instance):
         )
     elif isinstance(instance, Term):
         protected = instance.status != "open" or instance.academic_year.status != "open"
+        from attendance.models import StudentRegister
+
+        protected = (
+            protected
+            or StudentRegister.objects.filter(academic_year=instance.academic_year).exists()
+        )
     elif isinstance(instance, SchoolClass):
         protected = (
             instance.sections.filter(enrollments__isnull=False).exists()
@@ -120,6 +126,16 @@ def period_action(actor, kind, pk, action):
                 "Resolve active enrollments through promotion, transfer out, withdrawal or "
                 "graduation before closing this year."
             )
+        if model is AcademicYear:
+            from attendance.models import StaffRegister, StudentRegister
+
+            if (
+                StudentRegister.objects.filter(academic_year=period, state="draft").exists()
+                or StaffRegister.objects.filter(academic_year=period, state="draft").exists()
+            ):
+                raise ValidationError(
+                    "Finalize outstanding attendance registers before closing this academic year."
+                )
         period.status, period.is_current = "closed", False
         if model is AcademicYear:
             period.terms.filter(status="open").update(status="closed", is_current=False)

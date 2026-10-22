@@ -145,3 +145,13 @@ helpers; academic/core/people migrations; private image widgets; CSV cleanup man
 command; operational/concurrency/migration tests; and docs/SCHOOL_OPERATIONS.md.
 All existing first-party source remains in place. Generated previews, test logs,
 private uploads and runtime database files remain excluded from the source set.
+
+## Phase 3 attendance additions
+
+The attendance app adds models, database record guards, calendar/rules,
+selectors, transactional services, SQL reporting, CSV/PDF exports, routes and admin.
+Attendance templates and static/js/attendance.js supply registers, calendars,
+dashboards, requests/reviews, notices and reports. New tests cover attendance,
+boundaries and concurrency. scripts/attendance_browser.py creates its own isolated
+browser test database. docs/ATTENDANCE_POLICY.md documents the policy and workflows.
+Runtime data, private files, test logs and screenshots remain ignored.

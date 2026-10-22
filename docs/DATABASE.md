@@ -71,3 +71,53 @@ An enrollment trigger rejects deletion, modification of completed rows, changes 
 placement identity, dates outside the parent year and writes into closed years.
 Active roll corrections remain allowed and audited by their service. Upgrade tests
 verify legacy admission numbers, dated placements and assignments survive migration.
+
+## Phase 3 attendance relationships and integrity
+
+```mermaid
+erDiagram
+    AcademicYear ||--o{ AttendancePolicy : revisions
+    AcademicYear ||--o{ CalendarEvent : exceptions
+    AttendancePolicy ||--o{ StudentRegister : governs
+    AttendancePolicy ||--o{ StaffRegister : governs
+    Section ||--o{ StudentRegister : daily
+    StudentRegister ||--o{ StudentAttendance : entries
+    Enrollment ||--o{ StudentAttendance : valid_dates
+    StaffRegister ||--o{ StaffAttendance : entries
+    Teacher ||--o{ StaffAttendance : employee
+    Staff ||--o{ StaffAttendance : employee
+    StudentAttendance ||--o{ AttendanceCorrection : changes
+    StaffAttendance ||--o{ AttendanceCorrection : changes
+    Teacher ||--o{ LeaveRequest : requests
+    Staff ||--o{ LeaveRequest : requests
+    StudentAttendance ||--o{ AbsenceNotification : notices
+    Guardian ||--o{ AbsenceNotification : recipient
+```
+
+Registers are unique per year/section/date or year/staff/date, with draft/final state,
+optimistic version and submitter/timestamp. Student rows reference their original
+Enrollment with PROTECT and carry checked student/date keys for global daily uniqueness.
+Staff rows use exactly one existing teacher/staff profile; one account's teacher
+profile takes precedence when both profiles exist. Department and optional employment
+end dates extend the existing profiles for reporting.
+
+PostgreSQL constraints enforce daily uniqueness, valid statuses, paired submission/
+decision fields, one pending correction per entry, no self-approval, ordered leave
+ranges and non-overlapping pending/approved leave via btree_gist exclusion constraints.
+A notification has a unique guardian/entry/revision and only one active notice per
+entry/guardian. Used policies and reviewed requests retain immutable history.
+
+Triggers validate enrollment/employee/date/register consistency, require complete
+rosters on finalization, reject direct final-record edits/deletion, require matching
+approved original/revised correction values, protect decisions and notification
+identity, reject future registers using the school timezone, and preserve date-bound
+source relationships. Calendar exceptions are append-only with audited cancellation.
+Applications use ordered year locks and scoped transactional services in addition
+to these database protections. The application database role must not manage schema
+or disable triggers.
+
+Register entry writes are batched. Aggregates operate over scoped finalized rows
+and an in-memory working-date calendar for the selected bounded year/range, avoiding
+queries per student/day. Indexed dates/statuses, unique daily keys and explicit
+pagination support operational lookups. A test compares register query counts for
+one versus twenty-one students. Production-scale performance remains to be validated.

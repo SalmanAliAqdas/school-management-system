@@ -134,6 +134,7 @@ def module_detail(request, slug):
     if not module:
         raise Http404
     destinations = {
+        "attendance": ("attendance.view_attendance", "attendance:dashboard", {}),
         "academics": ("academics.view_academicyear", "academics:overview", {}),
         "admissions": ("people.add_student", "people:admission", {}),
         "guardians": ("people.view_guardian", "people:directory", {"kind": "guardians"}),
@@ -146,6 +147,8 @@ def module_detail(request, slug):
                 ["people.view_student", "people.view_all_students"]
             ):
                 return redirect(route, **kwargs)
+    if slug == "attendance" and request.user.has_perm("attendance.view_staff_attendance"):
+        return redirect("attendance:staff_dashboard")
     return render(request, "core/module.html", {"module": module, "active_nav": slug})
 
 

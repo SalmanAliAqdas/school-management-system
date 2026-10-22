@@ -21,3 +21,27 @@
 .print-heading { border-bottom:2px solid #253858; padding-bottom:16px; margin-bottom:24px; }
 .print-sheet footer { margin-top:40px; font-size:12px; color:#667085; }
 @media print { .no-print, .skip-link { display:none!important; } .print-sheet { margin:0; padding:0; max-width:none; } body { background:white; } tr { break-inside:avoid; } a { color:inherit; text-decoration:none; } }
+
+/* Attendance workspaces */
+.attendance-filters { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:1rem; align-items:end; }
+.attendance-filters > .alert { grid-column:1/-1; }
+.attendance-filters .field-group { margin:0; }
+.attendance-stats { grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); }
+.attendance-register .form-select { min-width:145px; }
+.attendance-register td { position:relative; }
+.attendance-register input[type=time] { min-width:110px; }
+.attendance-register td:last-child input { min-width:180px; }
+.attendance-calendar { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:.5rem; }
+.calendar-weekday { text-align:center; font-size:.8rem; font-weight:600; }
+.calendar-day { min-height:90px; padding:.65rem; border:1px solid #dfe5dc; border-radius:8px; overflow-wrap:anywhere; }
+.calendar-day small { display:block; font-size:.72rem; margin-top:.3rem; }
+.attendance-present,.attendance-duty { background:#e7f0dc; color:#204633; }
+.attendance-absent { background:#f9e7e4; color:#8d342d; }
+.attendance-late,.attendance-half_day { background:#fff0ce; color:#795c1c; }
+.attendance-excused,.attendance-leave { background:#e6eefb; color:#354e7a; }
+.attendance-excluded,.attendance-closure { background:#f0f2ee; color:#677167; }
+.attendance-missing { border-style:dashed; color:#5d685f; background:#fff; }
+.attendance-upcoming { color:#7b847e; background:#fafbf8; }
+.attendance-pill { display:inline-block; padding:.3rem .55rem; border-radius:6px; }
+.notification-row { padding:1rem 0; border-bottom:1px solid #e2e7dd; }
+@media(max-width:600px) { .attendance-calendar { gap:.2rem; } .calendar-day { min-height:75px; padding:.3rem; } .calendar-day small { font-size:.6rem; } .calendar-weekday { font-size:.7rem; } }

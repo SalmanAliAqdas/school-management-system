@@ -135,3 +135,35 @@ This section supersedes the foundation-only module boundary above.
 Local execution logs are ignored under `.local/`; the final test run is recorded in
 `school-operations-verification.log`. Production storage durability, real SMTP,
 MFA, backup/restore and operational scheduling remain outside local verification.
+
+
+## Phase 3 attendance verification - 23 October 2026
+
+This section is the latest verification scope.
+
+- Baseline before changes: Phase 2 migrations current and all 130 PostgreSQL tests passed.
+- Final suite: **185 tests passed**, zero failures/errors. It includes every earlier
+  authentication/dashboard/admissions regression, dated roster and policy tests,
+  database final-record guards, correction/leave approvals, guardian notice history,
+  safe scoped CSV/PDF output, concurrent finalization/decisions and query scaling.
+- Six new migrations applied successfully to the existing local PostgreSQL database.
+  Migration drift/pending checks and Django system/production checks passed.
+- Ruff lint/format, pip dependency consistency and repository/identity scans passed.
+  No secrets or local account identities were found in commit candidates.
+- An isolated, randomly named PostgreSQL browser database was created and removed
+  by scripts/attendance_browser.py. Installed headless Chrome verified four roles,
+  eight desktop/mobile screens, bulk present, draft/final submission, correction
+  review, leave submission/approval, scoped guardian/student access and CSV/PDF.
+- A mobile table-label overflow found during browser QA was fixed and rechecked.
+  The runtime application CSP remains unchanged. Private screenshots are ignored
+  under .local/previews/attendance/; test logs are ignored under .local/.
+- Fictional demo extension created 53 student registers/106 entries, 19 staff
+  registers/42 entries, two calendar exceptions, three correction examples, three
+  leave requests and fourteen absence notice history rows in the local demo.
+- Pre/post checks confirmed every existing account password/privilege fingerprint
+  and the existing student/enrollment counts were unchanged. No database reset or
+  administrator password change occurred. No production deployment was performed.
+
+User acceptance with real operational policy, assistive technology, physical printers,
+large school datasets and multilingual PDFs remains necessary before real-school use.
+The repository's Actions tab supplies the pushed-commit CI evidence.

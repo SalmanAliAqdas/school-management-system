@@ -19,7 +19,10 @@ Academic setup, admissions, enrollment transitions, guardian management, staff
 profiles, safe private images, CSV preview/confirmation and printable records now
 have dedicated interfaces. See the [school operations guide](docs/SCHOOL_OPERATIONS.md)
 for setup, permissions, academic lifecycle, import columns and historical protections.
-Attendance, exams, finance, homework and scheduling remain planned.
+Attendance now includes student/staff registers, calendars, corrections, leave,
+guardian notices, dashboards and scoped CSV/PDF reports. See the
+[attendance operating and policy guide](docs/ATTENDANCE_POLICY.md).
+Exams, finance, homework and scheduling remain planned.
 
 ## Requirements
 

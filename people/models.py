@@ -95,6 +95,8 @@ class GuardianStudent(TimestampedModel):
 
 
 class Teacher(NamedProfile):
+    department = models.CharField(max_length=80, default="Teaching")
+    left_on = models.DateField(null=True, blank=True)
     photo = models.FileField(upload_to="private/images/", blank=True)
     phone = models.CharField(max_length=40, blank=True)
     email = models.EmailField(blank=True)
@@ -110,8 +112,19 @@ class Teacher(NamedProfile):
     )
     employee_number = models.CharField(max_length=32, unique=True)
 
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(left_on__isnull=True)
+                | models.Q(left_on__gte=models.F("joined_on")),
+                name="teacher_employment_dates",
+            )
+        ]
+
 
 class Staff(NamedProfile):
+    department = models.CharField(max_length=80, default="Administration")
+    left_on = models.DateField(null=True, blank=True)
     phone = models.CharField(max_length=40, blank=True)
     email = models.EmailField(blank=True)
     joined_on = models.DateField(default=timezone.localdate)
@@ -125,6 +138,15 @@ class Staff(NamedProfile):
     )
     employee_number = models.CharField(max_length=32, unique=True)
     job_title = models.CharField(max_length=100)
+
+    class Meta:
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(left_on__isnull=True)
+                | models.Q(left_on__gte=models.F("joined_on")),
+                name="staff_employment_dates",
+            )
+        ]
 
 
 class Enrollment(TimestampedModel):

@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+{% load static tz %}
+{% block title %}Attendance · {{ school_name }}{% endblock %}
+{% block breadcrumb %}Attendance{% endblock %}
+{% block extra_head %}<script src="{% static 'vendor/chart.umd.min.js' %}" defer></script><script src="{% static 'js/attendance.js' %}" defer></script>{% endblock %}
+{% block content %}{% timezone attendance_zone %}
+<nav class="action-bar attendance-nav no-print" aria-label="Attendance navigation">
+{% if perms.attendance.view_attendance %}<a class="btn btn-outline-secondary" href="{% url 'attendance:dashboard' %}">Student attendance</a>{% endif %}
+{% if perms.attendance.mark_attendance %}<a class="btn btn-outline-secondary" href="{% url 'attendance:register' %}">Class register</a>{% endif %}
+{% if perms.attendance.view_staff_attendance %}<a class="btn btn-outline-secondary" href="{% url 'attendance:staff_dashboard' %}">Staff attendance</a><a class="btn btn-outline-secondary" href="{% url 'attendance:leaves' %}">Leave</a>{% endif %}
+{% if perms.attendance.manage_staff_attendance %}<a class="btn btn-outline-secondary" href="{% url 'attendance:staff_register' %}">Staff register</a>{% endif %}
+{% if perms.attendance.request_correction or perms.attendance.request_staff_correction or perms.attendance.approve_correction or perms.attendance.approve_staff_correction %}<a class="btn btn-outline-secondary" href="{% url 'attendance:corrections' %}">Corrections</a>{% endif %}
+{% if perms.attendance.view_attendance and perms.accounts.access_parent_dashboard %}<a class="btn btn-outline-secondary" href="{% url 'attendance:notifications' %}">Absence notices</a>{% endif %}
+{% if perms.attendance.view_attendance %}<a class="btn btn-outline-secondary" href="{% url 'attendance:reports' 'students' %}">Student reports</a>{% endif %}
+{% if perms.attendance.view_staff_attendance %}<a class="btn btn-outline-secondary" href="{% url 'attendance:reports' 'staff' %}">Staff reports</a>{% endif %}
+{% if perms.attendance.manage_policy %}<a class="btn btn-outline-secondary" href="{% url 'attendance:settings' %}">Policies &amp; calendar</a>{% endif %}
+</nav>
+{% block attendance_content %}{% endblock %}
+{% endtimezone %}{% endblock %}

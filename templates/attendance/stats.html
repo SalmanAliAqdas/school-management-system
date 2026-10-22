@@ -1,0 +1,7 @@
+{% if stats %}<section class="stats-grid attendance-stats" aria-label="Recorded attendance totals">
+<article class="stat-card"><div class="stat-label">Present</div><strong class="stat-value">{{ stats.present }}</strong><p>Confirmed records</p></article>
+<article class="stat-card"><div class="stat-label">Absent</div><strong class="stat-value">{{ stats.absent }}</strong><p>Confirmed absences</p></article>
+<article class="stat-card"><div class="stat-label">Late</div><strong class="stat-value">{{ stats.late }}</strong><p>Recorded arrivals</p></article>
+<article class="stat-card"><div class="stat-label">{% if staff_mode %}Approved leave{% else %}Excused{% endif %}</div><strong class="stat-value">{% if staff_mode %}{{ stats.leave }}{% else %}{{ stats.excused }}{% endif %}</strong><p>Explained attendance</p></article>
+<article class="stat-card"><div class="stat-label">Attendance</div><strong class="stat-value">{% if stats.percentage != None %}{{ stats.percentage }}%{% else %}—{% endif %}</strong><p>{% if stats.denominator %}{{ stats.denominator }} recorded opportunities{% else %}No recorded denominator{% endif %}</p></article>
+</section>{% endif %}
