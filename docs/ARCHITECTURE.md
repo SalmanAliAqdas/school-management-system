@@ -7,9 +7,10 @@ local CSS, and small JavaScript modules provide the interface. PostgreSQL is the
 application and test database. Django 5.2 LTS and Python 3.12–3.14 are the supported
 baseline. No separate API server, job broker, or frontend build tool is required.
 
-Foundation scope is authentication, access policy, school configuration, academic
-and profile relationships, read-only student access, audit events, and dashboard
-shells. The future operational modules are not represented as completed features.
+Foundation authentication, access policy, scoped dashboards and audit events are
+retained. Phase 2 adds academic administration, admissions, enrollment transitions,
+guardian relationships, teacher/staff profiles, CSV imports and private images.
+Later teaching, finance and campus modules remain planned.
 
 ## App boundaries (planned before initial models)
 
@@ -17,8 +18,8 @@ shells. The future operational modules are not represented as completed features
 | --- | --- | --- |
 | accounts | Custom user, groups, authentication, role bootstrap | Implement |
 | core | School settings, design system, dashboard routing, health | Implement |
-| academics | Years, terms, classes, sections, subjects, teaching assignments | Schema and admin |
-| people | Student, guardian, teacher, staff profiles; enrollments and guardian links | Schema, scoped read views and admin |
+| academics | Years, terms, classes, sections, subjects, teaching assignments | Models, lifecycle services and management UI |
+| people | Student, guardian, teacher, staff profiles; enrollments and guardian links | Scoped reads, admissions/transitions, directories, imports and private images |
 | audit | Append-only application event records and authentication signals | Implement |
 | admissions | Applications, admission workflow and document review | Future |
 | attendance | Dated student and staff attendance against enrollments | Future |
@@ -63,10 +64,10 @@ monitoring, database backups and a separately reviewed authorization model.
 
 ## Phased implementation plan
 
-1. **Foundation (this delivery):** initial schemas and migrations, custom users,
+1. **Foundation (implemented):** initial schemas and migrations, custom users,
    roles, sign-in/out/reset, scoped student reads, empty-state dashboards, security
    defaults, repeatable fictional seed, documentation and PostgreSQL tests.
-2. **School operations:** validated admissions and enrollment workflows, guardian
+2. **School operations (implemented):** validated admissions and enrollment workflows, guardian
    and staff management, academic setup UI, change history and access tests.
 3. **Teaching:** attendance, timetable, homework, exams and moderated results.
    Every teacher action is bounded by an assigned class and subject.
@@ -80,3 +81,10 @@ monitoring, database backups and a separately reviewed authorization model.
 
 Each phase needs database constraints, scoped services, working UI, regression
 tests and an updated IMPLEMENTATION_STATUS.md before being called complete.
+
+Phase 2 services are in `academics/services.py`, `people/services.py`,
+`people/directory_services.py` and `people/imports.py`. No separate admissions app
+was needed for direct student admission; application/document review remains future
+scope. PostgreSQL exclusion/unique constraints and a placement guard complement
+service locking. CSV staging uses an owner-bound expiring `AdmissionImport` and an
+explicit confirmation transaction. See [SCHOOL_OPERATIONS.md](SCHOOL_OPERATIONS.md).

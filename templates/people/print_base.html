@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block title %}School record{% endblock %}
+{% block body %}<main class="print-sheet"><header class="print-heading">{% if school.logo %}<img class="profile-photo" src="{% url 'core:school_logo' %}" alt="School logo">{% endif %}<h1>{{ school_name }}</h1><p>{{ school.address }}<br>{{ school.phone }} {{ school.email }}</p></header><p class="no-print">Use your browser's Print command (Ctrl+P) to print or save as PDF. <a href="{% url 'people:student_list' %}">Return to students</a></p>{% block record %}{% endblock %}<footer>Printed {% now 'd M Y H:i' %} · Authorized school record · {{ request.user.display_name }}</footer></main>{% endblock %}

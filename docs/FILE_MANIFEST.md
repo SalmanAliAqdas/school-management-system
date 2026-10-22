@@ -136,3 +136,12 @@ secrets, databases, private uploads, generated assets and review evidence are ex
 - tests/test_foundation.py
 - tests/test_permissions.py
 - tests/test_repository.py
+
+## School operations additions
+
+Phase 2 adds academic forms, authorized services, management URLs/views and templates;
+people admission/transition/directory/import services, forms and views; shared form/image
+helpers; academic/core/people migrations; private image widgets; CSV cleanup management
+command; operational/concurrency/migration tests; and docs/SCHOOL_OPERATIONS.md.
+All existing first-party source remains in place. Generated previews, test logs,
+private uploads and runtime database files remain excluded from the source set.

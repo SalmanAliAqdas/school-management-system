@@ -1,80 +1,66 @@
 # Implementation status
 
-Verified locally on 22 October 2026. Scope: fictional-data foundation only.
+School operations phase implemented on 22 October 2026, retaining the existing
+Django/PostgreSQL architecture, authentication and scoped dashboards.
 
-## Completed foundation features
+## Delivered in this phase
 
-- Modular Django 5.2 project, PostgreSQL-only settings and initial migration files.
-- Custom User before all profile migrations, required/case-insensitive unique email,
-  custom admin creation form and separate student/teacher/staff/guardian profiles.
-- Eleven deterministic permission groups, multiple roles, dashboard switching,
-  server capability checks and restricted student/history selectors.
-- Login, POST logout, inactive-account denial, CSRF, database-backed login throttling,
-  password validation, local/SMTP reset architecture and single-use reset tokens.
-- Four role dashboard shells, saved-data enrollment charts and honest empty states.
-- Read-only student directory, search/status filter/pagination and scoped details.
-- Editable school identity/timezone/currency configuration with validation and audit.
-- Authentication/access/settings audit events and an authorized read-only audit UI.
-- Responsive design system, branded login/recovery, keyboard mobile navigation,
-  loading states, error pages and local Bootstrap/Chart.js assets.
-- Explicit, repeatable fictional demo command; production refuses demo creation.
-- Database readiness endpoint; separate development/test/production settings.
-- Windows local database helper, Git ignore rules, GitHub CI and Render configuration.
-- Architecture, phase plan, ER relationships, permissions, security limits and README.
-- 77 PostgreSQL tests; Chrome checks for four roles, charts, links, search, details,
-  logout, viewport overflow and keyboard/mobile menu behavior.
+- School name/logo, address, contact details, principal information and settings.
+- Academic year and term setup, activation, permanent closure and archival.
+- Class, section and subject setup, year-specific class subjects and teacher assignments.
+- Student admissions with automatic, serialized school-wide admission numbers.
+- Student identity, admission/birth dates, status, image and dated placement history.
+- Roll numbers with active section/year uniqueness and audited active-roll corrections.
+- Transactional section transfers, promotion, withdrawal, graduation and transfer out.
+- Guardian contact management and audited many-to-many child relationships.
+- Teacher/staff directories, profile forms, employment details and teacher images.
+- CSV template, bounded parsing, preview, validation, duplicate detection, owner-bound
+  confirmation, expiry, single-use protection, atomic import and staged-data cleanup.
+- Search, sorting, filtering and pagination; printable profiles, admissions and class lists.
+- Explicit role and action permissions, scoped object reads/prints/images and CSRF checks.
+- PostgreSQL constraints for case-insensitive admissions/source references, active
+  enrollment/roll uniqueness, birth dates and overlapping placement date ranges.
+- Database trigger protection for completed placements and placement identity;
+  protected academic definitions and read-only historical Django admin records.
+- Safe decoded PNG/JPEG uploads, metadata stripping, random private filenames,
+  authenticated delivery, replacement cleanup and failed-admission image cleanup.
+- Upgrade backfill preserving legacy admission numbers, enrollment rows and assignments.
+- Operating guide, architecture/permission/security updates and expanded regression tests.
 
 ## Module status
 
-| Module | Status | Delivery boundary |
+| Module | Status | Boundary |
 | --- | --- | --- |
-| Core and school settings | Foundation complete | Singleton identity/configuration UI; application timezone uses environment |
-| Authentication and users | Foundation complete | Groups/admin provisioning; ordinary user-management workflow pending |
-| Academic years and terms | Partial | Validated models, constraints, migrations, superuser admin; dedicated UI pending |
-| Classes, sections, subjects | Partial | Schema, assignments and admin; operational management UI pending |
-| Admissions and students | Partial | Profiles/enrollment schema and scoped reads; admission/edit/transfer workflows pending |
-| Guardians and parents | Partial | Explicit link schema, admin and guardian dashboard; family management UI pending |
-| Teachers and staff | Partial | Independent profiles/assignments, admin and teacher shell; staff workflows pending |
-| Attendance | Pending | Clearly labeled planned page only |
-| Examinations and results | Pending | No exam/mark write operations or permissions granted |
-| Fees and finance | Pending | No money tables or payment operations |
-| Homework and assignments | Pending | Planned page only |
-| Timetables and calendar | Pending | Planned page; dashboard does not invent events |
-| Announcements/notifications | Pending | Planned page; no delivery integration |
-| HR and payroll | Pending | Role shell and planned page only |
-| Library | Pending | Role shell and planned page only |
-| Transport | Pending | Role shell and planned page only |
-| Inventory | Pending | Planned page only |
-| Certificates | Pending | Planned page only |
-| Analytics/reporting | Partial | Current-enrollment chart only; operational reports pending |
-| Audit and security | Partial | Foundation controls verified; commercial security, retention and operations pending |
+| Core and branding | Implemented | School identity, contacts, principal, logo and printable branding |
+| Authentication and dashboards | Retained | Existing login/reset/roles, scoped dashboard charts and directory access |
+| Academic administration | Implemented | Years/terms, lifecycle, structure and assignments; historical protection |
+| Admissions and enrollment | Implemented | Direct admissions, CSV and individual enrollment workflows |
+| Guardians | Implemented | Contact profiles, multi-child/multi-guardian linking and access revocation |
+| Teachers and staff | Implemented | Administrative profiles and assignments; HR/payroll remains separate |
+| Attendance, examinations, finance, homework and timetable | Pending | Existing planned pages only |
+| Notifications, HR/payroll, library, transport, inventory, certificates | Pending | Later implementation phases |
+| Reporting | Partial | Scoped printable student/admission/class records and existing dashboard charts |
+| Production operations | Pending | Durable storage, real SMTP, MFA, backups/restore and deployment validation |
 
-## Verification and local state
+## Verification
 
-- Seven first-party migration files applied, alongside Django and django-axes migrations.
-- Django checks and production deployment checks: zero reported issues.
-- Migration drift: no changes detected.
-- Automated tests: 77 passed, zero failures/errors, on PostgreSQL. The earlier
-  72-test foundation also passed the independent installation rehearsal.
-- Ruff lint/format and installed dependency checks: passed.
-- Production static collection: passed with compressed/hashed assets and source maps.
-- Production-settings request smoke: login, hashed asset and DB health returned 200.
-- Headless installed Chrome checks: passed; screenshots in ignored `.local/previews/`.
-- Local configuration and credentials remain in ignored `.env`; no production
-  passwords are included in source. The existing administrator was preserved.
-- Phase 1 source is on GitHub. The CI fix uses isolated, generated database credentials
-  and preserves all repository-scanner detection. See docs/CI.md.
-- Repository review passed: commit candidates have no secret-scan findings;
-  Python and vendored browser dependency advisory checks passed.
-- The review's temporary Django preview was stopped. The existing application
-  database, account password/privilege fingerprints and all table row counts are unchanged.
+**130 PostgreSQL tests passed**, including the original 77 tests. Django system
+and production checks, migration drift, dependency consistency, Ruff, repository
+scan and Chrome desktop/mobile checks passed. Six new first-party migrations
+were applied. Coverage includes role/object denials, imports, enrollment transitions,
+concurrent admissions/transfers and a legacy migration upgrade rehearsal. Browser
+checks cover four roles and five administration screens at desktop/mobile sizes
+using fictional data. Detailed evidence is recorded in docs/VERIFICATION.md.
 
-No blocker remains for this foundation. Real SMTP delivery, Render execution,
-durable uploads, MFA, concurrency/performance and production operations are outside
-the verified scope. See docs/VERIFICATION.md, docs/REPOSITORY_REVIEW.md and docs/SECURITY.md.
+## Explicit boundaries
 
-## Next implementation phase
+This phase implements the requested administration/admissions/academic workflows.
+It does not implement application-document review, readmission, exceptional historical
+record correction, scheduled transitions, bulk promotion, attendance/exams/payments
+or payroll. These are separate workflows rather than hidden edit/delete shortcuts.
+Uploaded images currently use private local storage; production durability and
+operational orphan-file reconciliation require deployment configuration. Expired
+CSV preview cleanup is provided as a command and requires an external schedule.
 
-Build dedicated academic setup, student admissions/enrollment transfer, guardian
-linking and staff assignment workflows. Add transactional services, scoped form
-choices, audit coverage and denial tests for every write before attendance/exams.
+No deployment was performed. Local verification does not establish commercial
+readiness; see docs/SECURITY.md and docs/SCHOOL_OPERATIONS.md.

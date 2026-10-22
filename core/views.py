@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
 from django.db import DatabaseError, connection, transaction
-from django.http import Http404, JsonResponse
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_GET, require_http_methods
@@ -17,6 +17,7 @@ from .context_processors import DASHBOARDS
 from .forms import SchoolSettingsForm
 from .models import SchoolSettings
 from .modules import MODULES
+from .uploads import image_write
 
 DASHBOARD_COPY = {
     "admin": (
@@ -132,6 +133,19 @@ def module_detail(request, slug):
     module = next((item for item in MODULES if item["slug"] == slug), None)
     if not module:
         raise Http404
+    destinations = {
+        "academics": ("academics.view_academicyear", "academics:overview", {}),
+        "admissions": ("people.add_student", "people:admission", {}),
+        "guardians": ("people.view_guardian", "people:directory", {"kind": "guardians"}),
+        "staff": ("people.view_teacher", "people:directory", {"kind": "teachers"}),
+    }
+    if slug in destinations:
+        permission, route, kwargs = destinations[slug]
+        if request.user.has_perm(permission):
+            if slug != "admissions" or request.user.has_perms(
+                ["people.view_student", "people.view_all_students"]
+            ):
+                return redirect(route, **kwargs)
     return render(request, "core/module.html", {"module": module, "active_nav": slug})
 
 
@@ -140,14 +154,32 @@ def module_detail(request, slug):
 @require_http_methods(["GET", "POST"])
 def school_settings(request):
     instance = SchoolSettings.objects.first()
-    form = SchoolSettingsForm(request.POST or None, instance=instance)
+    form = SchoolSettingsForm(
+        request.POST if request.method == "POST" else None, request.FILES or None, instance=instance
+    )
     if request.method == "POST" and form.is_valid():
         with transaction.atomic():
-            school = form.save()
-            record_event("school.settings_changed", actor=request.user, target=school.pk)
+            school = form.save(commit=False)
+            with image_write(school, "logo"):
+                school.save()
+                record_event("school.settings_changed", actor=request.user, target=school.pk)
         messages.success(request, "School settings saved.")
         return redirect("core:school_settings")
     return render(request, "core/settings.html", {"form": form, "active_nav": "settings"})
+
+
+@login_required
+@require_GET
+def school_logo(request):
+    school = SchoolSettings.objects.first()
+    if not school or not school.logo:
+        raise Http404
+    try:
+        response = FileResponse(school.logo.open("rb"), content_type="image/png")
+    except FileNotFoundError as exc:
+        raise Http404 from exc
+    response["Cache-Control"] = "private, no-store"
+    return response
 
 
 @login_required

@@ -4,21 +4,21 @@
 <div class="app-shell">
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
     <a class="brand" href="{% url 'core:dashboard' %}"><img src="{% static 'img/mark.svg' %}" width="38" height="38" alt=""><span>rumiware<span class="brand-sub">S C H O O L O S</span></span><span class="brand-dot"></span></a>
-    <div class="school-switch"><span class="school-monogram">R</span><span><strong>{{ school_name }}</strong><small>{% if demo_mode %}Fictional demonstration{% else %}School workspace{% endif %}</small></span></div>
+    <div class="school-switch"><span class="school-monogram">{% if school.logo %}<img src="{% url 'core:school_logo' %}" width="32" height="32" alt="School logo">{% else %}R{% endif %}</span><span><strong>{{ school_name }}</strong><small>{% if demo_mode %}Fictional demonstration{% else %}School workspace{% endif %}</small></span></div>
     <div class="nav-caption">WORKSPACE</div>
     <nav class="side-nav">
       <a href="{% url 'core:dashboard' %}" class="{% if active_nav == 'dashboard' %}active{% endif %}" {% if active_nav == 'dashboard' %}aria-current="page"{% endif %}><svg class="icon"><use href="#i-grid"/></svg>Overview</a>
       {% if perms.people.view_student %}<a href="{% url 'people:student_list' %}" class="{% if active_nav == 'students' %}active{% endif %}" {% if active_nav == 'students' %}aria-current="page"{% endif %}><svg class="icon"><use href="#i-users"/></svg>Students</a>{% endif %}
-      <a href="{% url 'core:module_detail' 'academics' %}" class="{% if active_nav == 'academics' %}active{% endif %}"><svg class="icon"><use href="#i-book"/></svg>Academics<span class="nav-planned">Soon</span></a>
+      {% if perms.academics.view_academicyear %}<a href="{% url 'academics:overview' %}" class="{% if active_nav == 'academics' %}active{% endif %}"><svg class="icon"><use href="#i-book"/></svg>Academics</a>{% endif %}
       <a href="{% url 'core:module_detail' 'attendance' %}" class="{% if active_nav == 'attendance' %}active{% endif %}"><svg class="icon"><use href="#i-check"/></svg>Attendance<span class="nav-planned">Soon</span></a>
       <a href="{% url 'core:module_detail' 'timetable' %}" class="{% if active_nav == 'timetable' %}active{% endif %}"><svg class="icon"><use href="#i-calendar"/></svg>Timetable<span class="nav-planned">Soon</span></a>
       <a href="{% url 'core:module_detail' 'analytics' %}" class="{% if active_nav == 'analytics' %}active{% endif %}"><svg class="icon"><use href="#i-chart"/></svg>Reports<span class="nav-planned">Soon</span></a>
-      <div class="nav-caption">MANAGEMENT</div>
+      <div class="nav-caption">MANAGEMENT</div>{% if perms.people.view_guardian %}<a href="{% url 'people:directory' 'guardians' %}">Guardians</a>{% endif %}{% if perms.people.view_teacher %}<a href="{% url 'people:directory' 'teachers' %}">Teachers</a>{% endif %}{% if perms.people.view_staff %}<a href="{% url 'people:directory' 'staff' %}">Staff</a>{% endif %}
       <a href="{% url 'core:roadmap' %}" class="{% if active_nav == 'roadmap' %}active{% endif %}"><svg class="icon"><use href="#i-layers"/></svg>All modules</a>
       {% if perms.core.change_schoolsettings %}<a href="{% url 'core:school_settings' %}" class="{% if active_nav == 'settings' %}active{% endif %}"><svg class="icon"><use href="#i-settings"/></svg>School settings</a>{% endif %}
       {% if perms.audit.view_auditevent %}<a href="{% url 'core:audit' %}" class="{% if active_nav == 'audit' %}active{% endif %}"><svg class="icon"><use href="#i-shield"/></svg>Audit trail</a>{% endif %}
     </nav>
-    <div class="sidebar-bottom"><div class="foundation-note"><span class="status-dot"></span> Foundation edition<p>Thoughtfully built.<br>Room to grow.</p><a href="{% url 'core:roadmap' %}">Explore the roadmap <span aria-hidden="true">↗</span></a></div><span class="sidebar-foot">RumiWare · School, connected.</span></div>
+    <div class="sidebar-bottom"><div class="foundation-note"><span class="status-dot"></span> School operations<p>Thoughtfully built.<br>Room to grow.</p><a href="{% url 'core:roadmap' %}">Explore the roadmap <span aria-hidden="true">↗</span></a></div><span class="sidebar-foot">RumiWare · School, connected.</span></div>
   </aside>
   <button class="sidebar-backdrop" aria-label="Close navigation" data-close-sidebar hidden></button>
   <div class="main-column">

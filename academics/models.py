@@ -4,15 +4,28 @@ from django.db import models
 from core.models import TimestampedModel
 
 
+class PeriodStatus(models.TextChoices):
+    OPEN = "open", "Open"
+    CLOSED = "closed", "Closed"
+    ARCHIVED = "archived", "Archived"
+
+
 class AcademicYear(TimestampedModel):
     name = models.CharField(max_length=32, unique=True)
     starts_on = models.DateField()
     ends_on = models.DateField()
     is_current = models.BooleanField(default=False)
+    status = models.CharField(
+        max_length=12, choices=PeriodStatus.choices, default=PeriodStatus.OPEN
+    )
 
     class Meta:
         ordering = ["-starts_on"]
         constraints = [
+            models.CheckConstraint(
+                condition=models.Q(is_current=False) | models.Q(status="open"),
+                name="current_year_is_open",
+            ),
             models.CheckConstraint(
                 condition=models.Q(ends_on__gt=models.F("starts_on")), name="year_date_order"
             ),
@@ -30,10 +43,23 @@ class Term(TimestampedModel):
     name = models.CharField(max_length=64)
     starts_on = models.DateField()
     ends_on = models.DateField()
+    is_current = models.BooleanField(default=False)
+    status = models.CharField(
+        max_length=12, choices=PeriodStatus.choices, default=PeriodStatus.OPEN
+    )
 
     class Meta:
         ordering = ["starts_on"]
         constraints = [
+            models.UniqueConstraint(
+                fields=["academic_year"],
+                condition=models.Q(is_current=True),
+                name="one_current_term_per_year",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(is_current=False) | models.Q(status="open"),
+                name="current_term_is_open",
+            ),
             models.UniqueConstraint(fields=["academic_year", "name"], name="term_name_per_year"),
             models.CheckConstraint(
                 condition=models.Q(ends_on__gte=models.F("starts_on")), name="term_date_order"
@@ -110,3 +136,19 @@ class TeachingAssignment(TimestampedModel):
 
     def __str__(self):
         return f"{self.teacher} · {self.section} · {self.subject}"
+
+
+class ClassSubject(TimestampedModel):
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.PROTECT)
+    school_class = models.ForeignKey(SchoolClass, on_delete=models.PROTECT)
+    subject = models.ForeignKey(Subject, on_delete=models.PROTECT)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["academic_year", "school_class", "subject"], name="unique_class_subject"
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.academic_year} · {self.school_class} · {self.subject}"

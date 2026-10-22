@@ -69,6 +69,24 @@ def main():
         )
         for link in links:
             assert context.request.get(link).status == 200, link
+        # Browser checks are read-only; form writes use the isolated test database.
+        for route, screenshot in [
+            ("/academics/years/", "academic-years"),
+            ("/students/admit/", "admission-form"),
+            ("/students/import/", "admission-import"),
+            ("/students/directory/guardians/", "guardian-directory"),
+            ("/students/directory/teachers/", "teacher-directory"),
+        ]:
+            assert page.goto(f"{base_url}{route}").status == 200
+            assert page.locator("h1").is_visible()
+            page.screenshot(path=str(output / f"{screenshot}-desktop.png"), full_page=True)
+            page.set_viewport_size({"width": 390, "height": 844})
+            # Allow the responsive sidebar transform to finish before capturing it.
+            page.wait_for_timeout(400)
+            assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
+            page.screenshot(path=str(output / f"{screenshot}-mobile.png"), full_page=True)
+            page.set_viewport_size({"width": 1440, "height": 1100})
+        page.goto(f"{base_url}/dashboard/admin/")
         page.get_by_role("link", name="Students", exact=True).click()
         page.get_by_role("searchbox").fill("DEMO-0001")
         page.get_by_role("button", name="Apply filters").click()
@@ -107,7 +125,8 @@ def main():
     if errors:
         raise AssertionError(json.dumps(errors))
     print(
-        "Browser smoke passed: four roles, charts, navigation, search, detail, logout, mobile menu."
+        "Browser smoke passed: four roles, charts, navigation, search, detail, logout, "
+        "mobile menu and five administration screens at desktop/mobile sizes."
     )
     print(f"Screenshots: {output}")
 

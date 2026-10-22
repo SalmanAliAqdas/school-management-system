@@ -1,8 +1,8 @@
 # RumiWare SchoolOS
 
-A modular school management foundation built with Django, PostgreSQL and
-server-rendered templates. This edition is a working prototype for **fictional
-school data only**. Operational school modules are introduced in later phases.
+A modular school management application built with Django, PostgreSQL and
+server-rendered templates. School administration, admissions and academic operations
+are implemented on the existing foundation. Local demonstrations use fictional data.
 
 ## Foundation capabilities
 
@@ -15,9 +15,11 @@ school data only**. Operational school modules are introduced in later phases.
 - Responsive local-asset design system, accessible forms and real enrollment charts.
 - PostgreSQL migrations, automated tests, Ruff, CI and Render deployment configuration.
 
-Attendance, exams, finance, homework, scheduling and other operational modules
-are visibly marked as planned. Schema-ready academic/profile modules have trusted
-system-admin configuration, with dedicated workflows still pending.
+Academic setup, admissions, enrollment transitions, guardian management, staff
+profiles, safe private images, CSV preview/confirmation and printable records now
+have dedicated interfaces. See the [school operations guide](docs/SCHOOL_OPERATIONS.md)
+for setup, permissions, academic lifecycle, import columns and historical protections.
+Attendance, exams, finance, homework and scheduling remain planned.
 
 ## Requirements
 
@@ -176,7 +178,8 @@ uses the environment timezone. Bootstrap 5.3.8 and Chart.js 4.5.1 are vendored.
 Development password reset emails print to the server console. Production uses
 SMTP environment settings from `.env.example`; validate actual delivery before
 provisioning real accounts. Reset requests for unknown addresses return the same
-message. No public file-upload or media-serving endpoint exists.
+message. Authorized profile/logo forms accept sanitized PNG/JPEG images. Image
+delivery uses authenticated, scoped routes; there is no public media-serving endpoint.
 
 `render.yaml` describes a Python web service and PostgreSQL database. `build.sh`
 installs dependencies and collects static assets; the pre-deploy command applies
@@ -203,7 +206,7 @@ by local checks.
 ```text
 accounts/        custom users, role groups, auth and demo commands
 academics/       academic years, terms, classes, sections, subjects, assignments
-people/          profiles, guardian links, enrollment history, scoped student reads
+people/          admissions, profiles, guardians, enrollment history, imports and scoped reads
 core/            school settings, dashboards, design system, readiness
 audit/           security and access events
 config/          Django configuration and server entry points

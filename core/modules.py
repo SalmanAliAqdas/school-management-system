@@ -4,15 +4,15 @@ MODULES = [
         "name": "Academic structure",
         "category": "School operations",
         "description": "Academic years, terms, classes, sections and subjects.",
-        "state": "Schema ready",
+        "state": "Available",
         "phase": 2,
     },
     {
         "slug": "admissions",
         "name": "Admissions",
         "category": "School operations",
-        "description": "Applications, document review and admission decisions.",
-        "state": "Planned",
+        "description": "Student admissions, CSV imports and enrollment transitions.",
+        "state": "Available",
         "phase": 2,
     },
     {
@@ -20,7 +20,7 @@ MODULES = [
         "name": "Guardians & families",
         "category": "School operations",
         "description": "Explicit family relationships and contact management.",
-        "state": "Schema ready",
+        "state": "Available",
         "phase": 2,
     },
     {
@@ -28,7 +28,7 @@ MODULES = [
         "name": "Teachers & staff",
         "category": "School operations",
         "description": "Staff profiles and teacher subject assignments.",
-        "state": "Schema ready",
+        "state": "Available",
         "phase": 2,
     },
     {

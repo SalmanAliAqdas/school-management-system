@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block breadcrumb %}{{ title }}{% endblock %}
+{% block content %}
+<a class="back-link" href="{% if back_arg %}{% url back_url back_arg %}{% else %}{% url back_url %}{% endif %}">Back to records</a>
+<div class="page-heading"><div><span class="eyebrow">SCHOOL ADMINISTRATION</span><h1>{{ title }}</h1><p>{{ description|default:'Required fields are marked. Changes are validated and recorded in the audit trail.' }}</p></div></div>
+<section class="panel settings-panel"><form method="post" enctype="multipart/form-data" class="padded-form" data-loading-form>{% csrf_token %}{% include 'includes/form_fields.html' %}<div class="action-bar"><button class="btn btn-primary" data-loading-label="Saving…">Confirm and save</button><a class="btn btn-outline-secondary" href="{% if back_arg %}{% url back_url back_arg %}{% else %}{% url back_url %}{% endif %}">Cancel</a></div></form></section>
+{% endblock %}

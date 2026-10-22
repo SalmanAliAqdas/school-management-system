@@ -104,3 +104,34 @@ References: [Django supported versions](https://www.djangoproject.com/download/)
 [Django deployment checklist](https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/),
 [Render Blueprint reference](https://render.com/docs/blueprint-spec),
 [Render Python versions](https://render.com/docs/python-version).
+
+
+## School operations verification - 22 October 2026
+
+This section supersedes the foundation-only module boundary above.
+
+- Six new first-party migrations applied successfully to the existing local PostgreSQL
+  database, including btree_gist, overlap/uniqueness constraints, legacy backfills,
+  immutable placement guards and active roll corrections. No migrations remain pending.
+- Full automated suite: **130 tests passed** on PostgreSQL, zero failures/errors.
+  This includes all original 77 authentication/configuration/dashboard/scope tests.
+- New coverage: role/service denials, CSRF, forged fields, many-to-many guardians,
+  admission numbering/duplicates, active-roll correction and constraints, lifecycle
+  closure/archival, all enrollment transitions and stale forms, history protection,
+  bounded CSV validation/ownership/expiry/revalidation/rollback/replay, image validation,
+  private object-scoped delivery and failed-write cleanup, invalid identifiers,
+  concurrent admissions/transfers and a legacy-schema upgrade rehearsal.
+- Django system check and production deployment check: zero issues reported.
+- Migration drift: no changes detected. Pending migration check passed.
+- Ruff check/format, installed dependency consistency and repository scan passed;
+  repository scan reported no findings. Git whitespace checks passed.
+- Installed headless Chrome: four-role authentication/dashboard/chart/navigation
+  regression passed, plus academic setup, admission form, import preview entry,
+  guardian directory and teacher directory at desktop and mobile sizes. Screenshots
+  are local, ignored artifacts under `.local/previews/`. No browser application writes
+  were used beyond authentication/audit events; workflow writes use the isolated test DB.
+- Temporary preview server stopped after verification. No deployment performed.
+
+Local execution logs are ignored under `.local/`; the final test run is recorded in
+`school-operations-verification.log`. Production storage durability, real SMTP,
+MFA, backup/restore and operational scheduling remain outside local verification.

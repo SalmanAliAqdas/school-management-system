@@ -40,3 +40,24 @@ are intentionally not granted. Accountants have no mark permissions. Before addi
 each module, define its read/write/approve/export capabilities, object scope,
 foreign-key validation and denial tests. Planned module descriptions contain no
 protected records and are readable by signed-in accounts.
+
+## School operations capabilities
+
+System Administrator, School Administrator and Principal have explicit academic
+view/add/change capabilities and admission, student edit, transition, import,
+guardian-link and profile-management capabilities. Principal retains its existing
+read-only boundary for school settings. HR Manager can view/create/change teacher
+and staff profiles only. Other roles keep their foundation scope and cannot write
+student or academic records, even when they can read a student.
+
+Every student write requires both its action capability and global student read
+scope (`people.view_student` plus `people.view_all_students`). Write services repeat
+the view's permission check; crafted foreign keys cannot grant restricted readers
+write access. Imports additionally require `people.import_students`, admission
+permission, batch ownership and an unused, unexpired preview. Permissions are
+rechecked at confirmation. Scoped selectors also govern printable records and images.
+
+Historical enrollment/admin records are read-only. Operational profile admin allows
+trusted superusers to attach login accounts; ordinary profile/academic edits use
+the guarded application services. No managed role receives student or enrollment
+delete permission. Run `sync_roles` after migration to update existing groups.

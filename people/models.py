@@ -1,8 +1,12 @@
 import uuid
 
 from django.conf import settings
+from django.contrib.postgres.constraints import ExclusionConstraint
+from django.contrib.postgres.fields import DateRangeField
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.functions import Lower
+from django.utils import timezone
 
 from core.models import TimestampedModel
 
@@ -29,13 +33,46 @@ class Student(NamedProfile):
     )
     admission_number = models.CharField(max_length=32, unique=True)
     is_active = models.BooleanField(default=True)
+    admission_date = models.DateField(default=timezone.localdate)
+    date_of_birth = models.DateField(null=True, blank=True)
+    status = models.CharField(
+        max_length=16,
+        default="enrolled",
+        choices=[
+            ("enrolled", "Enrolled"),
+            ("withdrawn", "Withdrawn"),
+            ("transferred", "Transferred out"),
+            ("graduated", "Graduated"),
+        ],
+    )
+    photo = models.FileField(upload_to="private/images/", blank=True)
+    external_reference = models.CharField(max_length=64, blank=True)
 
     class Meta:
         ordering = ["first_name", "last_name", "admission_number"]
         permissions = [("view_all_students", "Can view all student records")]
+        constraints = [
+            models.UniqueConstraint(Lower("admission_number"), name="admission_number_case_unique"),
+            models.CheckConstraint(
+                condition=~models.Q(admission_number=""), name="admission_not_blank"
+            ),
+            models.UniqueConstraint(
+                Lower("external_reference"),
+                condition=~models.Q(external_reference=""),
+                name="student_external_reference_unique",
+            ),
+            models.CheckConstraint(
+                condition=models.Q(date_of_birth__isnull=True)
+                | models.Q(date_of_birth__lt=models.F("admission_date")),
+                name="student_birth_before_admission",
+            ),
+        ]
 
 
 class Guardian(NamedProfile):
+    phone = models.CharField(max_length=40, blank=True)
+    email = models.EmailField(blank=True)
+    address = models.TextField(blank=True, max_length=500)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -58,6 +95,12 @@ class GuardianStudent(TimestampedModel):
 
 
 class Teacher(NamedProfile):
+    photo = models.FileField(upload_to="private/images/", blank=True)
+    phone = models.CharField(max_length=40, blank=True)
+    email = models.EmailField(blank=True)
+    qualification = models.CharField(max_length=160, blank=True)
+    joined_on = models.DateField(default=timezone.localdate)
+    is_active = models.BooleanField(default=True)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -69,6 +112,10 @@ class Teacher(NamedProfile):
 
 
 class Staff(NamedProfile):
+    phone = models.CharField(max_length=40, blank=True)
+    email = models.EmailField(blank=True)
+    joined_on = models.DateField(default=timezone.localdate)
+    is_active = models.BooleanField(default=True)
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
@@ -91,10 +138,49 @@ class Enrollment(TimestampedModel):
     started_on = models.DateField()
     ended_on = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
+    roll_number = models.CharField(max_length=24, blank=True)
+    exit_reason = models.CharField(
+        max_length=16,
+        blank=True,
+        choices=[
+            ("transfer", "Section transfer"),
+            ("promote", "Promoted"),
+            ("withdraw", "Withdrawn"),
+            ("graduate", "Graduated"),
+            ("transfer_out", "Transferred out"),
+        ],
+    )
+    notes = models.CharField(max_length=500, blank=True)
 
     class Meta:
         ordering = ["-academic_year__starts_on", "-started_on", "-pk"]
         constraints = [
+            models.UniqueConstraint(
+                fields=["student"],
+                condition=models.Q(is_active=True),
+                name="one_active_enrollment_per_student",
+            ),
+            ExclusionConstraint(
+                name="student_placements_do_not_overlap",
+                expressions=[
+                    ("student", "="),
+                    (
+                        models.Func(
+                            "started_on",
+                            "ended_on",
+                            models.Value("[]"),
+                            function="DATERANGE",
+                            output_field=DateRangeField(),
+                        ),
+                        "&&",
+                    ),
+                ],
+            ),
+            models.UniqueConstraint(
+                fields=["academic_year", "section", "roll_number"],
+                condition=models.Q(is_active=True) & ~models.Q(roll_number=""),
+                name="unique_active_section_roll",
+            ),
             models.UniqueConstraint(
                 fields=["student", "academic_year"],
                 condition=models.Q(is_active=True),
@@ -136,3 +222,22 @@ class Enrollment(TimestampedModel):
             )
             if overlapping.exists():
                 raise ValidationError("Enrollment dates cannot overlap an existing placement.")
+
+
+class AdmissionCounter(models.Model):
+    id = models.PositiveSmallIntegerField(primary_key=True, default=1, editable=False)
+    next_number = models.PositiveBigIntegerField(default=1)
+
+
+class AdmissionImport(TimestampedModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    actor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    rows = models.JSONField(default=list)
+    expires_at = models.DateTimeField()
+    confirmed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        permissions = [
+            ("import_students", "Can import student admissions"),
+            ("transition_students", "Can transfer, promote or withdraw students"),
+        ]

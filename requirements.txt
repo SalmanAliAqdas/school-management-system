@@ -5,3 +5,4 @@ python-dotenv>=1.2,<2
 whitenoise>=6.9,<7
 django-axes>=8.3,<9
 gunicorn>=23,<24
+Pillow>=12.1,<13

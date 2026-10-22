@@ -28,8 +28,10 @@ credential stores remain excluded; public test credentials are fictional fixture
 - Safe generic error pages and a health response that does not expose DB details.
 - Authentication, student-detail access and settings-write audit events omit
   credentials, request bodies, reset tokens and personal metadata.
-- No upload or public-media route. A reusable PDF extension/size/signature validator
-  and random private-storage path establish a future document-handling boundary.
+- Authorized PNG/JPEG profile/logo uploads are bounded, decoded, metadata-stripped,
+  resized and re-encoded to randomly named private PNGs. Image routes authenticate
+  and enforce record scope. No public media route exists. PDF document workflows
+  remain unimplemented beyond the original reusable validator.
 - Demo initialization requires DEBUG **and** ALLOW_DEMO_DATA and a locally supplied
   password. Existing account passwords are preserved on repeat runs.
 
@@ -56,7 +58,15 @@ need malware scanning, private storage, ownership checks, authenticated download
 attachment headers and file-type validation beyond the initial PDF signature gate.
 Render's ephemeral filesystem cannot serve as durable document storage.
 
-Enrollment overlap validation is application-level across rows. Future concurrent
-enrollment services must use student-row locks or a reviewed PostgreSQL exclusion
-constraint. The app is single-school; multi-school tenancy needs a separate access
+Enrollment writes use ordered year/student locks, a database overlap exclusion
+constraint, global active-placement uniqueness and a database history guard.
+CSV confirmation locks its batch, revalidates all rows and imports atomically.
+Admissions serialize number allocation and duplicate checks. Tests exercise
+simultaneous admissions and transfers. The app is single-school; multi-school tenancy needs a separate access
 and migration design. No attendance, mark entry, payments or payroll actions exist.
+
+Application audit events cover academic/profile/link/admission/transition/import
+writes without storing row contents. Expired CSV personal rows need scheduled
+`purge_admission_previews`; successful confirmation clears rows immediately.
+Private file storage still needs durability, backups and orphan reconciliation in
+production. Do not grant application users permission to alter schema or triggers.

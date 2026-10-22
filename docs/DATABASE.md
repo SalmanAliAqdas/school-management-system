@@ -37,8 +37,11 @@ multiple dated section placements in one year; one active placement per student
 and year is enforced by a conditional unique constraint. Historical placement rows
 are retained when a student changes class; close the previous placement and create
 a new row in a transaction. Date ranges must not overlap (model validation);
-future enrollment write services must lock the student row to prevent concurrent
-overlaps. A class is derived from its section, avoiding a redundant class key.
+enrollment write services now lock academic years and the student row. A PostgreSQL
+`btree_gist` exclusion constraint additionally rejects overlapping date ranges across
+years, and a partial unique constraint allows one active placement per student
+across all years. Active roll numbers are unique within the year/section. A class is
+derived from its section, avoiding a redundant class key.
 
 Guardian links are explicit and unique per guardian/student. Assignments are unique
 per teacher, subject, section and year. Record visibility matches the enrollment
@@ -58,3 +61,13 @@ aware; the default school timezone is Asia/Karachi.
 Application validators run in ModelForm/admin and seed services; database checks
 also protect critical single-row invariants. Direct ORM writes do not automatically
 run full_clean. New write services must explicitly validate and use transactions.
+
+Phase 2 adds year/term status and current-term constraints, year/class subject
+assignments, admission/birth dates, employment/contact details and private image
+references. Student numbers and external source references are case-insensitively
+unique. A singleton counter allocates admission numbers under a row lock.
+AdmissionImport stores owner, expiry, confirmation timestamp and transient JSON rows.
+An enrollment trigger rejects deletion, modification of completed rows, changes to
+placement identity, dates outside the parent year and writes into closed years.
+Active roll corrections remain allowed and audited by their service. Upgrade tests
+verify legacy admission numbers, dated placements and assignments survive migration.

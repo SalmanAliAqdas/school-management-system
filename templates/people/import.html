@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+{% block title %}Import admissions{% endblock %}
+{% block breadcrumb %}Admissions import{% endblock %}
+{% block content %}
+<div class="page-heading"><div><span class="eyebrow">BULK ADMISSIONS</span><h1>Review before admitting.</h1><p>Upload, validate and preview. Students are created only after a separate confirmation.</p></div><a class="btn btn-outline-secondary" href="{% url 'people:import_template' %}">Download CSV template</a></div>
+<section class="panel padded-form"><p>Use ISO dates (YYYY-MM-DD) and numeric academic year, section and optional guardian IDs from setup records. Give every student a stable, unique external_reference. Create guardians before linking them in CSV.</p><form method="post" enctype="multipart/form-data">{% csrf_token %}{% include 'includes/form_fields.html' %}<button class="btn btn-primary">Validate and preview</button></form></section>
+{% if results %}<section class="panel"><div class="panel-heading"><h2>{{ results|length }} rows reviewed</h2>{% if batch %}<a class="btn btn-primary" href="{% url 'people:import_confirm' batch.pk %}">Continue to confirmation</a>{% else %}<span class="record-status inactive">Correct errors and upload again</span>{% endif %}</div><div class="table-responsive"><table class="table school-table"><thead><tr><th>CSV LINE</th><th>STUDENT</th><th>REFERENCE</th><th>VALIDATION</th></tr></thead><tbody>{% for result in results %}<tr><td>{{ result.number }}</td><td>{{ result.row.first_name }} {{ result.row.last_name }}</td><td>{{ result.row.external_reference }}</td><td>{% for error in result.errors %}<div class="field-error">{{ error }}</div>{% empty %}Ready{% endfor %}</td></tr>{% endfor %}</tbody></table></div></section>{% endif %}
+{% endblock %}

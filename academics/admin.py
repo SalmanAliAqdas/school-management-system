@@ -1,6 +1,16 @@
 from django.contrib import admin
 
-from .models import AcademicYear, SchoolClass, Section, Subject, TeachingAssignment, Term
+from people.admin import HistoricalAdmin
 
-for model in (AcademicYear, SchoolClass, Section, Subject, TeachingAssignment, Term):
-    admin.site.register(model)
+from .models import (
+    AcademicYear,
+    ClassSubject,
+    SchoolClass,
+    Section,
+    Subject,
+    TeachingAssignment,
+    Term,
+)
+
+for model in (AcademicYear, SchoolClass, Section, Subject, TeachingAssignment, Term, ClassSubject):
+    admin.site.register(model, HistoricalAdmin)

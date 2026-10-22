@@ -30,6 +30,38 @@ ROLE_PERMISSIONS = {
     "Transport Manager": [ADMIN_DASHBOARD],
 }
 
+# Administrative capabilities are explicit; dashboard access alone never grants writes.
+OPERATIONS = [
+    "people.add_student",
+    "people.change_student",
+    "people.import_students",
+    "people.transition_students",
+    *[
+        f"people.{verb}_{model}"
+        for model in ("guardian", "teacher", "staff", "guardianstudent")
+        for verb in ("view", "add", "change")
+    ],
+    "people.delete_guardianstudent",
+    *[
+        f"academics.{verb}_{model}"
+        for model in (
+            "academicyear",
+            "term",
+            "schoolclass",
+            "section",
+            "subject",
+            "classsubject",
+            "teachingassignment",
+        )
+        for verb in ("view", "add", "change")
+    ],
+]
+for role in ("System Administrator", "School Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += OPERATIONS
+ROLE_PERMISSIONS["HR Manager"] += [
+    f"people.{verb}_{model}" for model in ("teacher", "staff") for verb in ("view", "add", "change")
+]
+
 
 @transaction.atomic
 def sync_roles():

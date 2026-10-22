@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block title %}{{ object }}{% endblock %}
+{% block breadcrumb %}{{ kind|title }} profile{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'people:directory' kind %}">All {{ kind }}</a><div class="page-heading"><div><span class="eyebrow">{{ kind|upper }} PROFILE</span><h1>{{ object }}</h1></div><div class="action-bar">{% if object.photo %}<img class="profile-photo" src="{% url 'people:image' kind object.pk %}" alt="Profile of {{ object }}">{% endif %}{% if can_edit %}<a class="btn btn-primary" href="{% url 'people:directory_edit' kind object.pk %}">Edit profile</a>{% endif %}</div></div>
+<section class="panel padded-form"><dl class="record-grid">{% for label,value in fields %}<div><dt>{{ label|capfirst }}</dt><dd>{{ value|default_if_none:'—' }}</dd></div>{% endfor %}</dl></section>
+{% if kind == 'guardians' %}<section class="panel padded-form"><h2>Linked children</h2>{% for link in links %}<p><a href="{% url 'people:student_detail' link.student_id %}">{{ link.student }}</a> · {{ link.relationship }}</p>{% empty %}<p>No visible linked children.</p>{% endfor %}{% if perms.people.add_guardianstudent and perms.people.view_all_students %}<a href="{% url 'people:guardian_link' %}">Link a child</a>{% endif %}</section>{% endif %}
+{% if kind == 'teachers' %}<section class="panel padded-form"><h2>Teaching assignments</h2>{% for assignment in assignments %}<p>{{ assignment.academic_year }} · {{ assignment.section }} · {{ assignment.subject }}</p>{% empty %}<p>No assignments yet.</p>{% endfor %}</section>{% endif %}
+{% endblock %}

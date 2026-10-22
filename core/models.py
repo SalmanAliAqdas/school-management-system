@@ -17,6 +17,14 @@ class SchoolSettings(TimestampedModel):
     name = models.CharField(max_length=160, default="RumiWare SchoolOS")
     timezone = models.CharField(max_length=64, default="Asia/Karachi")
     currency = models.CharField(max_length=3, default="PKR")
+    address = models.TextField(blank=True, max_length=500)
+    phone = models.CharField(max_length=40, blank=True)
+    email = models.EmailField(blank=True)
+    website = models.URLField(blank=True)
+    principal_name = models.CharField(max_length=160, blank=True)
+    principal_email = models.EmailField(blank=True)
+    principal_phone = models.CharField(max_length=40, blank=True)
+    logo = models.FileField(upload_to="private/images/", blank=True)
 
     class Meta:
         verbose_name_plural = "School settings"

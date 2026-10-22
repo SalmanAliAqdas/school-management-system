@@ -10,6 +10,7 @@ urlpatterns = [
     path("modules/", views.roadmap, name="roadmap"),
     path("modules/<slug:slug>/", views.module_detail, name="module_detail"),
     path("settings/school/", views.school_settings, name="school_settings"),
+    path("branding/logo/", views.school_logo, name="school_logo"),
     path("profile/", views.profile, name="profile"),
     path("audit/", views.audit_log, name="audit"),
 ]

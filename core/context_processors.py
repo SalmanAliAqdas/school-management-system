@@ -15,6 +15,7 @@ def school_context(request):
     school = SchoolSettings.objects.first() if request.user.is_authenticated else None
     return {
         "school_name": school.name if school else "RumiWare SchoolOS",
+        "school": school,
         "demo_mode": settings.ALLOW_DEMO_DATA,
         "available_dashboards": [
             {"key": key, "label": label}
