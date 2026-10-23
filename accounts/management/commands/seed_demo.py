@@ -160,6 +160,9 @@ class Command(BaseCommand):
         from portals.demo import seed_portal_demo
 
         seed_portal_demo(accounts, year, students, sections)
+        from scheduling.demo import seed_teaching_demo
+
+        seed_teaching_demo(accounts, year, students, sections)
         record_event("demo.initialized", target=school.pk)
         self.stdout.write(
             self.style.SUCCESS("Fictional demo initialized; existing passwords preserved.")

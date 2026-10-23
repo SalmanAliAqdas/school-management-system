@@ -5,10 +5,16 @@ from django.urls import reverse
 from django.utils import timezone
 
 from attendance.selectors import notifications_visible_to as attendance_notices
+from communications.notices import visible as communication_notices
 from examinations.selectors import notifications_visible_to as examination_notices
 from finance.selectors import notices_visible_to as finance_notices
 
 SOURCES = {
+    "communications": lambda user: communication_notices(user).filter(
+        category_name="communications"
+    ),
+    "learning": lambda user: communication_notices(user).filter(category_name="learning"),
+    "scheduling": lambda user: communication_notices(user).filter(category_name="scheduling"),
     "attendance": attendance_notices,
     "examinations": examination_notices,
     "finance": finance_notices,
@@ -16,7 +22,19 @@ SOURCES = {
 
 
 def sources(user):
-    return {name: selector(user) for name, selector in SOURCES.items()}
+    result = {
+        name: selector(user)
+        for name, selector in SOURCES.items()
+        if name not in ("communications", "learning", "scheduling")
+    }
+    new_notices = communication_notices(user)
+    result.update(
+        {
+            name: new_notices.filter(category_name=name)
+            for name in ("communications", "learning", "scheduling")
+        }
+    )
+    return result
 
 
 def inbox(user, *, category="", unread=False, child=None):
@@ -31,6 +49,9 @@ def inbox(user, *, category="", unread=False, child=None):
                 "attendance": "entry__student",
                 "examinations": "candidate__student",
                 "finance": "student",
+                "communications": "student",
+                "learning": "student",
+                "scheduling": "student",
             }[name]
             rows = rows.filter(**{field: child})
         parts.append(
@@ -73,6 +94,8 @@ def hydrate(user, page):
                 if child
                 else (reverse("examinations:session", args=[row.event.session_id]))
             )
+        elif category in ("communications", "learning", "scheduling"):
+            child, title, url = row.student, row.title, row.url
         else:
             child = row.student
             title = row.kind.replace("_", " ").capitalize()

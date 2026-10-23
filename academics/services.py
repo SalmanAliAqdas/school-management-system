@@ -75,7 +75,9 @@ def protect_academic_edit(instance):
         from examinations.models import ExamSubject
 
         protected = (
-            instance.academic_year.status != "open"
+            instance.entry_set.exists()
+            or instance.assignment_set.exists()
+            or instance.academic_year.status != "open"
             or ExamSubject.objects.filter(
                 cohort__session__academic_year=instance.academic_year,
                 cohort__section=instance.section,

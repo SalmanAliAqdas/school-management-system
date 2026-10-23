@@ -156,3 +156,25 @@ recorded day. Personal leave approvals retain the independent no-self-approval r
 Notification reads use current source selectors; POST updates repeat that scope.
 Phone/display forms cannot change email, official identity, enrollment or privileges.
 Read-only portal centers reject POST. See [portal routes and policy](PHASE6_PORTALS.md).
+
+
+## Phase 7 permissions
+
+| Capability / actor | Scope |
+| --- | --- |
+| `scheduling.manage_timetable` | Administrative setup, drafts, validation, publication, archive, substitution and reports |
+| `learning.manage_learning` | Administrative assignment oversight; historical-year edit bounds still apply |
+| Current teacher | Own active year/section/subject learning; own timetable/workload; released classroom feedback |
+| Student | Own eligible published assignments/submissions; own timetable and targeted publications |
+| Guardian | Current linked children's timetable, work/status and explicitly guardian-released feedback; no submission impersonation |
+| Approved substitute | Exact-date minimal roster; no permanent marks, attendance, finance or report-card grant |
+| `communications.manage_communications` | Create/manage events and announcements; eligible family contacts |
+| `communications.publish_communications` | Approve/publish/cancel and configure communication policy |
+| `communications.moderate_messages` | Reported-message review, reasoned hiding and thread blocking |
+| Active school staff | Eligible staff conversations; no arbitrary student contact |
+
+System Administrator, Principal and School Administrator receive timetable, learning and
+publication management; only System Administrator and Principal receive moderation. Custom
+coordinators may receive explicit capabilities. Active teaching-assignment revocation uses
+`academics.change_teachingassignment` and retains an attributed reason/history. Personal
+portal summaries remain narrower than secondary administrative capabilities.

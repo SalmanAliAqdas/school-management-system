@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     "attendance.apps.AttendanceConfig",
     "examinations.apps.ExaminationsConfig",
     "finance.apps.FinanceConfig",
+    "scheduling",
+    "learning",
+    "communications",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -46,6 +49,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "communications.middleware.SchoolTimezoneMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "core.middleware.SecurityHeadersMiddleware",

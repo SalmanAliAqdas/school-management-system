@@ -29,9 +29,9 @@ Later campus modules remain planned.
 | examinations | Assessment structures, Decimal marks, moderation, publication snapshots, report cards and analytics | Implemented |
 | finance | Decimal invoices, fees, receipts, ledgers and reconciliation | Implemented |
 | portals | Personal and family read composition, teacher workspace, inbox and account preferences | Implemented; no business models |
-| learning | Homework, assignments and submissions | Future |
-| scheduling | Timetables, rooms and calendar events | Future |
-| communications | Announcements and notification delivery | Future |
+| learning | Homework, submission versions and released feedback | Implemented |
+| scheduling | Timetables, resource bookings, workload and substitutions | Implemented |
+| communications | Events, announcements, restricted conversations and notices | Implemented |
 | hr | Employment records, leave and decimal payroll | Future |
 | library | Titles, copies, members and loans | Future |
 | transport | Routes, stops, vehicles and rider assignments | Future |
@@ -84,7 +84,7 @@ monitoring, database backups and a separately reviewed authorization model.
    workflows, approvals, reconciliation and notification delivery.
 6. **Personal portals (implemented):** integrated student, guardian and teacher experiences,
    current relationship/assignment checks, shared notification reads and safe self-service.
-7. **Teaching and communication (future):** timetable, homework, events and messaging.
+7. **Teaching and communication (implemented):** timetable, homework, events and messaging.
 8–10. **Further modules and commercial validation (future):** privacy and security review, retention policy,
    accessibility, PostgreSQL performance tests, restore drills, monitoring,
    incident procedures and deployment approval.
@@ -153,3 +153,17 @@ and downloads. Personal portal scopes narrow the existing multi-role selectors;
 switching presentation never grants capabilities. Teacher writes additionally require
 current year and employment dates at the service boundary. No cross-user cache or
 copy of historical notices is introduced. See [portal architecture and UX](PHASE6_PORTALS.md).
+
+
+## Phase 7 domain boundaries
+
+Scheduling owns versioned recurring definitions and bounded dated resource bookings.
+Learning owns assignment rules, immutable submission versions and feedback releases.
+Communications owns targeted publications, current-relationship conversations, moderation
+and new source notices. Existing portal selectors compose these sources without replacing
+attendance, examinations or finance. PostgreSQL row/advisory locks, resource exclusion
+constraints and immutable-history triggers complement service authorization.
+
+Private attachments use protected PostgreSQL binary records with scoped download routes.
+The existing TeachingAssignment gains an active access flag; referenced historical rows
+remain intact. See [Phase 7 operating architecture](PHASE7_TEACHING.md).

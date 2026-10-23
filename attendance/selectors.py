@@ -54,6 +54,7 @@ def sections_markable_by(user, year):
         return sections.none()
     return sections.filter(
         teaching_assignments__teacher__user=user,
+        teaching_assignments__is_active=True,
         teaching_assignments__academic_year=year,
         teaching_assignments__teacher__is_active=True,
     ).distinct()

@@ -144,6 +144,14 @@ def module_detail(request, slug):
     module = next((item for item in MODULES if item["slug"] == slug), None)
     if not module:
         raise Http404
+    if slug in ("homework", "timetable", "announcements"):
+        return redirect(
+            {
+                "homework": "learning:overview",
+                "timetable": "scheduling:overview",
+                "announcements": "communications:overview",
+            }[slug]
+        )
     destinations = {
         "finance": ("finance.access_finance", "finance:dashboard", {}),
         "examinations": ("examinations.view_examinations", "examinations:dashboard", {}),

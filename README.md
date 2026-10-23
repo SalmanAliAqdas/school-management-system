@@ -37,6 +37,19 @@ See the [portal experience and policy](docs/PHASE6_PORTALS.md) and
 [navigation guide](docs/NAVIGATION.md). Later phases remain planned; no real banking
 or payment gateway is connected.
 
+## Teaching and communication
+
+Phase 7 adds conflict-checked weekly timetables, teacher availability and substitutions,
+private homework submissions and released feedback, audience-scoped events/announcements,
+and authorized family/staff conversations. Start at `/scheduling/`, `/learning/` and
+`/communications/`. The existing portals include summaries and navigation; the unified
+notification inbox retains attendance, examination and finance notices.
+
+See the [teaching and communication guide](docs/PHASE7_TEACHING.md) for configuration,
+publication, access revocation, file protection, operating limits and all routes.
+Apply additive migrations and run `manage.py sync_roles` when upgrading. No production
+deployment or Phase 8 modules are included.
+
 ## Requirements
 
 - Python 3.12–3.14; local verification used Python 3.13.
@@ -229,6 +242,9 @@ audit/           security and access events
 attendance/      student/staff attendance, leave, calendars, notices and reports
 examinations/    assessment setup, marks, grading, publication and report cards
 portals/         role-specific read composition, unified inbox and account preferences
+scheduling/      timetable versions, resource bookings, substitutions and workload
+learning/        assignments, private submission versions and released feedback
+communications/  events, announcements, restricted messaging and source notices
 finance/         fees, manual collections, immutable documents and accounting
 config/          Django configuration and server entry points
 templates/       shared layouts, auth pages and role workspaces

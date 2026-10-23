@@ -172,6 +172,17 @@ for role in ("Student", "Parent or Guardian"):
     ROLE_PERMISSIONS[role] += ["finance.access_finance"]
 
 
+for role in ("System Administrator", "School Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += [
+        "scheduling.manage_timetable",
+        "learning.manage_learning",
+        "communications.manage_communications",
+        "communications.publish_communications",
+    ]
+for role in ("System Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += ["communications.moderate_messages"]
+
+
 @transaction.atomic
 def sync_roles():
     """Synchronize only managed groups; fail if migrations are missing."""

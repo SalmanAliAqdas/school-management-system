@@ -164,3 +164,19 @@ verification. Password changes use Django validation and session hash updates. T
 unified inbox is a read-side SQL union; page loads create no source notices or inbox
 copies. School-local timestamps, private/no-store middleware and scoped private-file
 endpoints remain in force. See [portal policy](PHASE6_PORTALS.md).
+
+
+## Phase 7 teaching and communication
+
+All new mutations have service capability/object checks and CSRF-protected POST interfaces.
+Current guardian links, dated enrollment, active assignments and employment are rechecked for
+threads, files, learning reviews and notices. Sender account locks serialize rate limiting;
+schedule advisory locks, stale revisions and PostgreSQL resource exclusions protect races.
+Submission versions, feedback, documents, message content and publication history are immutable.
+
+Uploads accept bounded PDF/text/PNG/JPEG content with filename/type/signature validation and
+private attachment downloads. No malware scanning is claimed. Plain text is escaped, CSP is
+retained and no public upload route is added. Retention records minimum policy without
+unrestricted deletion. Scoped moderators see reported content, not an unrestricted private
+message search. Production malware scanning, storage capacity, retention disposal and
+operational hardening remain separate deployment work. See PHASE7_TEACHING.md.

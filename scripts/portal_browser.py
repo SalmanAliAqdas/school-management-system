@@ -207,11 +207,24 @@ def main():
                 visit("/portals/teacher/classes/", "teacher-classes")
                 page.locator(f'a[href="/portals/teacher/classes/{assignment.pk}/"]').click()
                 page.get_by_role("link", name="Open attendance register", exact=True).click()
+                page.goto(
+                    f"{base}/attendance/register/?academic_year={draft.academic_year_id}"
+                    f"&section={draft.section_id}&date={draft.attendance_on.isoformat()}"
+                )
                 assert page.get_by_role("heading", name="Class attendance register").is_visible()
                 page.get_by_role("button", name="Mark all present", exact=False).click()
                 page.locator("#id_confirm").check()
                 page.get_by_role("button", name="Save draft", exact=True).click()
-                assert page.get_by_text("Attendance draft saved.").is_visible()
+                try:
+                    page.get_by_text("Attendance draft saved.").wait_for(state="visible")
+                except Exception:
+                    page.screenshot(
+                        path=str(output / "teacher-attendance-save-failure.png"), full_page=True
+                    )
+                    (output / "teacher-attendance-save-failure.html").write_text(
+                        page.content(), encoding="utf-8"
+                    )
+                    raise
                 visit(f"/examinations/marks/{sheet.pk}/", "teacher-marks")
                 page.locator('input[name$="-marks"]').first.fill("77")
                 page.get_by_role("button", name="Save draft marks").click()

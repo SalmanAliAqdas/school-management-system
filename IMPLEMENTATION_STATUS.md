@@ -1,9 +1,31 @@
 # Implementation status
 
-Phase 6 student, guardian and teacher portals are implemented over the retained
-Django/PostgreSQL modules. No schema migration or production deployment is introduced.
-The complete PostgreSQL regression suite passes: **383 tests, zero failures/errors**,
-including 54 portal tests and all 329 existing Phase 1-5 tests.
+Phase 7 timetable, homework, calendar, announcement and secure communication workflows
+are implemented over the retained Django/PostgreSQL modules and Phase 6 portals. The
+complete PostgreSQL regression suite passes: **461 tests, zero failures/errors**,
+including 78 Phase 7 tests and all 383 existing Phase 1-6 tests.
+
+## Phase 7 capabilities
+
+- Conflict-checked, versioned weekly timetables with rooms, availability, workload,
+  publication, dated bookings, substitutions, temporary roster access and reports.
+- Published homework with deadlines, private immutable submission versions, protected
+  attachments, review, grading, released feedback, guardian monitoring and analytics.
+- Audience-scoped school events and announcements with independent approval, history,
+  cancellation and a combined school/lesson/homework/examination calendar.
+- Relationship-revalidated parent-teacher and internal conversations, private files,
+  rate/duplicate limits, reporting, moderation, retention policy and unified notices.
+- Student, guardian and teacher navigation and summaries integrated with current
+  enrollments, guardian links and active teaching assignments.
+- Desktop/tablet/390px/320px Chrome journeys, keyboard navigation and JavaScript checks
+  passed in owned disposable PostgreSQL databases.
+- Twelve additive migrations applied. All **2,654 rows across 99 original tables** match
+  their saved fingerprints; only additive migration/content-type/permission metadata
+  and new Phase 7 schema were introduced.
+
+See [teaching and communication policy](docs/PHASE7_TEACHING.md),
+[implementation plan](docs/PHASE7_PLAN.md), [navigation](docs/NAVIGATION.md) and
+[verification](docs/VERIFICATION.md). No production deployment or Phase 8 work was done.
 
 ## Phase 6 capabilities
 
@@ -23,7 +45,7 @@ including 54 portal tests and all 329 existing Phase 1-5 tests.
 
 See [portal policy and UX](docs/PHASE6_PORTALS.md), [navigation](docs/NAVIGATION.md),
 [implementation plan](docs/PHASE6_PLAN.md) and [verification](docs/VERIFICATION.md).
-Phase 7 remains unimplemented.
+Phase 7 builds on these retained Phase 6 capabilities.
 
 ## Phase 5 implementation record
 

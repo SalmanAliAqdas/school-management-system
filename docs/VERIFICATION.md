@@ -300,3 +300,31 @@ No production environment was deployed and Phase 6 was not started.
 Local evidence: `.local/phase6-final-tests.log`, `.local/phase6-browser-final.log` and
 `.local/phase6-preservation.json`. GitHub Actions provides independent PostgreSQL CI
 for the pushed commit.
+
+## Phase 7 teaching and communication verification (24 October 2026)
+
+- Complete PostgreSQL regression suite: **461 tests passed, zero failures/errors** in
+  439.232 seconds. The 78 focused Phase 7 scheduling, learning, communication,
+  authorization, history-guard and concurrency tests also pass independently.
+- Django system and production deployment checks, migration generation/pending checks,
+  Ruff lint/format, `pip check` and the repository secret/private-file scan passed. The
+  scan reviewed 409 commit candidates and reported zero findings.
+- `scripts/phase7_browser.py` passed timetable draft/conflict/publication, role-scoped
+  schedules, homework file submission and grading, guardian feedback, event approval,
+  authorized messaging/reply, unrelated-user denial, tablet/390px/320px overflow,
+  keyboard navigation and JavaScript console checks.
+- The retained `scripts/portal_browser.py` passed student, guardian and teacher journeys,
+  including attendance and marks drafts, immediate access revocation and protected
+  reports. Its register journey now uses the seeded draft's date so weekend/holiday
+  execution remains deterministic.
+- The pre-upgrade preservation check matched **2,654 rows across 99 original tables**.
+  After all 12 additive migrations and role synchronization, the same row fingerprints
+  match. Additions were limited to 12 migration rows, 25 content types, 105 permissions,
+  14 group-permission links and new Phase 7 schema. Existing accounts, passwords,
+  school records, attendance, reports, finance journals and audit rows were unchanged.
+- A full-suite failure exposed a date-boundary issue in fictional submitted homework;
+  the demo seed now permits late submission for intentionally pre-submitted examples
+  while the production submission service retains strict configured deadline checks.
+
+No production deployment or Phase 8 implementation was performed. Ignored screenshots
+remain under `.local/previews/phase7/` and `.local/previews/portals/`.

@@ -111,7 +111,16 @@ class Subject(TimestampedModel):
         return self.name
 
 
+class ActiveTeachingAssignments(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(is_active=True)
+
+
 class TeachingAssignment(TimestampedModel):
+    is_active = models.BooleanField(default=True)
+    objects = ActiveTeachingAssignments()
+    all_objects = models.Manager()
+
     teacher = models.ForeignKey(
         "people.Teacher", on_delete=models.PROTECT, related_name="assignments"
     )

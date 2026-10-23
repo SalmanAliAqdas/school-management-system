@@ -198,3 +198,25 @@ fine exemptions; 0007 protects reconciliation/exemption history and policy range
 No preceding migration or database is replaced. Financial closing is independent
 of academic lifecycle. Source enrollment foreign keys and issued calculation snapshots
 preserve original billing despite subsequent withdrawal, transfer or promotion.
+
+
+## Phase 7 schema
+
+- Scheduling: Room, Period, Timetable, Entry, Availability, WorkloadLimit, Substitution,
+  ScheduleHistory, Booking and AssignmentAccessEvent.
+- Learning: Assignment, AssignmentChange, Submission, SubmissionVersion, Feedback and Attachment.
+- Communications: Publication, PublicationHistory, PublicationRead, Conversation, Message,
+  Document, Report, CommunicationPolicy and Notice.
+- Academics: TeachingAssignment.is_active defaults true for retained assignments. Active
+  scopes use its default manager; historical foreign keys retain an unfiltered base manager.
+
+Published Booking rows have teacher, room and section exclusion constraints over half-open
+PostgreSQL timestamp ranges. Date/order, unique version, submission ownership, recipient/action
+notice and document source checks are additive. History/document/version triggers reject
+rewrites; published timetable definitions and used periods remain protected. Messages allow
+only read/visibility metadata updates. Every new foreign key preserves source history.
+
+Attachments are bounded binary columns with no public storage URL. Migrations do not copy
+school records into another identity system or modify financial/examination data. The
+preservation checker compares original columns after adding schema and separately identifies
+added migration/permission metadata. See [Phase 7 policy](PHASE7_TEACHING.md).

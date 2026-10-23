@@ -27,3 +27,17 @@ On mobile, Open navigation moves focus into the sidebar. Escape or Close navigat
 restores focus to its toggle; Tab stays within the open sidebar. Skip to main content
 bypasses repeated navigation. Charts provide expandable data alternatives and tables
 scroll inside their cards. See [portal routes and policy](PHASE6_PORTALS.md).
+
+
+## Teaching and communication
+
+All workspaces now link to `/scheduling/`, `/learning/`, `/communications/calendar/`,
+`/communications/` and `/communications/messages/`. The existing administration and
+personal dashboards include actual lesson, assignment, event and conversation summaries.
+`/modules/timetable/`, `/modules/homework/` and `/modules/announcements/` redirect to their
+implemented workspaces. Timetable/workload and homework completion reports are linked
+from their owning modules. The existing portal notification inbox includes separate
+homework, timetable and school communication categories.
+
+See [the Phase 7 route table](PHASE7_TEACHING.md#routes-and-navigation) for setup, reviews,
+private submissions, moderation, access revocation and scoped downloads.
