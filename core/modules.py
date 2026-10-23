@@ -68,7 +68,7 @@ MODULES = [
         "name": "Fees & finance",
         "category": "Administration",
         "description": "Fees, receipts, ledgers and reconciliation.",
-        "state": "Planned",
+        "state": "Available",
         "phase": 5,
     },
     {

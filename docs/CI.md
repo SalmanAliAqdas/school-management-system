@@ -1,4 +1,4 @@
-# Phase 1 continuous integration
+# Continuous integration
 
 The `Foundation checks` workflow runs on pushes and pull requests. It uses a
 GitHub-hosted Ubuntu runner, Python 3.13 and a disposable PostgreSQL 17 service.
@@ -70,3 +70,13 @@ corrections/amendments, schedule exclusions, enrollment preservation, query boun
 and concurrent submissions/publications/decisions. No CI deployment job was added.
 Local installed-Chrome workflows are separately documented in VERIFICATION.md;
 they do not require or expose production accounts or databases.
+
+
+## Phase 5 finance coverage
+
+The same workflow discovers the finance application and all finance tests without a
+second database or deployment job. It applies seven additive finance migrations and
+runs the full PostgreSQL suite, including commit-time journal checks, migration
+rehearsal and concurrent finance transactions. No finance/bank/provider credentials
+are needed. Installed Chrome verification is available separately via
+`scripts/finance_browser.py` using the documented optional browser dependencies.

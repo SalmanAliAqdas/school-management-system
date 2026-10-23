@@ -221,3 +221,43 @@ real-school policy acceptance, assistive-technology review, physical printing an
 multilingual PDF typography remain manual/operational validation. The completion
 report supplies the pushed commit and GitHub Actions workflow link; no later phase
 was implemented.
+
+
+## Phase 5 finance verification (23 October 2026)
+
+- Baseline `2d8f38ff19c5dee4508a957d77c8eb786a6a93ec`: 251 tests passed.
+- Complete local PostgreSQL regression suite: **329 tests passed, zero failures/errors**,
+  including 78 finance tests and all original authentication, admissions/import,
+  attendance and examination tests. The complete run took 423.428 seconds locally.
+- Independent PostgreSQL connections verify duplicate collection and invoice generation,
+  competing refund reservations, and refund/allocation races. No overspending or
+  duplicate permanent posting is accepted. Deferred commit coverage rejects unfinished
+  journal entries. Migration downgrade/upgrade rehearsal retains issued invoices,
+  original receipt snapshots and restored history guards in a disposable test database.
+- Financial checks reconcile journal balance and every affected student's receivable,
+  advance, funded deposit and uncollected deposit against permanent source documents.
+  The fictional local ledger has 22 balanced entries, six issued invoices, four
+  collections, one refund and one approved/paid expense. Re-running the finance seed
+  does not overwrite an initialized ledger.
+- Seven additive migrations applied to the existing PostgreSQL database. All 1,363
+  pre-existing rows across 50 app tables have matching original SHA-256 fingerprints.
+  No old password, administrator flag, academic/attendance/examination/publication or
+  audit row changed. New fictional rows and finance role grants are explicitly additive.
+- System check, production deploy check, migration drift/pending checks, Ruff lint and
+  format, `pip check`, production static collection and repository/private identity
+  scan passed. The scan reported zero findings. Runtime logs and snapshots remain ignored.
+- `scripts/finance_browser.py` owns its uniquely named disposable PostgreSQL database,
+  in-memory fictional passwords and local WSGI/Chrome process. It shuts down its server
+  and removes only its owned test database. Desktop/mobile screenshots stay ignored at
+  `.local/previews/finance/`. It exercises administrator fee setup, billing preview/
+  generation/approval/issue, expense request/approval/payment, concession/refund review,
+  cashier partial payment, receipt PDF/print, staff report PDF, student/guardian scope,
+  unauthorized collection/export attempts, JavaScript errors and horizontal overflow.
+- Visual review corrected currency-place formatting and replaced raw implementation
+  representations in opening balances with ordinary financial labels. Browser checks
+  use the formatted amount shown to users rather than raw stored numeric strings.
+
+Private evidence: `.local/phase5-baseline.log`, `.local/phase5-final-tests.log`,
+`.local/phase5-finance-final.log`, `.local/phase5-browser-final.log`, security scan and
+preservation results. The completion report provides the final commit/Actions link.
+No production environment was deployed and Phase 6 was not started.

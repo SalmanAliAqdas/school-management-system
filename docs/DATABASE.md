@@ -186,3 +186,15 @@ correlated assignment scopes and shared grading context avoid per-student lookup
 queries. Foreign-key, unique and exclusion indexes are complemented by year/state,
 recipient/date and candidate/publication indexes. The public report limit is 5,000
 rows; operational load testing remains required for a real school.
+
+## Phase 5 finance schema
+
+Seven additive finance migrations add 36 models, numeric money checks, non-overlapping
+financial dates, unique original invoice/cycle and source-event keys, independent
+decision constraints, credit/allocation provenance, immutable snapshots, reconciliation
+reservations and deferred balanced-journal validation. Migrations 0003/0004 protect
+posted history and used setup; 0005 allows an optional currency symbol; 0006 adds dated
+fine exemptions; 0007 protects reconciliation/exemption history and policy ranges.
+No preceding migration or database is replaced. Financial closing is independent
+of academic lifecycle. Source enrollment foreign keys and issued calculation snapshots
+preserve original billing despite subsequent withdrawal, transfer or promotion.

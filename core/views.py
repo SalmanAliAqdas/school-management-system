@@ -56,6 +56,8 @@ def dashboard_redirect(request):
     for key, _label, permission in DASHBOARDS:
         if request.user.has_perm(permission):
             return redirect("core:role_dashboard", role=key)
+    if request.user.has_perm("finance.access_finance"):
+        return redirect("finance:dashboard")
     return render(request, "core/no_access.html", status=403)
 
 
@@ -134,6 +136,7 @@ def module_detail(request, slug):
     if not module:
         raise Http404
     destinations = {
+        "finance": ("finance.access_finance", "finance:dashboard", {}),
         "examinations": ("examinations.view_examinations", "examinations:dashboard", {}),
         "attendance": ("attendance.view_attendance", "attendance:dashboard", {}),
         "academics": ("academics.view_academicyear", "academics:overview", {}),

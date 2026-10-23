@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "audit.apps.AuditConfig",
     "attendance.apps.AttendanceConfig",
     "examinations.apps.ExaminationsConfig",
+    "finance.apps.FinanceConfig",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

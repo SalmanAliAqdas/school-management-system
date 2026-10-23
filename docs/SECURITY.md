@@ -122,3 +122,23 @@ randomly named test database and removes only that owned test database. Producti
 hosting, retention/access governance, backup/restore, real-school privacy review,
 large-scale load, accessibility and multilingual PDF validation remain operational
 work; no production deployment is included.
+
+## Phase 5 financial boundaries
+
+Finance keeps all money mutations atomic and serialized, with exact Decimal amounts,
+unique idempotency/reference keys, source ownership validation, independent approval,
+material/backdate senior review, pending refund reservations and permanent audit links.
+PostgreSQL protects posted journal lines/headers, issued documents, approval history,
+used definitions, allocation/refund evidence and closing controls. A deferred trigger
+rejects incomplete/unbalanced journal entries at commit. Student receivable/advance/
+deposit balances are reproducible and independently reconciled to source documents.
+No browser-supplied balance is trusted. Reversed receipts remain preserved and marked.
+
+Family views recheck current links/policy for every object and notification. Export
+permissions and spreadsheet-safe CSV cells prevent unauthorized/formula-based exposure.
+All mutation forms retain CSRF protection. Private sanitized PNG/JPEG expense scans
+reuse bounded image handling and authenticated streaming. School bank identifiers are
+masked in lists and visible only to configuration staff in edit forms. No card details,
+CVV, PIN, bank passwords, real provider integrations or paid notifications are added.
+Database-owner compromise, operational cash verification, financial policy acceptance,
+retention and production-scale resilience remain outside prototype certification.

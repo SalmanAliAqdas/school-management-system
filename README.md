@@ -26,7 +26,11 @@ Examinations now include weighted assessments, configurable grading, date sheets
 scoped marks entry, independent review, publication snapshots, corrections, student/
 guardian portals, analytics and branded PDF report cards. See the
 [examination and grading policy](docs/EXAMINATION_POLICY.md).
-Fees/finance and later phases remain planned.
+Fees and finance now include dated fee structures, concessions, safe billing previews,
+independent approvals, manual collections, immutable receipts, balanced journals,
+refunds/reversals, expenses, reconciliation, reports and basic family fee access.
+See the [finance operating policy](docs/FINANCE_POLICY.md) and `/finance/`.
+Later phases remain planned; no real banking or payment gateway is connected.
 
 ## Requirements
 

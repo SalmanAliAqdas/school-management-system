@@ -127,3 +127,16 @@ school enrollment screen without automatically promoting students.
 
 The current module boundaries and operating policy are in
 [EXAMINATION_POLICY.md](EXAMINATION_POLICY.md). Phase 5 finance has not begun.
+
+## Phase 5 finance
+
+The `finance` app reuses authentication, students, guardians, dated enrollments,
+academic years, school branding, private images and audit events. `common` owns money
+validation, numbering, permissions and school-local dates; `billing` calculates dated
+charges; `payments` manages credit lots and allocations; `approvals` owns independent
+financial decisions and compensating entries; `ledger` owns immutable balanced
+postings; `reconciliation` owns expenses and closing; `reporting`, `selectors`,
+`notifications` and `exports` provide scoped reads and documents. Template/Bootstrap
+screens use local CSS/JS, without a new frontend build or authentication subsystem.
+One finance-settings row serializes money writes; PostgreSQL guards enforce permanent
+history and balanced commit boundaries. See [FINANCE_POLICY.md](FINANCE_POLICY.md).

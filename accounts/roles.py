@@ -139,6 +139,39 @@ for role in ("Student", "Parent or Guardian"):
     ROLE_PERMISSIONS[role] += ["examinations.view_examinations"]
 
 
+FINANCE_READ = ["finance.access_finance", "finance.view_all_finance"]
+CASHIER_PERMISSIONS = [*FINANCE_READ, "finance.collect_payments", "finance.allocate_credit"]
+FINANCE_ENTRY = [
+    *CASHIER_PERMISSIONS,
+    "finance.generate_invoices",
+    "finance.request_adjustments",
+    "finance.record_expenses",
+    "finance.reconcile_accounts",
+    "finance.view_finance_reports",
+    "finance.view_journal",
+    "finance.close_financial_periods",
+]
+ROLE_PERMISSIONS["Accountant"] += FINANCE_ENTRY
+ROLE_PERMISSIONS["School Administrator"] += [
+    *FINANCE_READ,
+    "finance.manage_fees",
+    "finance.generate_invoices",
+    "finance.request_adjustments",
+    "finance.record_expenses",
+]
+for role in ("System Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += [
+        *FINANCE_ENTRY,
+        "finance.manage_finance",
+        "finance.manage_fees",
+        "finance.approve_finance",
+        "finance.approve_senior_finance",
+        "finance.reopen_financial_periods",
+    ]
+for role in ("Student", "Parent or Guardian"):
+    ROLE_PERMISSIONS[role] += ["finance.access_finance"]
+
+
 @transaction.atomic
 def sync_roles():
     """Synchronize only managed groups; fail if migrations are missing."""

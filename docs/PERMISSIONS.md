@@ -117,3 +117,21 @@ Students/guardians never receive draft previews, withheld marks, other students'
 rankings, private correction reasons or staff review records. A currently withheld
 report also blocks its older versions. Historical authorization is checked at request
 time rather than copied from the snapshot. See [examination policy](EXAMINATION_POLICY.md).
+
+## Phase 5 finance permissions
+
+| Actor | Finance capability |
+| --- | --- |
+| System Administrator / Principal | Configure, enter, report, independently approve, senior review and controlled reopen |
+| School Administrator | Manage fees, generate/issue approved invoices, request corrections/expenses; cannot approve finance decisions |
+| Accountant | Billing, manual collections, allocation, expense entry, reconciliation, reporting and closing requests; cannot configure policies or approve decisions |
+| Optional custom cashier group | `CASHIER_PERMISSIONS`: finance access/all-student account reads, manual collection and credit allocation; no approval, setup, journal or exports |
+| Student / Parent or Guardian | Current policy and explicit relationship-scoped issued invoices, receipts and statements only |
+| Other managed roles | No finance access unless separately granted |
+
+The eleven managed groups remain unchanged. Run `manage.py sync_roles` after migrations.
+An optional cashier group is not a twelfth managed role. Custom cashier-only users
+land on their finance workspace after login. Public services recheck action grants;
+selectors recheck student ownership and guardian links. Requesters cannot review
+their own financial decisions. Download and private attachment checks apply to each
+object; report and journal grants remain separate from collection permissions.
