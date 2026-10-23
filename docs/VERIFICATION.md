@@ -261,3 +261,42 @@ Private evidence: `.local/phase5-baseline.log`, `.local/phase5-final-tests.log`,
 `.local/phase5-finance-final.log`, `.local/phase5-browser-final.log`, security scan and
 preservation results. The completion report provides the final commit/Actions link.
 No production environment was deployed and Phase 6 was not started.
+
+
+## Phase 6 portal verification (23 October 2026)
+
+- Clean starting checkout: `8eaf1f719c21fb05695d0f041d164679faf3bd04`.
+  Actual baseline: **329 PostgreSQL tests passed**, zero failures/errors, in 295.327 seconds.
+- New authorization and composition coverage includes multiple children, child selection,
+  immediate revocation, role preference invalidation, mixed administrative/personal scope,
+  publication/withholding and report versions, finance policy/ledger consistency, source
+  inbox read-state/pagination, current/historical assignments, employment dates, password
+  change, CSRF, no-data handling and query growth across children/classes.
+- `scripts/portal_browser.py` ran installed headless Chrome using a uniquely named
+  disposable PostgreSQL database, in-memory credentials and a loopback-only WSGI server.
+  It exercised student dashboard/attendance/results/report/PDF/fees; guardian results and
+  fees for two children, real child switching, inbox read state and immediate revocation;
+  teacher assigned class, attendance draft, marks draft, personal attendance and leave;
+  unauthorized student/report/journal URLs; and 390px/320px layouts without horizontal
+  page overflow. Enter/Escape navigation restored keyboard focus. No JavaScript errors
+  were recorded. Screenshots were visually inspected and remain ignored under
+  `.local/previews/portals/`. The helper removes only its owned test database.
+- System/production checks, migration drift/pending checks, Ruff lint/format, `pip check`,
+  production static collection and repository/private-identity scan completed successfully.
+  No migrations are introduced and all existing financial database guards remain enabled.
+- `scripts/preservation_check.py` recorded and compared all **2,651 rows across 99
+  original tables**, including auth, academic, attendance, examination, finance, audit
+  and migration records. All table/row fingerprints match. It stores hashes and counts
+  only in ignored local evidence; private row contents are not exported.
+- Complete final PostgreSQL regression suite: **383 tests passed, zero failures/errors**,
+  in 370.166 seconds, including 54 portal tests and all 329 previous tests.
+  A focused final portal rerun verifies the final dashboard presentation changes. An earlier full run
+  caught a source event-label mismatch and fictional history initialization after year
+  archive; both were corrected using existing APIs and lifecycle guards.
+- Phase 7, production deployment, online payments and external messaging were not run.
+  Real-school policy acceptance, large-scale load and assistive-technology review remain
+  outside this prototype verification.
+
+Local evidence: `.local/phase6-final-tests.log`, `.local/phase6-browser-final.log` and
+`.local/phase6-preservation.json`. GitHub Actions provides independent PostgreSQL CI
+for the pushed commit.

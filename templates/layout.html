@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block body %}
-<div class="app-shell">
+<div class="app-shell {% if portal_role %}portal-shell{% endif %} density-{{ display_density }}">
   <aside class="sidebar" id="sidebar" aria-label="Main navigation">
     <a class="brand" href="{% url 'core:dashboard' %}"><img src="{% static 'img/mark.svg' %}" width="38" height="38" alt=""><span>rumiware<span class="brand-sub">S C H O O L O S</span></span><span class="brand-dot"></span></a>
     <div class="school-switch"><span class="school-monogram">{% if school.logo %}<img src="{% url 'core:school_logo' %}" width="32" height="32" alt="School logo">{% else %}R{% endif %}</span><span><strong>{{ school_name }}</strong><small>{% if demo_mode %}Fictional demonstration{% else %}School workspace{% endif %}</small></span></div>
     <div class="nav-caption">WORKSPACE</div>
     <nav class="side-nav">
+      {% if portal_role %}{% include 'portals/navigation.html' %}{% else %}
       <a href="{% url 'core:dashboard' %}" class="{% if active_nav == 'dashboard' %}active{% endif %}" {% if active_nav == 'dashboard' %}aria-current="page"{% endif %}><svg class="icon"><use href="#i-grid"/></svg>Overview</a>
       {% if perms.people.view_student %}<a href="{% url 'people:student_list' %}" class="{% if active_nav == 'students' %}active{% endif %}" {% if active_nav == 'students' %}aria-current="page"{% endif %}><svg class="icon"><use href="#i-users"/></svg>Students</a>{% endif %}
       {% if perms.academics.view_academicyear %}<a href="{% url 'academics:overview' %}" class="{% if active_nav == 'academics' %}active{% endif %}"><svg class="icon"><use href="#i-book"/></svg>Academics</a>{% endif %}
@@ -19,6 +20,7 @@
       <a href="{% url 'core:roadmap' %}" class="{% if active_nav == 'roadmap' %}active{% endif %}"><svg class="icon"><use href="#i-layers"/></svg>All modules</a>
       {% if perms.core.change_schoolsettings %}<a href="{% url 'core:school_settings' %}" class="{% if active_nav == 'settings' %}active{% endif %}"><svg class="icon"><use href="#i-settings"/></svg>School settings</a>{% endif %}
       {% if perms.audit.view_auditevent %}<a href="{% url 'core:audit' %}" class="{% if active_nav == 'audit' %}active{% endif %}"><svg class="icon"><use href="#i-shield"/></svg>Audit trail</a>{% endif %}
+      {% endif %}
     </nav>
     <div class="sidebar-bottom"><div class="foundation-note"><span class="status-dot"></span> School operations<p>Thoughtfully built.<br>Room to grow.</p><a href="{% url 'core:roadmap' %}">Explore the roadmap <span aria-hidden="true">↗</span></a></div><span class="sidebar-foot">RumiWare · School, connected.</span></div>
   </aside>
@@ -26,7 +28,7 @@
   <div class="main-column">
     <header class="topbar">
       <div class="topbar-left"><button class="menu-toggle btn" aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false" data-toggle-sidebar>☰</button><span class="breadcrumb-label">Workspace <span>/</span> <strong>{% block breadcrumb %}Overview{% endblock %}</strong></span></div>
-      <div class="topbar-right"><span class="environment-tag">{% if demo_mode %}DEMO WORKSPACE{% else %}FOUNDATION{% endif %}</span><a class="user-menu" href="{% url 'core:profile' %}" aria-label="Your account"><span class="avatar">{{ request.user.display_name|slice:':1'|upper }}</span><span class="user-info"><strong>{{ request.user.display_name }}</strong><small>{{ role_label|default:'My account' }}</small></span></a><form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="icon-button" aria-label="Sign out" title="Sign out"><svg class="icon"><use href="#i-log-out"/></svg></button></form></div>
+      <div class="topbar-right"><a class="notification-bell" href="{% url 'portals:notifications' %}" aria-label="Notifications: {{ unread_notifications }} unread"><svg class="icon"><use href="#i-bell"/></svg><span>{{ unread_notifications }}</span></a><span class="environment-tag">{% if demo_mode %}DEMO WORKSPACE{% else %}FOUNDATION{% endif %}</span><a class="user-menu" href="{% url 'core:profile' %}" aria-label="Your account"><span class="avatar">{{ request.user.display_name|slice:':1'|upper }}</span><span class="user-info"><strong>{{ request.user.display_name }}</strong><small>{{ role_label|default:'My account' }}</small></span></a><form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="icon-button" aria-label="Sign out" title="Sign out"><svg class="icon"><use href="#i-log-out"/></svg></button></form></div>
     </header>
     <main id="main-content" class="workspace" tabindex="-1">
       {% if messages %}<div class="messages" aria-live="polite">{% for message in messages %}<div class="alert alert-{{ message.tags|default:'info' }}" role="status">{{ message }}</div>{% endfor %}</div>{% endif %}

@@ -508,8 +508,14 @@ def validate_mark(assessment, status, marks, remarks=""):
 
 @transaction.atomic
 def save_marks(actor, sheet_id, rows, *, expected_version, submit=False):
+    from academics.services import teacher_year_writable
+
     initial = MarkSheet.objects.select_related("assessment__exam_subject__cohort").get(pk=sheet_id)
     session = lock_session(initial.assessment.exam_subject.cohort.session_id)
+    if not capable(actor, "view_all_examinations") and not teacher_year_writable(
+        actor, session.academic_year
+    ):
+        raise PermissionDenied
     if (
         not capable(actor, "enter_marks")
         or not subjects_visible_to(actor, session)

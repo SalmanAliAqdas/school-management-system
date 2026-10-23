@@ -30,8 +30,7 @@ credential stores remain excluded; public test credentials are fictional fixture
   credentials, request bodies, reset tokens and personal metadata.
 - Authorized PNG/JPEG profile/logo uploads are bounded, decoded, metadata-stripped,
   resized and re-encoded to randomly named private PNGs. Image routes authenticate
-  and enforce record scope. No public media route exists. PDF document workflows
-  remain unimplemented beyond the original reusable validator.
+  and enforce record scope. No public media route exists. Report cards, attendance reports and finance documents use authenticated scoped downloads.
 - Demo initialization requires DEBUG **and** ALLOW_DEMO_DATA and a locally supplied
   password. Existing account passwords are preserved on repeat runs.
 
@@ -63,7 +62,7 @@ constraint, global active-placement uniqueness and a database history guard.
 CSV confirmation locks its batch, revalidates all rows and imports atomically.
 Admissions serialize number allocation and duplicate checks. Tests exercise
 simultaneous admissions and transfers. The app is single-school; multi-school tenancy needs a separate access
-and migration design. No attendance, mark entry, payments or payroll actions exist.
+and migration design. Attendance, marks and manual finance actions use the owning guarded services; payroll remains unimplemented.
 
 Application audit events cover academic/profile/link/admission/transition/import
 writes without storing row contents. Expired CSV personal rows need scheduled
@@ -142,3 +141,26 @@ masked in lists and visible only to configuration staff in edit forms. No card d
 CVV, PIN, bank passwords, real provider integrations or paid notifications are added.
 Database-owner compromise, operational cash verification, financial policy acceptance,
 retention and production-scale resilience remain outside prototype certification.
+
+
+## Phase 6 personal portal boundary
+
+Personal student and guardian centers intersect domain selectors with the selected
+role relationship, even for administrative multi-role accounts. Child UUIDs, year
+filters, assignment IDs, source notification categories and notice IDs are revalidated
+on each request. Guardian revocation blocks source inbox hydration and POST read-state
+updates as well as private centers and document routes. There is no relationship cache.
+
+Teacher rosters use exact year/section/subject assignments and employment overlap.
+Limited student pages project only assigned-subject published snapshots. Attendance
+and marks writes additionally reject historical year dates and inactive/unemployed
+teachers unless explicit existing domain oversight applies. No financial or family
+records are included in a teacher student detail. Independent approvals remain intact.
+
+Role switching, source read-state updates, contact preferences and password changes
+retain POST/CSRF. Session preferences are allowlisted; email, identity, enrollment and
+privilege fields are not self-service inputs. Email changes require school-office
+verification. Password changes use Django validation and session hash updates. The
+unified inbox is a read-side SQL union; page loads create no source notices or inbox
+copies. School-local timestamps, private/no-store middleware and scoped private-file
+endpoints remain in force. See [portal policy](PHASE6_PORTALS.md).

@@ -12,8 +12,8 @@ retained. Phase 2 adds academic administration, admissions, enrollment transitio
 guardian relationships, teacher/staff profiles, CSV imports and private images.
 Phase 3 adds enrollment-aware attendance, staff attendance/leave, internal absence
 notices, corrections and attendance reporting. Phase 4 implements examinations,
-weighted grading, review/publication, report cards and result portals. Finance and
-later campus modules remain planned.
+weighted grading, review/publication, report cards and result portals. Phase 5 implements finance and Phase 6 composes student, guardian and teacher portals.
+Later campus modules remain planned.
 
 ## App boundaries (planned before initial models)
 
@@ -27,7 +27,8 @@ later campus modules remain planned.
 | admissions | Applications, admission workflow and document review | Future |
 | attendance | Dated registers, rules/calendar, corrections, leave, absence notices and scoped reports | Implemented |
 | examinations | Assessment structures, Decimal marks, moderation, publication snapshots, report cards and analytics | Implemented |
-| finance | Decimal invoices, fees, receipts, ledgers and reconciliation | Future |
+| finance | Decimal invoices, fees, receipts, ledgers and reconciliation | Implemented |
+| portals | Personal and family read composition, teacher workspace, inbox and account preferences | Implemented; no business models |
 | learning | Homework, assignments and submissions | Future |
 | scheduling | Timetables, rooms and calendar events | Future |
 | communications | Announcements and notification delivery | Future |
@@ -79,11 +80,12 @@ monitoring, database backups and a separately reviewed authorization model.
 4. **Examinations (implemented):** configurable assessment/grade structures, conflict-checked
    date sheets, assigned-teacher marks, independent reviews, controlled publication,
    preserved report-card versions, personal portals, analytics and recommendations.
-5. **Fees and finance (future):** immutable receipt references, decimal ledger
+5. **Fees and finance (implemented):** immutable receipt references, decimal ledger
    workflows, approvals, reconciliation and notification delivery.
-6. **Extended administration (future):** HR/payroll, library, transport, inventory and
-   certificates with module-specific permissions and audit events.
-7?10. **Further modules and commercial validation (future):** privacy and security review, retention policy,
+6. **Personal portals (implemented):** integrated student, guardian and teacher experiences,
+   current relationship/assignment checks, shared notification reads and safe self-service.
+7. **Teaching and communication (future):** timetable, homework, events and messaging.
+8–10. **Further modules and commercial validation (future):** privacy and security review, retention policy,
    accessibility, PostgreSQL performance tests, restore drills, monitoring,
    incident procedures and deployment approval.
 
@@ -126,7 +128,7 @@ existing enrollment history remain protected. Recommendations feed the existing
 school enrollment screen without automatically promoting students.
 
 The current module boundaries and operating policy are in
-[EXAMINATION_POLICY.md](EXAMINATION_POLICY.md). Phase 5 finance has not begun.
+[EXAMINATION_POLICY.md](EXAMINATION_POLICY.md). The finance boundary follows below.
 
 ## Phase 5 finance
 
@@ -140,3 +142,14 @@ postings; `reconciliation` owns expenses and closing; `reporting`, `selectors`,
 screens use local CSS/JS, without a new frontend build or authentication subsystem.
 One finance-settings row serializes money writes; PostgreSQL guards enforce permanent
 history and balanced commit boundaries. See [FINANCE_POLICY.md](FINANCE_POLICY.md).
+
+
+## Phase 6 portal composition
+
+The `portals` Python package owns presentation scopes, bounded cross-module read
+composition, a paginated source-notification union and account preferences. It has
+no models or migrations. Domain services retain all calculations, writes, approvals
+and downloads. Personal portal scopes narrow the existing multi-role selectors;
+switching presentation never grants capabilities. Teacher writes additionally require
+current year and employment dates at the service boundary. No cross-user cache or
+copy of historical notices is introduced. See [portal architecture and UX](PHASE6_PORTALS.md).

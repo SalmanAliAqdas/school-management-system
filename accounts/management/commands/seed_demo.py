@@ -101,6 +101,7 @@ class Command(BaseCommand):
                 "user": accounts["demo.teacher"],
                 "first_name": "Avery",
                 "last_name": "Reed",
+                "joined_on": date(2025, 8, 1),
             },
         )
         for section in sections[:2]:
@@ -156,6 +157,9 @@ class Command(BaseCommand):
         from finance.demo import seed_finance_demo
 
         seed_finance_demo(accounts, year, students, sections)
+        from portals.demo import seed_portal_demo
+
+        seed_portal_demo(accounts, year, students, sections)
         record_event("demo.initialized", target=school.pk)
         self.stdout.write(
             self.style.SUCCESS("Fictional demo initialized; existing passwords preserved.")

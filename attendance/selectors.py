@@ -1,6 +1,7 @@
 from django.db.models import Exists, OuterRef, Q
 
 from academics.models import Section, TeachingAssignment
+from academics.services import teacher_year_writable
 from people.models import Enrollment, Staff, Teacher
 from people.selectors import enrollments_visible_to
 
@@ -48,6 +49,8 @@ def sections_markable_by(user, year):
     ):
         return sections
     if not user.has_perm("accounts.access_teacher_dashboard"):
+        return sections.none()
+    if year is None or not teacher_year_writable(user, year):
         return sections.none()
     return sections.filter(
         teaching_assignments__teacher__user=user,

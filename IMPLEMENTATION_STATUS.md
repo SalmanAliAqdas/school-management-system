@@ -1,9 +1,35 @@
 # Implementation status
 
+Phase 6 student, guardian and teacher portals are implemented over the retained
+Django/PostgreSQL modules. No schema migration or production deployment is introduced.
+The complete PostgreSQL regression suite passes: **383 tests, zero failures/errors**,
+including 54 portal tests and all 329 existing Phase 1-5 tests.
+
+## Phase 6 capabilities
+
+- Personalized student/family summaries, current child switching and read-only profiles.
+- Policy-based attendance calendars, history, trends and authorized PDF links.
+- Published result/report versions, progress charts and existing protected report PDFs.
+- Separate fee balances, issued invoice allocations, receipts and account statements.
+- Existing-data academic calendars and categorized, paginated source notification inbox.
+- Assigned-class/subject teacher workspace, rosters, limited student views and guarded
+  register/marks workflows; personal staff attendance and leave.
+- Safe role/display preferences, contact-phone edits and Django password change.
+- Service-level protection against permanent teacher writes from historical assignments.
+- Desktop and 390px/320px Chrome journeys, keyboard navigation and JavaScript checks passed
+  in an owned disposable PostgreSQL database.
+- Original database preservation: all 2,651 rows across 99 tables match their fingerprints.
+  Existing accounts, passwords, privileges, snapshots, ledgers and audit records are intact.
+
+See [portal policy and UX](docs/PHASE6_PORTALS.md), [navigation](docs/NAVIGATION.md),
+[implementation plan](docs/PHASE6_PLAN.md) and [verification](docs/VERIFICATION.md).
+Phase 7 remains unimplemented.
+
+## Phase 5 implementation record
+
 Phase 5 fees, billing, manual payments and financial management are implemented on
 the existing Django/PostgreSQL architecture. Phases 1-4, the original administrator
-account and historical school records are retained. No production deployment or
-Phase 6 implementation has been performed.
+account and historical school records are retained. No production deployment was performed in Phase 5.
 
 ## Completed Phase 5 capabilities
 
@@ -108,5 +134,5 @@ payments cannot use the reversal workflow. Advanced replacement chains, multilin
 PDF typography, physical printing, production load, retention, backup/restore and
 real-school acceptance require further validation. Detailed policies and other
 constraints are explicit in FINANCE_POLICY.md. No real banking, payment gateway,
-paid messaging, tax certification, payroll, production deployment or Phase 6 work
-is included. The foundation is ready for Phase 6 planning after review.
+paid messaging, tax certification, payroll or production deployment was included
+in Phase 5. Phase 6 builds on this retained foundation as described above.

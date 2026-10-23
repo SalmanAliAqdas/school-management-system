@@ -1,0 +1,3 @@
+{% extends 'portals/base.html' %}
+{% block title %}Academic calendar{% endblock %}
+{% block portal_content %}<div class="page-heading"><div><span class="eyebrow">ACADEMIC CALENDAR</span><h1>Your school timeline.</h1><p>Configured terms, holidays, examination slots and authorized invoice due dates.</p></div></div>{% include 'portals/year_filter.html' %}<section class="panel">{% include 'portals/calendar_rows.html' with items=calendar %}</section>{% endblock %}

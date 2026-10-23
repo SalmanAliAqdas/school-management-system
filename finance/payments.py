@@ -98,6 +98,10 @@ def invoice_totals(invoice, *, through=None):
         adjustments = adjustments.filter(occurred_on__lte=through)
     adjustment = adjustments.aggregate(total=Sum("amount"))["total"] or ZERO
     applied = active_allocations(invoice=invoice, through=through)
+    return _invoice_totals(invoice, adjustment, applied, through=through)
+
+
+def _invoice_totals(invoice, adjustment, applied, *, through=None, reference_day=None):
     total = invoice.total + adjustment
     outstanding = total - applied
     voided = invoice.state == "voided"
@@ -117,7 +121,7 @@ def invoice_totals(invoice, *, through=None):
             "paid"
             if outstanding == 0
             else "overdue"
-            if invoice.due_on < (through or school_day())
+            if invoice.due_on < (through or reference_day or school_day())
             else "partially_paid"
             if applied > 0
             else "issued"
@@ -129,6 +133,42 @@ def invoice_totals(invoice, *, through=None):
         "allocated": applied,
         "balance": outstanding,
         "status": state,
+    }
+
+
+def invoice_total_map(invoices):
+    """Batch current totals using the same allocations/releases and status rules."""
+    from .models import InvoiceAdjustment
+
+    invoices = list(invoices)
+    ids = [invoice.pk for invoice in invoices]
+    adjustments = dict(
+        InvoiceAdjustment.objects.filter(invoice_id__in=ids)
+        .values("invoice_id")
+        .annotate(total=Sum("amount"))
+        .values_list("invoice_id", "total")
+    )
+    allocations = dict(
+        Allocation.objects.filter(invoice_id__in=ids)
+        .values("invoice_id")
+        .annotate(total=Sum("amount"))
+        .values_list("invoice_id", "total")
+    )
+    releases = dict(
+        AllocationRelease.objects.filter(allocation__invoice_id__in=ids)
+        .values("allocation__invoice_id")
+        .annotate(total=Sum("amount"))
+        .values_list("allocation__invoice_id", "total")
+    )
+    today = school_day()
+    return {
+        invoice.pk: _invoice_totals(
+            invoice,
+            adjustments.get(invoice.pk, ZERO),
+            allocations.get(invoice.pk, ZERO) - releases.get(invoice.pk, ZERO),
+            reference_day=today,
+        )
+        for invoice in invoices
     }
 
 

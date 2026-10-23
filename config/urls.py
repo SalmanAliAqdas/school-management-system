@@ -17,5 +17,6 @@ urlpatterns = [
     path("attendance/", include("attendance.urls")),
     path("examinations/", include("examinations.urls")),
     path("finance/", include("finance.urls")),
+    path("portals/", include("portals.urls")),
     path("", include("core.urls")),
 ]

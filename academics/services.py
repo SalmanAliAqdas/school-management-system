@@ -16,6 +16,26 @@ from .models import (
 )
 
 
+def teacher_year_writable(user, year, *, day=None):
+    """An old assignment is evidence for reads, never indefinite permission to edit."""
+    from django.db.models import Q
+
+    from attendance.calendar import school_now
+    from people.models import Teacher
+
+    today = school_now().date()
+    if year.status != "open" or not year.starts_on <= today <= year.ends_on:
+        return False
+    teachers = Teacher.objects.filter(user=user, is_active=True, joined_on__lte=today).filter(
+        Q(left_on__isnull=True) | Q(left_on__gte=today)
+    )
+    if day:
+        teachers = teachers.filter(joined_on__lte=day).filter(
+            Q(left_on__isnull=True) | Q(left_on__gte=day)
+        )
+    return teachers.exists()
+
+
 def protect_academic_edit(instance):
     """Prevent renaming/re-dating references that already describe academic history."""
     if not instance.pk:

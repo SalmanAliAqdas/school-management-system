@@ -135,3 +135,24 @@ land on their finance workspace after login. Public services recheck action gran
 selectors recheck student ownership and guardian links. Requesters cannot review
 their own financial decisions. Download and private attachment checks apply to each
 object; report and journal grants remain separate from collection permissions.
+
+
+## Phase 6 portal permissions
+
+| Workspace | Read scope | Mutations |
+| --- | --- | --- |
+| Student | Attached student only, intersected with domain capabilities/publication/finance policy | Safe own contact/display preferences and Django password change |
+| Guardian | Currently linked children only; selected child and every deep link revalidated | Own contact/display preferences, password and authorized source read-state |
+| Teacher | Own year/section/subject assignments; dated rosters and assigned-subject published projections | Existing register/marks/correction/leave services only |
+| Multi-role | Each personal portal narrows scope to its selected relationship; shared domain services retain their legitimate capability union | POST switch checks actual dashboard capability; preference never grants access |
+
+No twelfth managed role is added. No new business-model permissions or role-sync
+changes are required. Existing domain download and image endpoints repeat object
+authorization. Teacher history does not grant permanent edits: attendance and marks
+services require an open year containing today and current active employment unless
+explicit global domain oversight applies. Attendance also checks employment on its
+recorded day. Personal leave approvals retain the independent no-self-approval rule.
+
+Notification reads use current source selectors; POST updates repeat that scope.
+Phone/display forms cannot change email, official identity, enrollment or privileges.
+Read-only portal centers reject POST. See [portal routes and policy](PHASE6_PORTALS.md).

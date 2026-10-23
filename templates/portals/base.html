@@ -1,0 +1,8 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block extra_head %}<script src="{% static 'vendor/chart.umd.min.js' %}" defer></script><script src="{% static 'js/portals.js' %}" defer></script>{% endblock %}
+{% block breadcrumb %}{{ role_label|default:'My account' }}{% endblock %}
+{% block content %}<div class="portal-content">
+{% if selected_student %}<div class="child-context"><span class="avatar soft-avatar">{{ selected_student.first_name|slice:':1' }}</span><div><strong>{{ selected_student }}</strong><span>{{ selected_student.admission_number }}</span></div>{% if portal_role == 'parent' %}<form method="get" action="{% url 'portals:select_child' %}"><input type="hidden" name="section" value="{{ active_nav }}"><label for="child-switch">View child</label><select name="child" id="child-switch" class="form-select">{% for child in children %}<option value="{{ child.pk }}" {% if child.pk == selected_student.pk %}selected{% endif %}>{{ child }}</option>{% endfor %}</select><button class="btn btn-outline-secondary">Open</button></form>{% endif %}</div>{% endif %}
+{% block portal_content %}{% endblock %}
+</div>{% endblock %}

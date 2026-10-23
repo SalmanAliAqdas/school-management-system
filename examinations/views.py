@@ -14,6 +14,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
+from academics.services import teacher_year_writable
 from attendance.exports import safe_csv
 from audit.services import record_event
 from core.form_mixins import StyledFormMixin
@@ -482,6 +483,10 @@ def marks_entry(request, sheet_id):
         capable(request.user, "enter_marks")
         and session.state == "open"
         and sheet.state in ("draft", "returned")
+        and (
+            capable(request.user, "view_all_examinations")
+            or teacher_year_writable(request.user, session.academic_year)
+        )
     )
     if request.method == "POST":
         if not editable:

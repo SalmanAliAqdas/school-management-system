@@ -24,6 +24,54 @@ def current_results(user, *, session=None):
     return rows.filter(publication__session=session) if session else rows
 
 
+def published_subject_history(user, assignment, student):
+    """Project approved snapshots to one assigned subject, without full report data."""
+    from .selectors import authorized_subjects
+
+    if assignment.teacher.user_id != user.pk:
+        return []
+    allowed = authorized_subjects(user).filter(
+        cohort__session__academic_year=assignment.academic_year,
+        cohort__section=assignment.section,
+        subject=assignment.subject,
+    )
+    latest = (
+        ResultPublication.objects.filter(session_id=OuterRef("publication__session_id"))
+        .order_by("-version")
+        .values("pk")[:1]
+    )
+    rows = (
+        PublishedResult.objects.filter(
+            publication_id=Subquery(latest),
+            candidate__student=student,
+            candidate__cohort__subjects__in=allowed,
+            candidate__withheld=False,
+            publication__session__state__in=["published", "archived"],
+            candidate__session__ends_on__gte=assignment.teacher.joined_on,
+        )
+        .exclude(data__outcome="withheld")
+        .select_related("publication__session")
+    )
+    if assignment.teacher.left_on:
+        rows = rows.filter(candidate__session__starts_on__lte=assignment.teacher.left_on)
+    history = []
+    for row in rows.order_by("publication__session__ends_on", "pk").distinct()[:100]:
+        subjects = [
+            subject
+            for subject in row.data.get("subjects", [])
+            if subject["subject_id"] == assignment.subject_id
+        ]
+        if subjects:
+            history.append(
+                {
+                    "session": row.publication.session.name,
+                    "version": row.publication.version,
+                    "subjects": subjects,
+                }
+            )
+    return history
+
+
 def analytics(user, session):
     """Subject teachers receive only assigned-subject metrics, never full report data."""
     if session not in sessions_visible_to(user):

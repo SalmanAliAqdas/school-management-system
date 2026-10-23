@@ -53,6 +53,10 @@ def health(request):
 
 @login_required
 def dashboard_redirect(request):
+    selected = request.session.get("selected_portal")
+    for key, _label, permission in DASHBOARDS:
+        if key == selected and request.user.has_perm(permission):
+            return redirect("core:role_dashboard", role=key)
     for key, _label, permission in DASHBOARDS:
         if request.user.has_perm(permission):
             return redirect("core:role_dashboard", role=key)
@@ -103,23 +107,28 @@ def role_dashboard(request, role):
             .order_by("section__school_class__sort_order")
         )
     title, subtitle = DASHBOARD_COPY[role]
+    context = {
+        "role": role,
+        "role_label": definition[1],
+        "headline": title,
+        "subtitle": subtitle,
+        "current_year": current_year,
+        "student_count": students.count(),
+        "secondary_count": count,
+        "secondary_label": count_label,
+        "recent_students": students[:5],
+        "chart_data": chart_data,
+        "active_nav": "dashboard",
+        "module_previews": MODULES[:4],
+    }
+    if role != "admin":
+        from portals.views import overview
+
+        return overview(request, role, legacy=context)
     return render(
         request,
         "core/dashboard.html",
-        {
-            "role": role,
-            "role_label": definition[1],
-            "headline": title,
-            "subtitle": subtitle,
-            "current_year": current_year,
-            "student_count": students.count(),
-            "secondary_count": count,
-            "secondary_label": count_label,
-            "recent_students": students[:5],
-            "chart_data": chart_data,
-            "active_nav": "dashboard",
-            "module_previews": MODULES[:4],
-        },
+        context,
     )
 
 

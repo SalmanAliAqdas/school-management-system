@@ -8,7 +8,7 @@ are implemented on the existing foundation. Local demonstrations use fictional d
 
 - Custom user model from the first migration; eleven permission groups and multiple roles.
 - Sign-in, POST sign-out, database-backed login throttling and email password resets.
-- Administration, teacher, student and guardian dashboard shells.
+- Administration dashboard and integrated student, guardian and teacher portals.
 - Permission-scoped student directory, profile reads and enrollment history.
 - Explicit guardian links and teacher section/year/subject assignments.
 - School identity settings, account information and a read-only audit trail.
@@ -30,7 +30,12 @@ Fees and finance now include dated fee structures, concessions, safe billing pre
 independent approvals, manual collections, immutable receipts, balanced journals,
 refunds/reversals, expenses, reconciliation, reports and basic family fee access.
 See the [finance operating policy](docs/FINANCE_POLICY.md) and `/finance/`.
-Later phases remain planned; no real banking or payment gateway is connected.
+Phase 6 adds personalized student, guardian and teacher portals over these modules,
+with child switching, assigned-class workspaces, unified notifications and safe account
+settings. Start at `/portals/student/`, `/portals/parent/` or `/portals/teacher/`.
+See the [portal experience and policy](docs/PHASE6_PORTALS.md) and
+[navigation guide](docs/NAVIGATION.md). Later phases remain planned; no real banking
+or payment gateway is connected.
 
 ## Requirements
 
@@ -114,8 +119,9 @@ the 12-character password policy. No default password is included in source.
 .\.venv\Scripts\python.exe manage.py seed_demo
 ```
 
-The command creates eleven fictional accounts, six students, one guardian link,
-three sections, academic dates, teacher assignments and school settings. It is
+The command creates eleven fictional accounts, six students, a guardian linked to two children,
+three sections, academic dates, teacher assignments, historical enrollment examples
+and school settings. It is
 transactional and repeatable, preserving existing account passwords and records.
 Demo accounts are ordinary users; none receives Django staff or superuser flags.
 
@@ -184,7 +190,7 @@ Phase 1 commit boundaries and results are in [the repository review](docs/REPOSI
 `DJANGO_SETTINGS_MODULE` takes precedence. WSGI/ASGI default to production settings.
 `DATABASE_URL` is mandatory. `TIME_ZONE` defaults to `Asia/Karachi`; school settings
 store a separate timezone/currency boundary for future workflows. Attendance and examination workflows
-use the configured school timezone; other UI dates use the environment timezone. Bootstrap 5.3.8 and Chart.js 4.5.1 are vendored.
+and portal workflows use the configured school timezone; other UI dates use the environment timezone. Bootstrap 5.3.8 and Chart.js 4.5.1 are vendored.
 
 Development password reset emails print to the server console. Production uses
 SMTP environment settings from `.env.example`; validate actual delivery before
@@ -222,6 +228,8 @@ core/            school settings, dashboards, design system, readiness
 audit/           security and access events
 attendance/      student/staff attendance, leave, calendars, notices and reports
 examinations/    assessment setup, marks, grading, publication and report cards
+portals/         role-specific read composition, unified inbox and account preferences
+finance/         fees, manual collections, immutable documents and accounting
 config/          Django configuration and server entry points
 templates/       shared layouts, auth pages and role workspaces
 static/          local CSS, JavaScript, brand mark and vendor assets

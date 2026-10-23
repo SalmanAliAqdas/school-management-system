@@ -7,6 +7,7 @@ from django.db.models import F
 from django.utils import timezone
 
 from academics.models import AcademicYear
+from academics.services import teacher_year_writable
 from audit.services import record_event
 from core.operations import require_capability
 from people.models import GuardianStudent
@@ -89,6 +90,10 @@ def save_student_register(
     year = lock_year(year_id)
     section = sections_markable_by(actor, year).filter(pk=section_id).first()
     if not section:
+        raise PermissionDenied
+    if not actor.has_perm("attendance.view_all_attendance") and not teacher_year_writable(
+        actor, year, day=day
+    ):
         raise PermissionDenied
     calendar = SchoolCalendar(year)
     if calendar.reason(day):

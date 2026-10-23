@@ -122,6 +122,39 @@ def student_balances(student, *, through=None):
     }
 
 
+def student_balance_map(student_ids, *, through=None):
+    """The same posted control balances, grouped once for a bounded portal page.
+
+    Callers must pass student IDs from the finance authorization selector.
+    Deposits and advances retain separate controls and are never added to tuition owed.
+    """
+    student_ids = list(student_ids)
+    result = {
+        pk: {key: ZERO for key in ("owed", "advance", "deposit", "deposit_due")}
+        for pk in student_ids
+    }
+    controls = {
+        "receivable": "owed",
+        "advance": "advance",
+        "deposit": "deposit",
+        "deposit_due": "deposit_due",
+    }
+    rows = JournalLine.objects.filter(
+        student_id__in=student_ids, journal__state="posted", account__control__in=controls
+    )
+    if through:
+        rows = rows.filter(journal__occurred_on__lte=through)
+    for row in rows.values("student_id", "account__control").annotate(
+        debit=Sum("debit"), credit=Sum("credit")
+    ):
+        control = row["account__control"]
+        value = row["debit"] - row["credit"]
+        result[row["student_id"]][controls[control]] = (
+            -value if control in ("advance", "deposit") else value
+        )
+    return result
+
+
 def trial_balance(*, through=None, start=None):
     rows = JournalLine.objects.filter(journal__state="posted")
     if through:
