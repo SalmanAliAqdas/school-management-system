@@ -1,5 +1,13 @@
 # RumiWare SchoolOS architecture
 
+## Phase 8 bounded contexts
+
+`hr` references `people`; `payroll` owns salary snapshots but posts only through `finance.ledger`;
+`library` references existing borrowers; `transport` references students/staff and optional fee
+assignments; `inventory` owns movement/asset history and references approved expenses; and
+`certificates` snapshots approved source data. All remain in the existing Django/PostgreSQL
+transaction boundary.
+
 ## Scope and decisions
 
 SchoolOS is a single-school modular Django monolith. Django templates, Bootstrap 5,

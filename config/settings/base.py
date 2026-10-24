@@ -41,6 +41,12 @@ INSTALLED_APPS = [
     "scheduling",
     "learning",
     "communications",
+    "hr",
+    "payroll",
+    "library",
+    "transport",
+    "inventory",
+    "certificates",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

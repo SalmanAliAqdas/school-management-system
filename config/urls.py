@@ -20,6 +20,12 @@ urlpatterns = [
     path("scheduling/", include("scheduling.urls")),
     path("learning/", include("learning.urls")),
     path("communications/", include("communications.urls")),
+    path("hr/", include("hr.urls")),
+    path("payroll/", include("payroll.urls")),
+    path("library/", include("library.urls")),
+    path("transport/", include("transport.urls")),
+    path("inventory/", include("inventory.urls")),
+    path("certificates/", include("certificates.urls")),
     path("portals/", include("portals.urls")),
     path("", include("core.urls")),
 ]

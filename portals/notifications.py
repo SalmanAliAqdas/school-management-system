@@ -18,6 +18,12 @@ SOURCES = {
     "attendance": attendance_notices,
     "examinations": examination_notices,
     "finance": finance_notices,
+    **{
+        name: (
+            lambda user, category=name: communication_notices(user).filter(category_name=category)
+        )
+        for name in ("hr", "payroll", "library", "transport", "inventory", "certificates")
+    },
 }
 
 
@@ -25,13 +31,34 @@ def sources(user):
     result = {
         name: selector(user)
         for name, selector in SOURCES.items()
-        if name not in ("communications", "learning", "scheduling")
+        if name
+        not in (
+            "communications",
+            "learning",
+            "scheduling",
+            "hr",
+            "payroll",
+            "library",
+            "transport",
+            "inventory",
+            "certificates",
+        )
     }
     new_notices = communication_notices(user)
     result.update(
         {
             name: new_notices.filter(category_name=name)
-            for name in ("communications", "learning", "scheduling")
+            for name in (
+                "communications",
+                "learning",
+                "scheduling",
+                "hr",
+                "payroll",
+                "library",
+                "transport",
+                "inventory",
+                "certificates",
+            )
         }
     )
     return result
@@ -52,6 +79,12 @@ def inbox(user, *, category="", unread=False, child=None):
                 "communications": "student",
                 "learning": "student",
                 "scheduling": "student",
+                "hr": "student",
+                "payroll": "student",
+                "library": "student",
+                "transport": "student",
+                "inventory": "student",
+                "certificates": "student",
             }[name]
             rows = rows.filter(**{field: child})
         parts.append(
@@ -94,7 +127,17 @@ def hydrate(user, page):
                 if child
                 else (reverse("examinations:session", args=[row.event.session_id]))
             )
-        elif category in ("communications", "learning", "scheduling"):
+        elif category in (
+            "communications",
+            "learning",
+            "scheduling",
+            "hr",
+            "payroll",
+            "library",
+            "transport",
+            "inventory",
+            "certificates",
+        ):
             child, title, url = row.student, row.title, row.url
         else:
             child = row.student

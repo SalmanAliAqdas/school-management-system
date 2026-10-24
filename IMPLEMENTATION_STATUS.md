@@ -1,5 +1,11 @@
 # Implementation status
 
+Phase 8 is implemented through six additive applications: HR, payroll, library, transport,
+inventory/assets, and certificates/documents. They reuse existing identities, attendance/leave,
+the Phase 5 ledger, portal authorization, protected PDF patterns, audit events, and notifications.
+PostgreSQL and concurrency coverage is in `tests/test_phase8*.py`; release evidence is recorded in
+`docs/VERIFICATION.md`.
+
 Phase 7 timetable, homework, calendar, announcement and secure communication workflows
 are implemented over the retained Django/PostgreSQL modules and Phase 6 portals. The
 complete PostgreSQL regression suite passes: **461 tests, zero failures/errors**,

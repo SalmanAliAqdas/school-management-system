@@ -1,5 +1,12 @@
 # Permission matrix
 
+## Phase 8 operations
+
+HR Manager handles confidential HR/payroll preparation; Principal/System Administrator provide
+independent payroll, certificate, and disposal approval; Accountant records payroll payment;
+Librarian, Transport Manager, and Inventory Manager operate their domains. Employees see only their
+own released salary/HR/assets; students and guardians see only own or linked-child records.
+
 Multiple groups are supported. These are initial capabilities, not completed
 operational modules. `sync_roles` deterministically updates the eleven managed
 groups; use separate custom groups for additional grants. Model permissions exist

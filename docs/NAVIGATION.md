@@ -1,5 +1,11 @@
 # SchoolOS navigation
 
+## Phase 8 services
+
+Authorized users receive HR (`/hr/`), payroll (`/payroll/`), library (`/library/`), transport
+(`/transport/`), inventory/assets (`/inventory/`), and certificates (`/certificates/`) links in the
+shared navigation. Actions render only with their mutation permission.
+
 Start at `/`; sign-in uses `/accounts/login/` and sign-out is a POST form. The default
 dashboard order is administration, teaching, student and guardian. A verified POST
 workspace choice is remembered in the session and revalidated after role changes.

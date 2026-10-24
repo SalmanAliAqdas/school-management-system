@@ -1,5 +1,12 @@
 # Security foundation and operational limits
 
+## Phase 8 sensitive data
+
+HR files, performance data, salary, incidents, transport assignments, and full official documents
+are private. Downloads authorize the object before returning bytes/PDF. Public verification uses a
+random token and minimal response. Payroll approval and asset disposal separate preparation/request
+from approval; finance and stock mutations use row locks and idempotent keys.
+
 The application is a fictional-data prototype. Foundation controls are not a
 certification of commercial readiness.
 

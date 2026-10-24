@@ -28,7 +28,7 @@ def main():
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["snapshot", "prepare-upgrade", "verify"])
-    parser.add_argument("--phase", default="phase6", choices=["phase6", "phase7"])
+    parser.add_argument("--phase", default="phase6", choices=["phase6", "phase7", "phase8"])
     parser.add_argument("--allow-schema-additions", action="store_true")
     args = parser.parse_args()
     path = ROOT / ".local" / f"{args.phase}-preservation.json"

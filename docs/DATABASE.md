@@ -1,5 +1,12 @@
 # Database design
 
+## Phase 8 data model
+
+Phase 8 migrations are additive. Effective dates and action/history tables retain HR, salary,
+circulation, route, stock, asset, and issued-document history. Unique/check constraints protect
+identities, periods/totals, accessions, active loans, route data, stock references, certificate
+subjects/tokens, nonnegative values, and valid date ranges.
+
 ## Foundation relationships
 
 ```mermaid

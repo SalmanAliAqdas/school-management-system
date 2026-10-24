@@ -50,6 +50,13 @@ publication, access revocation, file protection, operating limits and all routes
 Apply additive migrations and run `manage.py sync_roles` when upgrading. No production
 deployment or Phase 8 modules are included.
 
+## School operations
+
+Phase 8 adds integrated HR, independently approved payroll with double-entry finance posting,
+library circulation, route-safe transport assignment, movement-based inventory and durable assets,
+and privacy-preserving official document issuance. Employees, students, and linked guardians use
+object-scoped views. See [Phase 8 school operations](docs/PHASE8_OPERATIONS.md).
+
 ## Requirements
 
 - Python 3.12–3.14; local verification used Python 3.13.

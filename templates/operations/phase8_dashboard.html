@@ -1,0 +1,15 @@
+{% extends "operations/base.html" %}
+{% block title %}{{ title }} · SchoolOS{% endblock %}
+{% block operations %}
+<div class="page-heading"><div><span class="eyebrow">PHASE 8 OPERATIONS</span><h1>{{ title }}</h1><p>{{ description }}</p></div></div>
+<nav class="op-actions" aria-label="Module actions">
+{% if perms.hr.manage_hr %}<a href="{% url 'hr:employee_new' %}">New employee profile</a>{% endif %}
+{% if perms.payroll.manage_payroll %}<a href="{% url 'payroll:generate' %}">Generate payroll</a>{% endif %}
+{% if perms.library.manage_library %}<a href="{% url 'library:issue' %}">Issue library copy</a>{% endif %}
+{% if perms.transport.manage_transport %}<a href="{% url 'transport:assignment' %}">Assign transport</a>{% endif %}
+{% if perms.inventory.manage_inventory %}<a href="{% url 'inventory:movement' %}">Record stock movement</a>{% endif %}
+{% if perms.accounts.access_student_dashboard or perms.accounts.access_parent_dashboard or perms.accounts.access_teacher_dashboard or perms.certificates.manage_certificates %}<a href="{% url 'certificates:request' %}">Request document</a>{% endif %}
+</nav>
+<div class="metric-grid">{% for label, value in metrics %}<article class="metric-card"><span>{{ label }}</span><strong>{{ value }}</strong></article>{% endfor %}</div>
+{% for section in sections %}<section class="panel"><div class="panel-heading"><div><h2>{{ section.title }}</h2><p>{{ section.help }}</p></div></div><div class="table-responsive"><table class="table school-table"><thead><tr>{% for heading in section.headings %}<th>{{ heading }}</th>{% endfor %}</tr></thead><tbody>{% for row in section.rows %}<tr>{% for value in row %}<td>{{ value }}</td>{% endfor %}</tr>{% empty %}<tr><td colspan="8">No records are available in this scope.</td></tr>{% endfor %}</tbody></table></div></section>{% endfor %}
+{% endblock %}

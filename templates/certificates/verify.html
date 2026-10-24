@@ -1,0 +1,3 @@
+{% extends "layout.html" %}
+{% block title %}Document verification · SchoolOS{% endblock %}
+{% block content %}<main class="container py-5"><section class="panel padded-form"><span class="eyebrow">DOCUMENT VERIFICATION</span><h1>{{ document.request.document_type.name }}</h1><p>This page confirms only the minimum issuance facts; it does not expose the certificate or private school record.</p><dl><dt>Issuing school</dt><dd>{{ school.name }}</dd><dt>Issue date</dt><dd>{{ document.issued_at|date:"DATE_FORMAT" }}</dd><dt>Status</dt><dd>{{ document.get_state_display }}</dd><dt>Reference</dt><dd>{{ document.number }}</dd></dl></section></main>{% endblock %}

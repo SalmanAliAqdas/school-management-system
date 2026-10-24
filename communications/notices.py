@@ -179,6 +179,16 @@ def visible(user):
             | Q(assignment__in=assignments(user))
             | Q(timetable__in=tables(user))
             | Q(conversation__in=conversations(user))
+            | Q(
+                category_name__in=[
+                    "hr",
+                    "payroll",
+                    "library",
+                    "transport",
+                    "inventory",
+                    "certificates",
+                ]
+            )
         )
         .select_related("student")
     )

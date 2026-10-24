@@ -1,5 +1,21 @@
 # Foundation verification
 
+## Phase 8 verification procedure
+
+Run the complete PostgreSQL suite and `scripts/phase8_browser.py` against its owned disposable
+database. Also run system/deploy checks, migration drift/pending checks, Ruff, static collection,
+repository scanning, preservation checks, and domain integrity queries. Never point destructive
+browser QA at the preserved development database.
+
+Release verification on 24 October 2026 passed: 474 PostgreSQL tests in 724.538 seconds;
+13 focused Phase 8 tests; Django system and production checks; migration drift and pending
+migration checks; Ruff lint/format; dependency consistency; static collection; repository secret
+scan; and installed-Chrome desktop/mobile journeys. The browser script exercised employee HR and
+released payslip access, librarian circulation, student library/certificate access, guardian child
+transport scope, inventory stock/assets, protected PDFs, minimal public verification, and denied
+unrelated salary access using a uniquely named disposable database. Preservation verification
+matched 2,810 baseline rows across all 124 original tables after the additive migration.
+
 Executed locally on 22 October 2026 with Python 3.13.5, Django 5.2.18,
 PostgreSQL 17.11 and psycopg 3.3.6. The database was an isolated, password-protected
 cluster bound to `127.0.0.1:55432`; SQLite was not used.

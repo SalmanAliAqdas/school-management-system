@@ -28,6 +28,7 @@ ROLE_PERMISSIONS = {
     "HR Manager": [ADMIN_DASHBOARD],
     "Librarian": [ADMIN_DASHBOARD],
     "Transport Manager": [ADMIN_DASHBOARD],
+    "Inventory Manager": [ADMIN_DASHBOARD],
 }
 
 # Administrative capabilities are explicit; dashboard access alone never grants writes.
@@ -181,6 +182,54 @@ for role in ("System Administrator", "School Administrator", "Principal"):
     ]
 for role in ("System Administrator", "Principal"):
     ROLE_PERMISSIONS[role] += ["communications.moderate_messages"]
+
+
+PHASE8_ADMIN = [
+    "hr.manage_hr",
+    "hr.view_all_hr",
+    "payroll.manage_payroll",
+    "payroll.view_all_payroll",
+    "library.manage_library",
+    "library.view_all_library",
+    "transport.manage_transport",
+    "transport.view_all_transport",
+    "inventory.manage_inventory",
+    "inventory.view_all_inventory",
+    "certificates.manage_certificates",
+    "certificates.view_all_certificates",
+]
+for role in ("System Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += [
+        *PHASE8_ADMIN,
+        "payroll.approve_payroll",
+        "payroll.pay_payroll",
+        "inventory.approve_inventory",
+        "certificates.approve_certificates",
+    ]
+ROLE_PERMISSIONS["School Administrator"] += PHASE8_ADMIN
+ROLE_PERMISSIONS["HR Manager"] += [
+    "hr.manage_hr",
+    "hr.view_all_hr",
+    "payroll.manage_payroll",
+    "payroll.view_all_payroll",
+    "certificates.manage_certificates",
+    "certificates.view_all_certificates",
+]
+ROLE_PERMISSIONS["Accountant"] += [
+    "payroll.manage_payroll",
+    "payroll.view_all_payroll",
+    "payroll.pay_payroll",
+    "inventory.view_all_inventory",
+]
+ROLE_PERMISSIONS["Librarian"] += ["library.manage_library", "library.view_all_library"]
+ROLE_PERMISSIONS["Transport Manager"] += [
+    "transport.manage_transport",
+    "transport.view_all_transport",
+]
+ROLE_PERMISSIONS["Inventory Manager"] += [
+    "inventory.manage_inventory",
+    "inventory.view_all_inventory",
+]
 
 
 @transaction.atomic
