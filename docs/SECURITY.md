@@ -187,3 +187,18 @@ retained and no public upload route is added. Retention records minimum policy w
 unrestricted deletion. Scoped moderators see reported content, not an unrestricted private
 message search. Production malware scanning, storage capacity, retention disposal and
 operational hardening remain separate deployment work. See PHASE7_TEACHING.md.
+
+## Phase 9 analytics, exports and data governance
+
+Analytics is an additional read surface, never an authorization bypass. Finance and payroll cards
+are omitted without their domain permissions; progress uses current object relationships; exports
+require a second permission, have a 5,000-row ceiling, neutralize spreadsheet formulas, emit audit
+events and use private/no-store responses. Health responses contain only a status word. Production
+startup rejects `DEBUG` and demo data together with the existing secret/host/cookie checks.
+
+Schools must approve a jurisdiction-specific retention schedule before production use. That review
+must separately cover student academic and attendance history, guardian contacts, immutable finance
+and payroll records, communications and homework files, employee documents, certificates, audit
+events, database dumps and media backups. Legal basis, access, archival, holds, deletion approval,
+secure disposal and backup-expiry behavior require local legal and school-policy decisions; this
+prototype deliberately hardcodes no statutory retention period and claims no legal certification.

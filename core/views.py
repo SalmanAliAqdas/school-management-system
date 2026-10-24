@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.exceptions import PermissionDenied
@@ -49,6 +50,19 @@ def health(request):
     except DatabaseError:
         return JsonResponse({"status": "unavailable"}, status=503)
     return JsonResponse({"status": "ok"})
+
+
+@require_GET
+@never_cache
+def liveness(request):
+    return JsonResponse({"status": "alive"})
+
+
+@login_required
+def demo_guide(request):
+    if not settings.ALLOW_DEMO_DATA or not request.user.username.startswith("demo."):
+        raise Http404
+    return render(request, "core/demo_guide.html")
 
 
 @login_required

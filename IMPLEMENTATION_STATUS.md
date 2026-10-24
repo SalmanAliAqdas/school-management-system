@@ -1,5 +1,18 @@
 # Implementation status
 
+Phase 9 is implemented as an additive read-side analytics and operational-preparation layer.
+Leadership receives saved-record executive KPIs with year/date filters; sensitive finance and
+aggregate payroll values appear only with their existing domain permissions. The integrated
+reporting center delegates to established module reports and adds bounded student, library,
+inventory and certificate exports. Individual progress remains relationship/assignment scoped.
+
+The development prototype now includes informational data-quality findings, an opt-in guided
+fictional demo, minimal liveness/readiness endpoints, operator diagnostics, hardened production
+startup validation, CI deployment checks, private PostgreSQL backup tooling and a measured
+disposable restore workflow. No live deployment, hosted production database, public demo or Phase
+10 audit has been performed. See `docs/ANALYTICS_DICTIONARY.md`, `docs/REPORTING_GUIDE.md`,
+`docs/DEMO_GUIDE.md`, `docs/DEPLOYMENT_RUNBOOK.md` and `docs/PRODUCTION_READINESS.md`.
+
 Phase 8 is implemented through six additive applications: HR, payroll, library, transport,
 inventory/assets, and certificates/documents. They reuse existing identities, attendance/leave,
 the Phase 5 ledger, portal authorization, protected PDF patterns, audit events, and notifications.

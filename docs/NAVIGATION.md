@@ -47,3 +47,11 @@ homework, timetable and school communication categories.
 
 See [the Phase 7 route table](PHASE7_TEACHING.md#routes-and-navigation) for setup, reviews,
 private submissions, moderation, access revocation and scoped downloads.
+
+## Analytics and demo navigation
+
+Authorized administrative sidebars link directly to `/analytics/` or `/analytics/reports/`; the old
+planned Reports placeholder is removed. Executive cards link to Reporting center and Data quality.
+Individual progress is `/analytics/students/<uuid>/` and deliberately returns 404 when the current
+student, guardian or teacher relationship does not authorize the object. `/demo/guide/` is visible
+only when demo mode is enabled and the authenticated username uses the reserved `demo.` prefix.

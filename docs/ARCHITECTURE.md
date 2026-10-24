@@ -175,3 +175,17 @@ constraints and immutable-history triggers complement service authorization.
 Private attachments use protected PostgreSQL binary records with scoped download routes.
 The existing TeachingAssignment gains an active access flag; referenced historical rows
 remain intact. See [Phase 7 operating architecture](PHASE7_TEACHING.md).
+
+## Phase 9 analytics and operations
+
+`analytics` is a read-side Django application. Its selectors aggregate authoritative enrollment,
+final attendance, immutable published-result, finance, payroll, library, transport and movement
+records; it does not copy domain data into a warehouse. Core permissions gate the executive,
+reporting, export and quality surfaces while the owning module permissions gate sensitive slices.
+Student progress reuses current portal relationship and teaching-assignment selectors.
+
+`/health/live/` proves only that the web process can respond. `/health/` performs a minimal database
+readiness query. Detailed migration, ledger and stock diagnostics remain an operator-only management
+command. Backups use PostgreSQL custom format and restore only into randomly named disposable
+databases during rehearsal. Production remains WSGI-based and uses the existing WhiteNoise static
+pipeline; protected files continue through authenticated views rather than public media URLs.

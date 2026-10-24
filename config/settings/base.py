@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "transport",
     "inventory",
     "certificates",
+    "analytics",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

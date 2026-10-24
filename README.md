@@ -34,8 +34,7 @@ Phase 6 adds personalized student, guardian and teacher portals over these modul
 with child switching, assigned-class workspaces, unified notifications and safe account
 settings. Start at `/portals/student/`, `/portals/parent/` or `/portals/teacher/`.
 See the [portal experience and policy](docs/PHASE6_PORTALS.md) and
-[navigation guide](docs/NAVIGATION.md). Later phases remain planned; no real banking
-or payment gateway is connected.
+[navigation guide](docs/NAVIGATION.md). No real banking or payment gateway is connected.
 
 ## Teaching and communication
 
@@ -56,6 +55,19 @@ Phase 8 adds integrated HR, independently approved payroll with double-entry fin
 library circulation, route-safe transport assignment, movement-based inventory and durable assets,
 and privacy-preserving official document issuance. Employees, students, and linked guardians use
 object-scoped views. See [Phase 8 school operations](docs/PHASE8_OPERATIONS.md).
+
+## Analytics and operational preparation
+
+Phase 9 adds permission-scoped executive indicators, an integrated reporting center,
+relationship-scoped student progress, informational data-quality checks, bounded audited exports,
+and a guided fictional demo. Begin at `/analytics/`; metric definitions are in the
+[analytics dictionary](docs/ANALYTICS_DICTIONARY.md) and operator usage is in the
+[reporting guide](docs/REPORTING_GUIDE.md).
+
+Deployment remains an operator-controlled preparation exercise, not a live release. See the
+[deployment runbook](docs/DEPLOYMENT_RUNBOOK.md), [backup/restore procedure](docs/BACKUP_RESTORE.md),
+and [production readiness record](docs/PRODUCTION_READINESS.md). Production settings reject demo
+mode. Database backups and protected media are separate responsibilities.
 
 ## Requirements
 

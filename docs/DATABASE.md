@@ -227,3 +227,12 @@ Attachments are bounded binary columns with no public storage URL. Migrations do
 school records into another identity system or modify financial/examination data. The
 preservation checker compares original columns after adding schema and separately identifies
 added migration/permission metadata. See [Phase 7 policy](PHASE7_TEACHING.md).
+
+## Phase 9 preservation and recovery
+
+Phase 9 adds only the `core.0003` permission metadata migration; analytics introduces no duplicate
+fact tables. `scripts/preservation_check.py` fingerprints original columns and accepts only explicit
+additive schema/permission metadata during upgrade verification. `scripts/postgres_backup.py`
+creates private custom-format dumps beneath ignored `.local/backups/` and rehearses restoration in a
+random `schoolos_restore_*` database. It never targets the configured source database for restore.
+Production must use a separate TLS-capable PostgreSQL service and least-privilege application role.

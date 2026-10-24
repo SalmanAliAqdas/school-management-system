@@ -344,3 +344,37 @@ for the pushed commit.
 
 No production deployment or Phase 8 implementation was performed. Ignored screenshots
 remain under `.local/previews/phase7/` and `.local/previews/portals/`.
+
+## Phase 9 analytics and operational-preparation verification (24 October 2026)
+
+- Clean starting baseline: **474 PostgreSQL tests passed** in 794.833 seconds at Phase 8 commit
+  `5c112305f3d7866098a8bc475f580acfda2dc81a`.
+- Final complete regression: **484 tests passed, zero failures/errors** in **1287.176 seconds**.
+  Ten focused Phase 9 tests cover saved-record KPI boundaries, missing attendance, explicit
+  dashboard permission, payroll confidentiality, relationship revocation, date validation,
+  formula-safe/no-store export, separate export authority, health privacy, demo isolation and
+  role-appropriate navigation.
+- Representative executive aggregation over the preserved fictional database completed in
+  **290.207 ms with 27 SQL queries** and returned six active students. This is a development
+  measurement, not a production capacity guarantee; larger datasets still require load testing.
+- Installed headless Chrome passed administrator dashboard/year filter, reporting center, CSV
+  download, authorized payroll, student and guardian progress, unrelated-child and salary denial,
+  guided demo, keyboard navigation, console monitoring, and desktop/tablet/390px/320px overflow
+  checks in an independently named disposable PostgreSQL database. Generated screenshots remain
+  ignored under `.local/previews/phase9/` and contain fictional test records only.
+- A 939,748-byte PostgreSQL custom-format backup restored into a random disposable database in
+  **7.835 seconds**. Verification found 85 migration records, 12 representative users and zero
+  unbalanced journals; the restore database was then dropped. This is a measured rehearsal, not an
+  RTO guarantee. Backups remain ignored beneath `.local/backups/`.
+- Final Django system/deployment checks, migration drift/pending checks, operational database/
+  ledger/stock check, Ruff lint/format, dependency consistency, production static collection and
+  repository secret/private-data scan passed. The scan covered 505 commit candidates with no
+  findings.
+- Preservation verification matched all **3,084 baseline rows across 173 original tables**.
+  Additions were limited to one migration, four permissions, three managed roles and 101 managed
+  role-permission links. No original business, account, password, journal, payroll, academic,
+  communication or audit row fingerprint changed.
+
+Phase 9 did not deploy, create a hosted database, publish a public demo, upload private media or
+begin Phase 10. Provider-scale load, production object storage, external monitoring, legal retention
+approval, assistive-technology review and a final independent security/financial audit remain open.

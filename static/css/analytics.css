@@ -1,0 +1,10 @@
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 1rem; margin: 1.25rem 0 1.5rem; }
+.metric-card { background: #fff; border: 1px solid #dce5de; border-radius: 14px; padding: 1.15rem; min-width: 0; }
+.metric-card span { display: block; color: #5d7067; font-size: .82rem; }
+.metric-card strong { display: block; color: #173f33; font-size: clamp(1.25rem, 2vw, 1.8rem); margin-top: .45rem; overflow-wrap: anywhere; }
+.filter-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; gap: 1rem; align-items: end; padding: 1.25rem; margin-bottom: 1.25rem; }
+.filter-grid > div { min-width: 0; }
+.filter-grid label { display: block; font-weight: 600; font-size: .82rem; margin-bottom: .35rem; }
+.filter-grid input, .filter-grid select { width: 100%; min-width: 0; padding: .68rem; border: 1px solid #bdcdc5; border-radius: 9px; background: #fff; }
+.button-primary { border: 0; border-radius: 9px; padding: .75rem 1rem; background: #173f33; color: #fff; font-weight: 600; cursor: pointer; }
+@media (max-width: 600px) { .filter-grid { grid-template-columns: 1fr; padding: 1rem; } }

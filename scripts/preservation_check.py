@@ -14,6 +14,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.development")
 SCHEMA_METADATA = {
     "django_migrations",
     "django_content_type",
+    "auth_group",
     "auth_permission",
     "auth_group_permissions",
 }
@@ -28,7 +29,9 @@ def main():
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=["snapshot", "prepare-upgrade", "verify"])
-    parser.add_argument("--phase", default="phase6", choices=["phase6", "phase7", "phase8"])
+    parser.add_argument(
+        "--phase", default="phase6", choices=["phase6", "phase7", "phase8", "phase9"]
+    )
     parser.add_argument("--allow-schema-additions", action="store_true")
     args = parser.parse_args()
     path = ROOT / ".local" / f"{args.phase}-preservation.json"
@@ -87,6 +90,17 @@ def main():
                 if not (Counter(baseline["row_hashes"]) - Counter(current["row_hashes"])):
                     added[table] = current["rows"] - baseline["rows"]
                     continue
+            # Phase 9 introduced additional named roles. Older snapshots did not
+            # retain per-row hashes for auth_group, so only permit a row-count
+            # increase for that metadata table.
+            if (
+                args.allow_schema_additions
+                and table == "auth_group"
+                and current
+                and current["rows"] >= baseline["rows"]
+            ):
+                added[table] = current["rows"] - baseline["rows"]
+                continue
             changed.append(table)
         if changed:
             raise SystemExit("Preservation mismatch: " + ", ".join(changed))

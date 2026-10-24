@@ -185,3 +185,18 @@ publication management; only System Administrator and Principal receive moderati
 coordinators may receive explicit capabilities. Active teaching-assignment revocation uses
 `academics.change_teachingassignment` and retains an attributed reason/history. Personal
 portal summaries remain narrower than secondary administrative capabilities.
+
+## Phase 9 analytics
+
+| Permission | Purpose |
+| --- | --- |
+| `core.view_executive_analytics` | Open school-wide executive indicators |
+| `core.view_reporting_center` | Discover only reports allowed by underlying module permissions |
+| `core.export_analytics` | Export a permitted, scoped and bounded analytics report |
+| `core.view_data_quality` | View informational quality findings and authorized remediation links |
+
+System Administrator and Principal can view the executive surface. Principal intentionally does not
+inherit `payroll.view_all_payroll`; salary aggregates require an explicit confidential payroll role.
+School Administrator can use reporting/export/quality. Academic Coordinator and Payroll Officer are
+managed roles, and every detailed report still checks its owning module permission. Guardian,
+student and teacher progress access remains relationship/assignment scoped on every request.

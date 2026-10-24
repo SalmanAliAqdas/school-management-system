@@ -29,6 +29,8 @@ ROLE_PERMISSIONS = {
     "Librarian": [ADMIN_DASHBOARD],
     "Transport Manager": [ADMIN_DASHBOARD],
     "Inventory Manager": [ADMIN_DASHBOARD],
+    "Academic Coordinator": [ADMIN_DASHBOARD, STUDENT_READ, GLOBAL_STUDENTS],
+    "Payroll Officer": [ADMIN_DASHBOARD],
 }
 
 # Administrative capabilities are explicit; dashboard access alone never grants writes.
@@ -229,6 +231,35 @@ ROLE_PERMISSIONS["Transport Manager"] += [
 ROLE_PERMISSIONS["Inventory Manager"] += [
     "inventory.manage_inventory",
     "inventory.view_all_inventory",
+]
+ROLE_PERMISSIONS["Academic Coordinator"] += [
+    *ATTENDANCE_ADMIN,
+    *EXAM_OVERSIGHT,
+    "scheduling.manage_timetable",
+    "learning.manage_learning",
+]
+ROLE_PERMISSIONS["Payroll Officer"] += [
+    "payroll.manage_payroll",
+    "payroll.view_all_payroll",
+]
+
+for role in ("System Administrator", "Principal"):
+    ROLE_PERMISSIONS[role] += [
+        "core.view_executive_analytics",
+        "core.view_reporting_center",
+        "core.export_analytics",
+        "core.view_data_quality",
+    ]
+ROLE_PERMISSIONS["School Administrator"] += [
+    "core.view_reporting_center",
+    "core.export_analytics",
+    "core.view_data_quality",
+]
+# Leadership approval does not itself reveal every employee's salary.
+ROLE_PERMISSIONS["Principal"] = [
+    permission
+    for permission in ROLE_PERMISSIONS["Principal"]
+    if permission != "payroll.view_all_payroll"
 ]
 
 

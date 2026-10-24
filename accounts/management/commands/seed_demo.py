@@ -76,6 +76,9 @@ class Command(BaseCommand):
             ("demo.hr", "Jordan", "Ellis", "HR Manager"),
             ("demo.librarian", "Finley", "Sage", "Librarian"),
             ("demo.transport", "River", "Lane", "Transport Manager"),
+            ("demo.inventory", "Morgan", "Field", "Inventory Manager"),
+            ("demo.academic", "Sidney", "Grove", "Academic Coordinator"),
+            ("demo.payroll", "Emery", "Quill", "Payroll Officer"),
         ]
         accounts = {}
         for username, first, last, role in identities:

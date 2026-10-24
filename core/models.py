@@ -28,6 +28,12 @@ class SchoolSettings(TimestampedModel):
 
     class Meta:
         verbose_name_plural = "School settings"
+        permissions = [
+            ("view_executive_analytics", "View executive school analytics"),
+            ("view_reporting_center", "View integrated reporting center"),
+            ("export_analytics", "Export integrated analytics reports"),
+            ("view_data_quality", "View school data quality findings"),
+        ]
         constraints = [
             models.CheckConstraint(condition=models.Q(id=1), name="single_school_settings")
         ]
