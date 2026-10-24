@@ -1,5 +1,16 @@
 # Implementation status
 
+Phase 10 final technical audit is implemented. It adds evidence-based findings, acceptance, risk and
+release-readiness records; removes an executive collections N+1 query; prevents caching/referrer
+leakage on public certificate verification; upgrades Pillow to the advisory-cleared 13.x line; and
+adds targeted PostgreSQL regressions plus CI dependency auditing. The release decision is
+**CONTROLLED PILOT CANDIDATE**, limited to fictional data or an explicitly authorized test
+environment. Durable private storage and malware controls, hosted end-to-end recovery, monitoring,
+school UAT, and independent security/privacy/accessibility/payroll/accounting/legal review remain
+production blockers. No deployment was performed. See `docs/RELEASE_READINESS.md`,
+`docs/FINAL_ACCEPTANCE_MATRIX.md`, `docs/PHASE10_FINDINGS.md`, and
+`docs/FINAL_RISK_REGISTER.md`.
+
 Phase 9 is implemented as an additive read-side analytics and operational-preparation layer.
 Leadership receives saved-record executive KPIs with year/date filters; sensitive finance and
 aggregate payroll values appear only with their existing domain permissions. The integrated

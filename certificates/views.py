@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_http_methods
 
 from core.branding import school_branding
@@ -125,12 +126,15 @@ def download(request, pk):
     )
 
 
+@never_cache
 def verify(request, token):
     issued = get_object_or_404(
         IssuedDocument.objects.select_related("request__document_type"), verification_token=token
     )
-    return render(
+    response = render(
         request,
         "certificates/verify.html",
         {"document": issued, "school": SchoolSettings.objects.first()},
     )
+    response.headers["Referrer-Policy"] = "no-referrer"
+    return response

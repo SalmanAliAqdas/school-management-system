@@ -4,6 +4,12 @@ A modular school management application built with Django, PostgreSQL and
 server-rendered templates. School administration, admissions and academic operations
 are implemented on the existing foundation. Local demonstrations use fictional data.
 
+Phase 10 completed a repository-wide technical audit and retains the conservative release decision
+**controlled pilot candidate** for fictional data or an explicitly authorized test environment.
+It is not approved for real-school production use. See the [release readiness assessment](docs/RELEASE_READINESS.md),
+[acceptance matrix](docs/FINAL_ACCEPTANCE_MATRIX.md), [findings](docs/PHASE10_FINDINGS.md), and
+[risk register](docs/FINAL_RISK_REGISTER.md).
+
 ## Foundation capabilities
 
 - Custom user model from the first migration; eleven permission groups and multiple roles.
@@ -46,8 +52,8 @@ notification inbox retains attendance, examination and finance notices.
 
 See the [teaching and communication guide](docs/PHASE7_TEACHING.md) for configuration,
 publication, access revocation, file protection, operating limits and all routes.
-Apply additive migrations and run `manage.py sync_roles` when upgrading. No production
-deployment or Phase 8 modules are included.
+Apply additive migrations and run `manage.py sync_roles` when upgrading. These Phase 7 controls
+remain the foundation for the later Phase 8-10 modules; no production deployment is included.
 
 ## School operations
 
@@ -265,6 +271,13 @@ scheduling/      timetable versions, resource bookings, substitutions and worklo
 learning/        assignments, private submission versions and released feedback
 communications/  events, announcements, restricted messaging and source notices
 finance/         fees, manual collections, immutable documents and accounting
+hr/              employment history, leave policy, qualifications and training
+payroll/         salary revisions, controlled payroll runs, payslips and journals
+library/         catalog, accessioned copies, circulation and reservations
+transport/       routes, trips, vehicles, assignments, maintenance and incidents
+inventory/       movement-derived stock, custody, maintenance and disposal
+certificates/    controlled document requests, issuance, revocation and verification
+analytics/       executive KPIs, reporting center, progress and data-quality views
 config/          Django configuration and server entry points
 templates/       shared layouts, auth pages and role workspaces
 static/          local CSS, JavaScript, brand mark and vendor assets

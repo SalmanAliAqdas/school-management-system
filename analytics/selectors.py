@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.db.models import Count, Q, Sum
+from django.db.models import Count, Exists, OuterRef, Q, Sum
 from django.utils import timezone
 
 from attendance.models import StaffAttendance, StudentAttendance
@@ -9,7 +9,6 @@ from certificates.models import DocumentRequest
 from communications.models import Publication
 from examinations.models import ExamSession, PublishedResult
 from finance.models import Expense, FinancialRequest, Invoice, Payment
-from finance.payments import reversal_for
 from hr.models import Qualification, TrainingRecord
 from inventory.models import StockMovement
 from library.models import Book, Copy, Loan, Reservation
@@ -31,12 +30,19 @@ def _attendance(year, start, end, *, staff=False):
 
 
 def _collections(start, end):
-    total = ZERO
-    for payment in Payment.objects.filter(state="posted", paid_on__range=(start, end)):
-        reverse = reversal_for(payment)
-        if not reverse or reverse.occurred_on > end:
-            total += payment.amount
-    return total
+    reversed_by_end = FinancialRequest.objects.filter(
+        kind="reverse_payment",
+        payment_id=OuterRef("pk"),
+        state="approved",
+        occurred_on__lte=end,
+    )
+    return (
+        Payment.objects.filter(state="posted", paid_on__range=(start, end))
+        .alias(reversed_by_end=Exists(reversed_by_end))
+        .filter(reversed_by_end=False)
+        .aggregate(total=Sum("amount"))["total"]
+        or ZERO
+    )
 
 
 def executive_metrics(user, academic_year, starts_on, ends_on):

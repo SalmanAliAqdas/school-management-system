@@ -378,3 +378,42 @@ remain under `.local/previews/phase7/` and `.local/previews/portals/`.
 Phase 9 did not deploy, create a hosted database, publish a public demo, upload private media or
 begin Phase 10. Provider-scale load, production object storage, external monitoring, legal retention
 approval, assistive-technology review and a final independent security/financial audit remain open.
+
+## Phase 10 final audit verification (24 October 2026)
+
+- Starting source was clean `main` at Phase 9 commit
+  `0cf3512df975e2dee45a3d5572759278ef18975b`. The pre-change baseline suite found and passed
+  **484 PostgreSQL tests** in **740.950 seconds** after restarting the stale repository-owned local
+  PostgreSQL process. The original application database was never reset.
+- Phase 10 added two targeted regressions. The authoritative isolated final run under Python 3.13.5,
+  Django 5.2.18, PostgreSQL 17 and Pillow 13.0.0 passed **486 tests, zero failures/errors, zero
+  skips** in **778.195 seconds**.
+- `manage.py check`, production `check --deploy`, `makemigrations --check --dry-run`,
+  `migrate --check`, `operational_check`, static collection, Ruff lint/format, `pip check`, repository
+  secret/private-file scan and `git diff --check` passed. The repository scan reviewed 505 tracked
+  files and 511 commit candidates with no findings.
+- A live `pip-audit -r requirements.txt` initially identified 37 advisories in installed Pillow
+  12.3.0, all reporting 13.0.0 as fixed. The declared range was raised to 13.x, CI scanning was added,
+  and the repeated live audit returned **no known vulnerabilities**. This is time-bounded advisory
+  evidence, not a permanent supply-chain guarantee.
+- Phase 10 Chrome runs passed for examination, finance, portals, scheduling/homework/communications,
+  Phase 8 operations and analytics on owned disposable PostgreSQL databases. Coverage included
+  desktop, tablet, 390 px and 320 px where supported, keyboard/overflow checks, protected files,
+  PDFs/CSV, role isolation, guardian revocation and expected denied routes. The legacy foundation
+  smoke required a separately running seeded server and was not run against the preserved database;
+  the attendance script correctly refused the configured non-working date. These two items are not
+  represented as Phase 10 passes.
+- Saved-fictional-data executive analytics measured **23 queries** and **265.642 ms** for six active
+  students. The collections calculation is now one query regardless of payment count; its regression
+  verifies reversal cutoffs. These local figures are not production capacity claims.
+- Backup/restore rehearsal created a 939,748-byte private custom-format backup and restored it only
+  into random disposable database `schoolos_restore_10d218a8d7d5`. Verification found 85 migrations,
+  12 users and zero unbalanced journals; creation, restore, verification and cleanup took **9.087
+  seconds**. Private media remains a separate, unresolved production recovery responsibility.
+- Preservation verification matched all **3,084 baseline rows across 173 original tables** by
+  ignored fingerprints, exporting no private values. Only the already permitted additive group,
+  permission and migration metadata differed from the Phase 9 snapshot.
+
+Phase 10 did not deploy the application. The final decision is **CONTROLLED PILOT CANDIDATE** for
+fictional data or an explicitly authorized test environment, subject to the blockers in
+`RELEASE_READINESS.md` and `FINAL_RISK_REGISTER.md`.
